@@ -1,3 +1,12 @@
+2004-12-08  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* DESCRIPTION (Maintainer): Email adress changed
+
+2004-12-01  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* inst/Rcmdr-urca.R: x11() device added in function urcaza for
+	plotting the path of the test statistic.
+
 2004-11-29  Bernhard Pfaff  <bernhard@pfaffikus.de>
 
 	* inst/Rcmdr-menus.txt: Menu structure for URCA add-in of Rcmdr
