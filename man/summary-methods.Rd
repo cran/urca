@@ -1,5 +1,6 @@
 \name{summary-methods}
 \docType{methods}
+\alias{summary}
 \alias{summary-methods}
 \alias{summary,ur.ers-method}
 \alias{summary,ur.kpss-method}
