@@ -66,8 +66,10 @@ ca.jo(x, type = c("eigen", "trace"), constant = FALSE, K = 2, season = NULL)
 
 }
 \seealso{
-  \code{\link{plotres}}, \code{\link{blrtest}},
-  \code{\link{ca.jo-class}} and \code{\link{urca-class}}. 
+  
+  \code{\link{plotres}}, \code{\link{alrtest}}, \code{\link{ablrtest}},
+  \code{\link{blrtest}}, \code{\link{cajolst}}, \code{\link{cajools}},
+  \code{\link{lttest}}, \code{\link{ca.jo-class}} and \code{\link{urca-class}}. 
 }
 \examples{
 data(denmark)
