@@ -17,6 +17,50 @@ setClass("ur.ers", representation(y="vector",
                                   testreg="ANY"),
          contains="urca")
 
+setClass("ca.jo", representation(x="ANY",
+                                 Z0="matrix",
+                                 Z1="matrix",
+                                 ZK="matrix",
+                                 type="character",
+                                 model="character",
+                                 const="logical",
+                                 lag="integer",
+                                 P="integer",
+                                 season="ANY",
+                                 cval="matrix",
+                                 teststat="numeric",
+                                 lambda="vector",
+                                 Vorg="matrix",
+                                 V="matrix",
+                                 W="matrix",
+                                 PI="matrix",
+                                 DELTA="matrix",
+                                 GAMMA="matrix",
+                                 R0="matrix",
+                                 RK="matrix"),
+         contains="urca")
+
+setClass("cajo.test", representation(Z0="matrix",
+                                     Z1="matrix",
+                                     ZK="matrix",
+                                     H="ANY",
+                                     A="ANY",
+                                     B="ANY",
+                                     type="character",
+                                     teststat="numeric",
+                                     pval="vector",
+                                     lambda="vector",
+                                     Vorg="matrix",
+                                     V="matrix",
+                                     W="matrix",
+                                     PI="matrix",
+                                     DELTA="ANY",
+                                     DELTA.bb="ANY",
+                                     DELTA.ab="ANY",
+                                     DELTA.aa.b="ANY",
+                                     GAMMA="matrix"),
+         contains="urca")
+
 setClass("ur.kpss", representation(y="vector",
                                    type="character",
                                    lag="integer",
@@ -68,7 +112,7 @@ setClass("ur.za", representation(y="vector",
          contains="urca")
 
 #
-# Functions for unit root tests
+# Functions for unit root tests and cointegration analysis
 #
 
 #
@@ -181,6 +225,364 @@ ur.ers <- function(y, type=c("DF-GLS", "P-test"), model=c("constant", "trend"), 
   colnames(cvals) <- c("1%", "5%", "10%")
   rownames(cvals) <- c("critical values")
   new("ur.ers", y=y, yd=yd, type=type, model=model, lag=as.integer(lag.max), cval=round(cvals, 2), teststat=teststat, testreg=test.reg, test.name="Elliot, Rothenberg \& Stock")
+}
+#
+# Johansen Procedure
+#
+ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, season=NULL){
+  x <- as.matrix(x)
+  type <- match.arg(type)
+  K <- as.integer(K)
+  P <- ncol(x)
+  arrsel <- P 
+  N <- nrow(x)
+  if(N*P < P + 3*P + K*P^2 + P*(P + 1)/2)
+    stop("Insufficient degrees of freedom")
+  if(P > 5)
+    warning("Too many variables, critical values cannot be computed.")
+  if(!(is.null(season))){
+    dum <- (diag(season) - 1/season)[,-season]
+    dums <- dum
+    while(nrow(dums) < N){
+      dums <- rbind(dums, dum)}
+    dums <- dums[1:N,]
+    if(NA%in%x){
+      idx.NA <- 1:N
+      ind <- as.logical(sapply(idx.NA,  function(z) sum(is.na(x[z,])*1)))
+      ind2 <- ind*(1:N)
+      dums <- dums[-ind2,]
+    }
+  }
+  x <- na.omit(x)
+  N <- nrow(x)
+  Z <- embed(diff(x), K)
+  Z0 <- Z[,1:P]
+  if(constant){
+    ZK <- cbind(x[-c((N-K+1):N),], 1)
+    Z1 <- Z[,-c(1:P)]
+    P <- P + 1
+    idx <- 0:(P-2)
+    cvals <- array(c(7.563, 13.781, 19.796, 25.611, 31.592, 9.094, 15.752, 21.894, 28.167, 34.397, 12.740, 19.834, 26.409, 33.121, 39.672, 7.563, 17.957, 32.093, 49.925, 71.472, 9.094, 20.168, 35.068, 53.347, 75.328, 12.741, 24.988, 40.198, 60.054, 82.969), c(5, 3, 2))
+    model <- "without linear trend"
+  }else{
+    Z1 <- Z[,-c(1:P)]
+    Z1 <- cbind(1, Z1)
+    ZK <- x[-c((N-K+1):N),]
+    idx <- 0:(P-1)
+    cvals <- array(c(6.691, 12.783, 18.959, 24.917, 30.818, 8.083, 14.595, 21.279, 27.341, 33.262, 11.576, 18.782, 26.154, 32.616, 38.858, 6.691, 15.583, 28.436, 45.248, 65.956, 8.083, 17.844, 31.256, 48.419, 69.977, 11.576, 21.962, 37.291, 55.551, 77.911), c(5, 3, 2))
+    model <- "with linear trend"
+  }
+  N <- nrow(Z0)
+  if(!(is.null(season))){
+    Z1 <- cbind(Z1, dums[-(1:K),])
+  }
+  M00 <- crossprod(Z0)/N
+  M11 <- crossprod(Z1)/N
+  MKK <- crossprod(ZK)/N
+  M01 <- crossprod(Z0, Z1)/N
+  M0K <- crossprod(Z0, ZK)/N
+  MK0 <- crossprod(ZK, Z0)/N
+  M10 <- crossprod(Z1, Z0)/N
+  M1K <- crossprod(Z1, ZK)/N
+  MK1 <- crossprod(ZK, Z1)/N
+  M11inv <- solve(M11)
+  R0 <- Z0 - t(M01%*%M11inv%*%t(Z1))
+  RK <- ZK - t(MK1%*%M11inv%*%t(Z1))
+  S00 <- M00 - M01%*%M11inv%*%M10
+  S0K <- M0K - M01%*%M11inv%*%M1K
+  SK0 <- MK0 - MK1%*%M11inv%*%M10
+  SKK <- MKK - MK1%*%M11inv%*%M1K
+  Ctemp <- chol(SKK, pivot=TRUE)
+  pivot <- attr(Ctemp, "pivot")
+  oo <- order(pivot)
+  C <- t(Ctemp[,oo])
+  Cinv <- solve(C)
+  S00inv <- solve(S00)
+  valeigen <- eigen(Cinv%*%SK0%*%S00inv%*%S0K%*%t(Cinv))
+  lambda <- valeigen$values
+  e <- valeigen$vector
+  V <- t(Cinv)%*%e
+  Vorg <- V
+  V <- sapply(1:P, function(x) V[,x]/V[1,x])
+  W <- S0K%*%V%*%solve(t(V)%*%SKK%*%V)
+  PI <- S0K%*%solve(SKK)
+  DELTA <- S00 - S0K%*%V%*%solve(t(V)%*%SKK%*%V)%*%t(V)%*%SK0
+  GAMMA <- M01%*%M11inv - PI%*%MK1%*%M11inv
+  if(type=="trace"){
+    type <- "trace statistic"
+    teststat <- as.matrix(rev(sapply(idx, function(x) -N*sum(log(1 - lambda[(x+1):P])))))
+    colnames(teststat) <- "trace"
+    if(arrsel > 5){
+      cval <- NULL
+    }else{
+      cval <- round(cvals[1:arrsel, ,2],2)
+      colnames(cval) <- c("10\%", "5\%", "1\%")
+      rownames(cval) <- c(paste("r <= ", (arrsel-1):1, " |",sep=""), "r = 0  |")
+    }
+  }else if(type=="eigen"){
+    type <- "maximal eigenvalue statistic (lambda max)"
+    teststat <- as.matrix(rev(sapply(idx, function(x) -N*log(1 - lambda[x+1]))))
+    colnames(teststat) <- "lambda max."
+    if(arrsel > 5){
+      cval <- NULL
+    }else{
+      cval <- round(cvals[1:arrsel, ,1],2)
+      colnames(cval) <- c("10\%", "5\%", "1\%")
+      rownames(cval) <- c(paste("r <= ", (arrsel-1):1, " |",sep=""), "r = 0  |")
+    }
+  }
+  new("ca.jo", x=x, Z0=Z0, Z1=Z1, ZK=ZK, type=type, model=model, const=constant, lag=K, P=arrsel, season=season, cval=cval, teststat=as.vector(teststat), lambda=lambda, Vorg=Vorg, V=V, W=W, PI=PI, DELTA=DELTA, GAMMA=GAMMA, R0=R0, RK=RK, test.name="Johansen-Procedure")
+}
+#
+# auxiliary function for residuals' diagnostics and tests
+#
+alrtest <- function(z, A, r){
+  if(!(class(z)=="ca.jo")){
+    stop("Please, provide object of class 'ca.jo' as 'z'.\n")
+  }
+  r <- as.integer(r)
+  A <- as.matrix(A)
+  if(!(nrow(A)==z@P)){
+    stop("Row number of 'A' is unequal to VAR order.\n")
+  }
+  if(r >= z@P || r<1){
+    stop("Count of cointegrating relationships is out of allowable range.\n")
+  }
+  type <- "Estimation and testing under linear restrictions on beta"
+  B <- qr.Q(qr(A), complete=TRUE)[,-c(1:ncol(A))]
+  N <- nrow(z@Z0)
+  M00 <- crossprod(z@Z0)/N
+  M11 <- crossprod(z@Z1)/N
+  MKK <- crossprod(z@ZK)/N
+  M01 <- crossprod(z@Z0, z@Z1)/N
+  M0K <- crossprod(z@Z0, z@ZK)/N
+  MK0 <- crossprod(z@ZK, z@Z0)/N
+  M10 <- crossprod(z@Z1, z@Z0)/N
+  M1K <- crossprod(z@Z1, z@ZK)/N
+  MK1 <- crossprod(z@ZK, z@Z1)/N
+  M11inv <- solve(M11)
+  S00 <- M00 - M01%*%M11inv%*%M10
+  S0K <- M0K - M01%*%M11inv%*%M1K
+  SK0 <- MK0 - MK1%*%M11inv%*%M10
+  SKK <- MKK - MK1%*%M11inv%*%M1K
+  Sab <- t(A)%*%S00%*%B
+  Skb <- t(S0K)%*%B
+  Sbb <- t(B)%*%S00%*%B
+  Sbbinv <- solve(Sbb)
+  RA <- z@R0%*%A - z@R0%*%B%*%Sbbinv%*%t(Sab)
+  RK <- z@RK - z@R0%*%B%*%Sbbinv%*%t(Skb)
+  Saa.b <- crossprod(RA, RA)/N
+  Sak.b <- crossprod(RA, RK)/N
+  Ska.b <- crossprod(RK, RA)/N
+  Skk.b <- crossprod(RK, RK)/N
+  Ctemp <- chol(Skk.b, pivot=TRUE)
+  pivot <- attr(Ctemp, "pivot")
+  oo <- order(pivot)
+  C <- t(Ctemp[,oo])
+  Cinv <- solve(C)
+  Saa.binv <- solve(Saa.b)
+  valeigen <- eigen(Cinv%*%Ska.b%*%Saa.binv%*%Sak.b%*%t(Cinv))
+  lambda.res <- valeigen$values
+  e <- valeigen$vector
+  V <- t(Cinv)%*%e
+  V <- as.matrix(V[,1:r])
+  Vorg <- V
+  idx <- 1:r
+  V <- sapply(idx, function(x) V[ , x] / V[1,x])
+  PHI <- solve(t(A)%*%A)%*%Sak.b%*%Vorg
+  ALPHA <- as.matrix(A%*%PHI)
+  ALPHAorg <- ALPHA
+  ALPHA <- sapply(idx, function(x) ALPHA[ , x] * Vorg[1,x])
+  PI <- ALPHA %*% t(V)
+  GAMMA <- M01%*%M11inv - PI%*%MK1%*%M11inv
+  DELTA.bb <- Sbb
+  DELTA.ab <- Sab - t(A)%*%ALPHA%*%t(V)%*%Skb
+  DELTA.aa.b <- Saa.b - t(A)%*%ALPHA%*%t(ALPHA)%*%A
+  lambda <- z@lambda
+  teststat <- N*sum(log((1-lambda.res[1:r])/(1-lambda[1:r])))
+  df <- r*(z@P - ncol(A))
+  pval <- c(1-pchisq(teststat, df), df)
+  new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, H=NULL, A=A, B=B, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=ALPHA, PI=PI, DELTA=NULL, DELTA.bb=DELTA.bb, DELTA.ab=DELTA.ab, DELTA.aa.b=DELTA.aa.b, GAMMA=GAMMA, test.name="Johansen-Procedure")
+}
+ablrtest <- function(z, H, A, r){
+    if(!(class(z)=="ca.jo")){
+      stop("Please, provide object of class 'ca.jo' as 'z'.\n")
+    }
+    r <- as.integer(r)
+    A <- as.matrix(A)
+    H <- as.matrix(H)
+    if(!(nrow(A)==z@P)){
+      stop("Row number of 'A' is unequal to VAR order.\n")
+    }
+    if(r >= z@P || r<1){
+      stop("Count of cointegrating relationships is out of allowable range.\n")
+    }
+    if(z@const==TRUE){
+      P <- z@P + 1
+    }else{
+      P <- z@P
+    }
+    if(!(nrow(H)==P)){
+      stop("Row number of 'H' is unequal to VAR order.\n")
+    }
+    type <- "Estimation and testing under linear restrictions on alpha and beta"
+    N <- nrow(z@Z0)
+    B <- qr.Q(qr(A), complete=TRUE)[,-c(1:ncol(A))]
+    M00 <- crossprod(z@Z0)/N
+    M11 <- crossprod(z@Z1)/N
+    MKK <- crossprod(z@ZK)/N
+    M01 <- crossprod(z@Z0, z@Z1)/N
+    M0K <- crossprod(z@Z0, z@ZK)/N
+    MK0 <- crossprod(z@ZK, z@Z0)/N
+    M10 <- crossprod(z@Z1, z@Z0)/N
+    M1K <- crossprod(z@Z1, z@ZK)/N
+    MK1 <- crossprod(z@ZK, z@Z1)/N
+    M11inv <- solve(M11)
+    S00 <- M00 - M01%*%M11inv%*%M10
+    S0K <- M0K - M01%*%M11inv%*%M1K
+    SK0 <- MK0 - MK1%*%M11inv%*%M10
+    SKK <- MKK - MK1%*%M11inv%*%M1K
+    Sab <- t(A)%*%S00%*%B
+    Skb <- t(S0K)%*%B
+    Sbb <- t(B)%*%S00%*%B
+    Sbbinv <- solve(Sbb)
+    RA <- z@R0%*%A - z@R0%*%B%*%Sbbinv%*%t(Sab)
+    RK <- z@RK - z@R0%*%B%*%Sbbinv%*%t(Skb)
+    Saa.b <- crossprod(RA, RA)/N
+    Sak.b <- crossprod(RA, RK)/N
+    Ska.b <- crossprod(RK, RA)/N
+    Skk.b <- crossprod(RK, RK)/N
+    Ctemp <- chol(t(H)%*%Skk.b%*%H, pivot=TRUE)
+    pivot <- attr(Ctemp, "pivot")
+    oo <- order(pivot)
+    C <- t(Ctemp[,oo])
+    Cinv <- solve(C)
+    Saa.binv <- solve(Saa.b)
+    valeigen <- eigen(Cinv%*%t(H)%*%Ska.b%*%Saa.binv%*%Sak.b%*%H%*%t(Cinv))
+    lambda.res <- valeigen$values
+    e <- valeigen$vector
+    V <- H%*%t(Cinv)%*%e
+    Vorg <- V
+    idx <- 1:r
+    V <- sapply(idx, function(x) V[ , x] / V[1,x])
+    PHI <- solve(t(A)%*%A)%*%Sak.b%*%Vorg
+    ALPHA <- as.matrix(A%*%PHI)
+    ALPHAorg <- ALPHA
+    ALPHA <- sapply(idx, function(x) ALPHA[ , x] * Vorg[1,x])
+    PI <- ALPHA %*% t(V)
+    GAMMA <- M01%*%M11inv - PI%*%MK1%*%M11inv
+    DELTA.bb <- Sbb
+    DELTA.ab <- Sab - t(A)%*%ALPHA%*%t(V)%*%Skb
+    DELTA.aa.b <- Saa.b - t(A)%*%ALPHA%*%t(ALPHA)%*%A
+    lambda <- z@lambda
+    teststat <- N*sum(log((1-lambda.res[1:r])/(1-lambda[1:r])))
+    df <- r*(z@P - ncol(A)) + r*(z@P - ncol(H))
+    pval <- c(1-pchisq(teststat, df), df)
+    new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, H=H, A=A, B=B, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=ALPHA, PI=PI, DELTA=NULL, DELTA.bb=DELTA.bb, DELTA.ab=DELTA.ab, DELTA.aa.b=DELTA.aa.b, GAMMA=GAMMA, test.name="Johansen-Procedure")
+}
+blrtest <- function(z, H, r){
+  if(!(class(z)=="ca.jo")){
+    stop("Please, provide object of class 'ca.jo' as 'z'.\n")
+  }
+  if(r >= z@P || r < 1){
+    stop("Count of cointegrating relationships is out of allowable range.\n")
+  }
+  if(z@const==TRUE){
+    P <- z@P + 1
+  }else{
+    P <- z@P
+  }
+  r <- as.integer(r)
+  H <- as.matrix(H)
+  if(!(nrow(H)==P)){
+    stop("Row number of 'H' is unequal to VAR order.\n")
+  }
+  type <- "Estimation and testing under linear restrictions on beta"
+  N <- nrow(z@Z0)
+  M00 <- crossprod(z@Z0)/N
+  M11 <- crossprod(z@Z1)/N
+  MKK <- crossprod(z@ZK)/N
+  M01 <- crossprod(z@Z0, z@Z1)/N
+  M0K <- crossprod(z@Z0, z@ZK)/N
+  MK0 <- crossprod(z@ZK, z@Z0)/N
+  M10 <- crossprod(z@Z1, z@Z0)/N
+  M1K <- crossprod(z@Z1, z@ZK)/N
+  MK1 <- crossprod(z@ZK, z@Z1)/N
+  M11inv <- solve(M11)
+  S00 <- M00 - M01%*%M11inv%*%M10
+  S0K <- M0K - M01%*%M11inv%*%M1K
+  SK0 <- MK0 - MK1%*%M11inv%*%M10
+  SKK <- MKK - MK1%*%M11inv%*%M1K
+  Ctemp <- chol(t(H)%*%SKK%*%H, pivot=TRUE)
+  pivot <- attr(Ctemp, "pivot")
+  oo <- order(pivot)
+  C <- t(Ctemp[,oo])
+  Cinv <- solve(C)
+  S00inv <- solve(S00)
+  valeigen <- eigen(Cinv%*%t(H)%*%SK0%*%S00inv%*%S0K%*%H%*%t(Cinv))
+  e <- valeigen$vector
+  V <- H%*%t(Cinv)%*%e
+  Vorg <- V
+  idx <- ncol(V)
+  V <- sapply(1:idx, function(x) V[,x]/V[1,x])
+  W <- S0K%*%V%*%solve(t(V)%*%SKK%*%V)
+  PI <- W %*% t(V)
+  DELTA <- S00 - S0K%*%V%*%solve(t(V)%*%SKK%*%V)%*%t(V)%*%SK0
+  GAMMA <- M01%*%M11inv - PI%*%MK1%*%M11inv
+  lambda.res <- valeigen$values
+  lambda <- z@lambda
+  teststat <- N*sum(log((1-lambda.res[1:r])/(1-lambda[1:r])))
+  df <- r*(P - ncol(H))
+  pval <- c(1-pchisq(teststat, df), df)
+  new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, H=H, A=NULL, B=NULL, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=W, PI=PI, DELTA=DELTA, DELTA.bb=NULL, DELTA.ab=NULL, DELTA.aa.b=NULL, GAMMA=GAMMA, test.name="Johansen-Procedure")
+}
+lttest <- function(z, r){
+  if(!(class(z)=="ca.jo")){
+    stop("Object 'x' must be of class 'ca.jo'\n")
+  }
+  r <- as.integer(r)
+  if(r >= z@P || r < 1){
+    stop("Provide number of cointegration vectors in valid range.\n")
+  }
+  idx <- r + 1
+  df <- length(idx:z@P)
+  N <- nrow(z@Z0)
+  test1 <- ca.jo(z@x, constant=TRUE, K=z@lag, season=z@season)
+  lambda1 <- test1@lambda
+  test2 <- ca.jo(z@x, constant=FALSE, K=z@lag, season=z@season)
+  lambda2 <- test2@lambda
+  teststat <- -N*sum(log((1-lambda1[idx:z@P])/(1-lambda2[idx:z@P])))
+  pval <- 1 - pchisq(teststat, df)
+  lttest <- as.matrix(t(c(teststat, pval)))
+  colnames(lttest) <- c("test statistic", "p-value")
+  rownames(lttest) <- "LR test"
+  cat("LR-test for no linear trend\n")
+  cat("\n")
+  cat(paste("H0: H*2(r<=", r, ")\n", sep=""))
+  cat(paste("H1: H2(r<=", r, ")\n", sep=""))
+  cat("\n")
+  cat("Test statistic is distributed as chi-square\n")
+  cat(paste("with", df, "degress of freedom\n", sep=" "))
+  print(round(lttest, 2))
+}
+plotres <- function (x){
+  if (!(class(x) == "ca.jo"))
+    stop("Object is not of class 'ca.jo' \n")
+  resids <- x@Z0 - x@Z1%*%t(x@GAMMA) - x@ZK%*%t(x@PI)
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  par(mfrow = c(1, 1))
+  for (i in 1:x@P) {
+    layout(matrix(c(1, 2, 1, 3), 2, 2))
+    plot.ts(resids[, i], main = paste("Residuals of ", i, ". VAR regression", sep = ""), ylab = "", xlab = "")
+    abline(h = 0, col = "red")
+    acf(x@R0[, i], main = "Autocorrelations of Residuals")
+    pacf(x@R0[, i], main = "Partial Autocorrelations of Residuals")
+    if (interactive()){
+      cat("\nType <Return> to continue: ")
+      readline()
+    }
+  }
 }
 #
 # KPSS-Test
@@ -584,9 +986,8 @@ ur.za <- function(y, model=c("intercept", "trend", "both"), lag){
 #
 # Setting methods for classes
 #
-
 show.urca <- function(object){
-  title <- paste("#", object@test.name, "Unit Root Test #", sep=" ")
+  title <- paste("#", object@test.name, "Unit Root / Cointegration Test #", sep=" ")
   row <- paste(rep("#", nchar(title)), collapse="")
   cat("\n")
   cat(row, "\n")
@@ -598,6 +999,8 @@ show.urca <- function(object){
 }
 
 setMethod("show", "ur.kpss", show.urca)
+setMethod("show", "ca.jo", show.urca)
+setMethod("show", "cajo.test", show.urca)
 setMethod("show", "ca.po", show.urca)
 setMethod("show", "ur.pp", show.urca)
 setMethod("show", "ur.sp", show.urca)
@@ -623,6 +1026,87 @@ setMethod("summary", "ur.ers", function(object){
   cat('Critical values of', object@type, "are:\n")
   print(object@cval)
   cat('\n')
+})
+
+setMethod("summary", "ca.jo", function(object){
+  title <- paste("#", object@test.name, "#", sep=" ")
+  row <- paste(rep("#", nchar(title)), collapse="")
+  cat("\n")
+  cat(row, "\n")
+  cat(title, "\n")
+  cat(row, "\n")
+  cat("\n")
+  cat("Test type:", object@type, ",", object@model, "\n")
+  cat("\n")
+  cat("Eigenvalues (lambda):\n")
+  print(object@lambda)
+  cat('\n')
+  if(!(is.null(object@cval))){
+    res1 <- as.matrix(round(object@teststat, 2))
+    colnames(res1) <- "test"
+    result <- cbind(res1, object@cval) 
+    cat("Values of teststatistic \& critical values of test:\n")
+    cat("\n")
+    print(result)
+    cat("\n")
+  }else{
+    cat("Values of test statistic\n")
+    cat("\n")
+    result <- as.matrix(object@teststat)
+    rownames(result) <- c(paste("r <= ", (object@P-1):1, " |",sep=""), "r = 0  |")
+    print(result)
+    cat("\n")
+  }
+  cat("Eigenvectors, normalised to first column:\n")
+  cat("(These are the cointegration relations)\n")
+  cat("\n")
+  print(object@V)
+  cat("\n")
+  cat("Weights W:\n")
+  cat("(This is the loading matrix)\n")
+  cat("\n")
+  print(object@W)
+  cat("\n")
+})
+
+setMethod("summary", "cajo.test", function(object){
+  title <- paste("#", object@test.name, "#", sep=" ")
+  row <- paste(rep("#", nchar(title)), collapse="")
+  cat("\n")
+  cat(row, "\n")
+  cat(title, "\n")
+  cat(row, "\n")
+  cat("\n")
+  cat(object@type, "\n")
+  cat("\n")
+  cat("The VECM has been estimated subject to: \n")
+  cat("beta=H*phi and/or alpha=A*psi\n")
+  if(!is.null(object@H)){
+    cat("\n")
+    print(object@H)
+    cat("\n")
+  }
+  if(!is.null(object@A)){
+    cat("\n")
+    print(object@A)
+    cat("\n")
+  }
+  cat("Eigenvalues of restricted VAR (lambda):\n")
+  print(round(object@lambda, 4))
+  cat('\n')
+  cat("The value of the likelihood ratio test statistic:\n")
+  cat(round(object@teststat, 2), "distributed as chi square with", object@pval[2], "df.\n")
+  cat("The p-value of the test statistic is:", round(object@pval[1], 2), "\n")
+  cat("\n")
+  cat("Eigenvectors, normalised to first column\n")
+  cat("of the restricted VAR:\n")
+  cat("\n")
+  print(round(object@V, 4))
+  cat("\n")
+  cat("Weights W of the restricted VAR:\n")
+  cat("\n")
+  print(round(object@W, 4))
+  cat("\n")
 })
 
 setMethod("summary", "ur.kpss", function(object){
@@ -728,6 +1212,25 @@ setMethod("plot", signature(x="ur.ers", y="missing"), function(x){
   abline(h=0, col="red")
   acf(resid(x@testreg), main="Autocorrelations of Residuals")
   pacf(resid(x@testreg), main="Partial Autocorrelations of Residuals")
+})
+
+setMethod("plot", signature(x="ca.jo", y="missing"), function(x){
+  oldpar <- par(no.readonly=TRUE)
+  on.exit(par(oldpar))
+  par(mfrow=c(2,1))
+  if(x@P==nrow(x@V)){
+    ci <- x@x%*%x@V
+  }else{
+    ci <- x@x%*%x@V[-(x@P+1),]
+  }
+  for( i in 1:x@P){
+    plot.ts(x@x[,i], main=paste("Time series plot of y", i, sep=""), ylab="")
+    plot.ts(ci[,i], main=paste("Cointegration relation of ", i, ". variable", sep=""), ylab="")
+    if(interactive()){
+      cat("\nType <Return> to continue: ")
+      readline()
+    }
+  }
 })
 
 setMethod("plot", signature(x="ur.kpss", y="missing"), function(x){

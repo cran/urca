@@ -5,7 +5,7 @@
 \title{Representation of class `ca.po'}
 \description{
   This class contains the relevant information by applying the Phillips
-  \& Ouliaris Cointegration test to a data matrix.
+  \& Ouliaris cointegration test to a data matrix.
 }
 \section{Slots}{
   \describe{
@@ -27,11 +27,11 @@
     \item{\code{testreg}:}{Object of class \code{"ANY"}: The summary
       output of the cointegration regression(s).}
     \item{\code{test.name}:}{Object of class \code{"character"}: The
-      name of the test, \emph{i.e.} "Phillips \& Ouliaris".}
+      name of the test, \emph{i.e.} `Phillips \& Ouliaris'.}
   }
 }
 \section{Extends}{
-Class \code{"urca"}, directly.
+Class \code{`urca'}, directly.
 }
 \section{Methods}{
   Type \code{showMethods(classes="ca.po")} at the R prompt for a
@@ -39,7 +39,7 @@ Class \code{"urca"}, directly.
   
   Useful methods include
   \describe{
-    \item{\code{show}:}{test-statistic.}
+    \item{\code{show}:}{test statistic.}
     \item{\code{summary}:}{like show, but critical value and summary of
       test regression(s) added.}
     \item{\code{plot}:}{Residual plot(s) and their acfs' and pacfs'.}
@@ -52,6 +52,6 @@ Class \code{"urca"}, directly.
 }
   
 \seealso{
-  \code{\link{ca.po}}, \code{\link{urca-class}}. 
+  \code{\link{ca.po}} and \code{\link{urca-class}}. 
 }
 \keyword{classes}

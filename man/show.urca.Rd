@@ -3,14 +3,14 @@
 \title{Function to show objects of classes for unit root tests}
 \description{
   The function \code{show.urca} is called within the defined methods
-  for classes \code{ca.po}, \code{ur.ers}, \code{ur.kpss}, \code{ur.po},
+  for classes \code{ca.jo}, \code{cajo.test}, \code{ca.po}, \code{ur.ers}, \code{ur.kpss}, \code{ur.po},
   \code{ur.pp}, \code{ur.sp} and \code{ur.za}.
 }
 \usage{
 show.urca(object)
 }
 \arguments{
-  \item{object}{Object of class contained in \code{urca}.}
+  \item{object}{Object of class contained in \code{`urca'}.}
 }
 \details{
   This function is called by method \code{show}.

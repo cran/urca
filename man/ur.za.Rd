@@ -2,7 +2,7 @@
 \alias{ur.za}
 \title{Zivot \& Andrews Unit Root Test}
 \description{
-  Performs the Zivot \& Andrews Unit Root Test, which allows a
+  Performs the Zivot \& Andrews unit root test, which allows a
   break at an unknown point in either the intercept, the linear
   trend or in both.
 }
@@ -20,7 +20,7 @@ ur.za(y, model = c("intercept", "trend", "both"), lag)
   of the coeffcient of the lagged endogenous variable. 
 }
 \value{
-  An object of class \code{"ur.za"}.
+  An object of class \code{`ur.za'}.
 }
 \references{
   Zivot, E. and Andrews, Donald W.K. (1992), Further Evidence on the

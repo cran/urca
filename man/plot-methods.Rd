@@ -3,6 +3,7 @@
 \alias{plot-methods}
 \alias{plot,ur.ers,missing-method}
 \alias{plot,ur.kpss,missing-method}
+\alias{plot,ca.jo,missing-method}
 \alias{plot,ca.po,missing-method}
 \alias{plot,ur.pp,missing-method}
 \alias{plot,ur.sp,missing-method}
@@ -10,8 +11,8 @@
 \title{Methods for Function plot in Package `urca'}
 \description{
   Plot methods for objects belonging to classes set in package
-  \code{urca}. Depending on the unit root test a suitable graphical
-  presentation is selected.
+  \code{`urca'}. Depending on the unit root/cointegration test a
+  suitable graphical presentation is selected.
   }
 \section{Methods}{\describe{
 
@@ -20,6 +21,8 @@
   residual plot and their acfs' and pacfs'.}
 \item{x = "ur.kpss", y = "missing"}{Residual plot and their acfs' and
   pacfs' of the KPSS test.}
+\item{x = "ca.jo", y = "missing"}{Time series plots and associated
+  cointegration relations for the Johansen procedure.}
 \item{x = "ca.po", y = "missing"}{Residual plot and their acfs' and
   pacfs' of the cointegration regression(s) for the Phillips \& Ouliaris
   test.}
@@ -32,8 +35,9 @@
 }}
 \seealso{
   \code{\link{ur.ers-class}}, \code{\link{ur.kpss-class}},
-  \code{\link{ca.po-class}}, \code{\link{ur.pp-class}},
-  \code{\link{ur.sp-class}} and \code{\link{ur.za-class}}.}
+  \code{\link{ca.jo-class}}, \code{\link{ca.po-class}},
+  \code{\link{ur.pp-class}}, \code{\link{ur.sp-class}} and
+  \code{\link{ur.za-class}}.}
 \examples{
 data(nporg)
 gnp <- na.omit(nporg[, "gnp.r"])
@@ -53,6 +57,11 @@ plot(sp.gnp)
 #
 za.gnp <- ur.za(gnp, model="both", lag=2)
 plot(za.gnp)
+#
+data(denmark)
+sjd <- denmark[, c("LRM", "LRY", "IBO", "IDE")]
+sjd.vecm <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, season=4)
+plot(sjd.vecm)
 }
 \keyword{methods}
 

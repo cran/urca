@@ -12,7 +12,7 @@
     \item{\code{y}:}{Object of class \code{"vector"}: The time series to
       be tested.}
     \item{\code{type}:}{Object of class \code{"character"}: Test type,
-      \code{mu} or \code{tau} depending on the deterministic part.}
+      \code{"mu"} or \code{"tau"} depending on the deterministic part.}
     \item{\code{lag}:}{Object of class \code{"integer"}: Number of lags
       for error term correction.}
     \item{\code{cval}:}{Object of class \code{"matrix"}: Critical value
@@ -22,11 +22,11 @@
     \item{\code{res}:}{Object of class \code{"vector"}: Residuals of
       test regression.}
     \item{\code{test.name}:}{Object of class \code{"character"}: The
-      name of the test, \emph{i.e.} "KPSS".}
+      name of the test, \emph{i.e.} `KPSS'.}
   }
 }
 \section{Extends}{
-Class \code{"urca"}, directly.
+Class \code{`urca'}, directly.
 }
 \section{Methods}{
   Type \code{showMethods(classes="ur.kpss")} at the R prompt for a
@@ -51,6 +51,6 @@ Class \code{"urca"}, directly.
   'Discussion Papers (CFDPs)'.
 }
 \seealso{
-  \code{\link{ur.kpss}}, \code{\link{urca-class}}.
+  \code{\link{ur.kpss}} and \code{\link{urca-class}}.
 }
 \keyword{classes}

@@ -2,7 +2,7 @@
 \alias{ca.po}
 \title{Phillips \& Ouliaris Cointegration Test}
 \description{
-  Performs the Phillips \& Ouliaris \code{Pu} and \code{Pz}
+  Performs the Phillips \& Ouliaris \code{"Pu"} and \code{"Pz"}
   cointegration test.
 }
 \usage{
@@ -16,18 +16,19 @@ ca.po(z, demean = c("none", "constant", "trend"),
   \item{lag}{Either a short or long lag number used for
     variance/covariance correction.}
   \item{type}{The test type, either \code{"Pu"} or \code{"Pz"}.}
-  \item{tol}{Numeric, this argument is passed to \code{solve()} in \code{ca.po()}.}
+  \item{tol}{Numeric, this argument is passed to \code{solve()} in
+    \code{ca.po()}.}
 }
 \details{
-  The test \code{"Pz"} compared to the test \code{"Pu"} has the
+  The test \code{"Pz"}, compared to the test \code{"Pu"}, has the
   advantage that it is invariant to the normalization of the
   cointegration vector, \emph{i.e.} it does not matter which variable
-  is one the left hand side of the equation. In case, convergence
+  is one the left hand side of the equation. In case convergence
   problems are encountered by matrix inversion, one can pass a higher
-  tolerance level \emph{via} \code{tol=...} to the \code{solve()}-function.
+  tolerance level \emph{via} \code{"tol=..."} to the \code{solve()}-function.
 }
 \value{
-  An object of class \code{"ca.po"}
+  An object of class \code{`ca.po'}.
 }
 \references{
   Phillips, P.C.B. and Ouliaris, S. (1990), Asymptotic Properties of
