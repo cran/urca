@@ -6,7 +6,7 @@
 }
 \usage{
 ur.ers(y, type = c("DF-GLS", "P-test"), model = c("constant", "trend"),
-       lag.max = 2)
+       lag.max = 4)
 }
 \arguments{
   \item{y}{Vector to be tested for a unit root.}
