@@ -416,7 +416,7 @@ urcablrtest <- function(){
   onOK <- function(){
     x <- getSelection(xBox)
     if (length(x) == 0){
-      errorCondition(recall=urcaalrtest, message="You must select a VECM model.")
+      errorCondition(recall=urcaablrtest, message="You must select a VECM model.")
       return()
     }
     y <- getSelection(yBox)
@@ -440,6 +440,123 @@ urcablrtest <- function(){
   tkgrid(buttonsFrame, sticky="w")
   tkgrid.configure(rankField, sticky="e")
   dialogSuffix(rows=3, columns=1)
+}
+
+urcabh5lrtest <- function(){
+  VECMmodels <- listVECMmodels()
+  matrices <- listMatrix()
+  numerics <- listNumeric()
+  elements <- c(matrices, numerics)
+  if (length(VECMmodels) == 0){
+    tkmessageBox(message="There are no VECM models from which to choose.", icon="error", type="ok")
+    tkfocus(.commander)
+    return()
+  }
+  if (length(matrices) == 0){
+    tkmessageBox(message="There are no restriction matrices defined from which to choose.", icon="error", type="ok")
+    tkfocus(.commander)
+    return()
+  }
+  initializeDialog(title="Test validity of partly known cointegrating Vectors")
+  xBox <- variableListBox(top, VECMmodels, title="VECM models (pick one)")
+  yBox <- variableListBox(top, elements, title="Restriction matrices (pick one)")
+  onOK <- function(){
+    x <- getSelection(xBox)
+    if (length(x) == 0){
+      errorCondition(recall=urcabh5lrtest, message="You must select a VECM model.")
+      return()
+    }
+    y <- getSelection(yBox)
+    if (length(y) == 0){
+      errorCondition(recall=urcabh5lrtest, message="You must select a restriction matrix.")
+      return()
+    }
+    rint <- tclvalue(rankVariable)
+    if (.grab.focus) tkgrab.release(top)
+    tkdestroy(top)
+    doItAndPrint(paste("summary(bh5lrtest(z = ", x, ", H = ", y , ", r = ", rint, "))", sep=""))
+    tkfocus(.commander)
+  }
+  OKCancelHelp(helpSubject="bh5lrtest")
+  rankFrame <- tkframe(top)
+  rankVariable <- tclVar("2")
+  rankField <- tkentry(rankFrame, width="2", textvariable=rankVariable)
+  tkgrid(getFrame(xBox), getFrame(yBox), sticky="nw")
+  tkgrid(rankFrame, sticky="w")
+  tkgrid(tklabel(rankFrame, text="Number of cointegrating relationships =  ", fg="blue"), rankField, sticky="w")
+  tkgrid(buttonsFrame, sticky="w")
+  tkgrid.configure(rankField, sticky="e")
+  dialogSuffix(rows=3, columns=1)
+}
+
+urcabh6lrtest <- function(){
+  VECMmodels <- listVECMmodels()
+  matrices <- listMatrix()
+  numerics <- listNumeric()
+  elements <- c(matrices, numerics)
+  if (length(VECMmodels) == 0){
+    tkmessageBox(message="There are no VECM models from which to choose.", icon="error", type="ok")
+    tkfocus(.commander)
+    return()
+  }
+  if (length(matrices) == 0){
+    tkmessageBox(message="There are no restriction matrices defined from which to choose.", icon="error", type="ok")
+    tkfocus(.commander)
+    return()
+  }
+  initializeDialog(title="Test restrictions of partly known cointegrating Vectors")
+  xBox <- variableListBox(top, VECMmodels, title="VECM models (pick one)")
+  yBox <- variableListBox(top, elements, title="Restriction matrices (pick one)")
+  onOK <- function(){
+    x <- getSelection(xBox)
+    if (length(x) == 0){
+      errorCondition(recall=urcabh6lrtest, message="You must select a VECM model.")
+      return()
+    }
+    y <- getSelection(yBox)
+    if (length(y) == 0){
+      errorCondition(recall=urcaalrtest, message="You must select a restriction matrix.")
+      return()
+    }
+    rint <- tclvalue(rankVariable)
+    r1int <- tclvalue(r1Variable)
+    maxiter <- tclvalue(maxiterVariable)
+    conv <- tclvalue(conVariable)
+    if (.grab.focus) tkgrab.release(top)
+    tkdestroy(top)
+    doItAndPrint(paste("summary(bh6lrtest(z = ", x, ", H = ", y , ", r = ", rint, ", r1 =", r1int, ", conv.val =", conv, ", max.iter =", maxiter, "))", sep=""))
+    tkfocus(.commander)
+  }
+  OKCancelHelp(helpSubject="bh6lrtest")
+  rankFrame <- tkframe(top)
+  r1Frame <- tkframe(top)
+  rankVariable <- tclVar("2")
+  r1Variable <- tclVar("1")
+  rightFrame <- tkframe(top)
+  maxiterFrame <- tkframe(rightFrame)
+  maxiterVariable <- tclVar("50")
+  maxiterField <- tkentry(maxiterFrame, width="4", textvariable=maxiterVariable)
+  conFrame <- tkframe(rightFrame)
+  conVariable <- tclVar("0.0001")
+  conField <- tkentry(conFrame, width="8", textvariable=conVariable)
+  tkgrid(tklabel(rightFrame, text=""))
+  rankField <- tkentry(rankFrame, width="2", textvariable=rankVariable)
+  r1Field <- tkentry(r1Frame, width="2", textvariable=r1Variable)
+  tkgrid(getFrame(xBox), getFrame(yBox), sticky="nw")
+  tkgrid(rankFrame, rightFrame, sticky="w")
+  tkgrid(tklabel(rankFrame, text="Number of cointegrating relationships =  ", fg="blue"), rankField, sticky="w")
+  tkgrid(r1Frame, rightFrame, sticky="w")
+  tkgrid(tklabel(r1Frame, text="Number of restricted ci relationships =  ", fg="blue"), r1Field, sticky="w")
+  tkgrid(maxiterFrame, sticky="w")
+  tkgrid(tklabel(maxiterFrame, text="Maximum number of iterations = ", fg="blue"), maxiterField, sticky="w")
+  tkgrid(conFrame, sticky="w")
+  tkgrid(tklabel(conFrame, text="Convergence criteria = ", fg="blue"), conField, sticky="w")
+  tkgrid(buttonsFrame, sticky="w")
+  tkgrid.configure(rankField, sticky="e")
+  tkgrid.configure(r1Field, sticky="e")
+  tkgrid.configure(maxiterField, sticky="e")
+  tkgrid.configure(conField, sticky="e")
+  dialogSuffix(rows=4, columns=2)
 }
 
 urcaablrtest <- function(){
@@ -572,4 +689,10 @@ listMatrix <- function(envir=.GlobalEnv, ...) {
   objects <- ls(envir=envir, ...)
   if (length(objects) == 0) NULL
   else objects[sapply(objects, function(.x) "matrix" == (class(eval(parse(text=.x), envir=envir))[1]))]
+}
+
+listNumeric <- function(envir=.GlobalEnv, ...) {
+  objects <- ls(envir=envir, ...)
+  if (length(objects) == 0) NULL
+  else objects[sapply(objects, function(.x) "numeric" == (class(eval(parse(text=.x), envir=envir))[1]))]
 }

@@ -43,8 +43,8 @@ blrtest(z, H, r)
 }
 \seealso{
   \code{\link{ca.jo}}, \code{\link{alrtest}}, \code{\link{ablrtest}},
-  \code{\link{cajo.test-class}}, \code{\link{ca.jo-class}} and
-  \code{\link{urca-class}}. 
+  \code{\link{bh5lrtest}}, \code{\link{bh6lrtest}}, \code{\link{cajo.test-class}},
+  \code{\link{ca.jo-class}} and \code{\link{urca-class}}. 
 }
 \examples{
 data(denmark)

@@ -8,7 +8,8 @@
 }
 \usage{
 ca.jo(x, type = c("eigen", "trace"), constant = FALSE, K = 2,
-spec=c("longrun", "transitory"), season = NULL, dumvar = NULL)
+spec=c("longrun", "transitory"), season = NULL, dumvar = NULL,
+ctable = c("A1", "A2", "A3"))
 }
 \arguments{
   \item{x}{Data matrix to be investigated for cointegration.}
@@ -22,6 +23,8 @@ spec=c("longrun", "transitory"), season = NULL, dumvar = NULL)
     data.}
   \item{dumvar}{If dummy variables should be included, a matrix with
     row dimension equal to \code{x} can be provided.} 
+  \item{ctable}{The table from which the critical values should be
+    taken (see reference below for further details). } 
 }
 \details{
 
@@ -113,13 +116,13 @@ spec=c("longrun", "transitory"), season = NULL, dumvar = NULL)
 data(denmark)
 sjd <- denmark[, c("LRM", "LRY", "IBO", "IDE")]
 sjd.vecm <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, spec="longrun",
-season=4)
+season=4, ctable="A3")
 summary(sjd.vecm)
 #
 data(finland)
 sjf <- finland
 sjf.vecm <- ca.jo(sjf, constant=FALSE, type="eigen", K=2,
-spec="longrun", season=4)
+spec="longrun", season=4, ctable="A2")
 summary(sjf.vecm)
 }
 \author{Bernhard Pfaff}
