@@ -52,3 +52,4 @@ lttest(sjf.vecm, r=3)
 }
 \author{Bernhard Pfaff}
 \keyword{regression}
+\concept{VECM Test Linear Trend Johansen Juselius}

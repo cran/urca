@@ -31,3 +31,4 @@
 }
 \author{Bernhard Pfaff}
 \keyword{datasets}
+\concept{data set Johansen Juselius Denmark}

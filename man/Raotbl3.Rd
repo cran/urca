@@ -4,7 +4,7 @@
 \title{Data set used by Holden and Perman (1994)}
 \description{
   This data set contains the time series used by Darryl Holden and Roger
-  Perman in their article: ``Unit Roots and Cointegration for the Economist´´. 
+  Perman in their article: ``Unit Roots and Cointegration for the Economist". 
 }
 \usage{data(Raotbl3)}
 \format{
@@ -31,3 +31,5 @@
 }
 \author{Bernhard Pfaff}
 \keyword{datasets}
+\concept{data set Rao Holden Perman}
+  

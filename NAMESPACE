@@ -2,7 +2,7 @@
 export(ablrtest, alphaols, alrtest, blrtest, ca.jo, ca.po, cajolst, cajools, lttest, plotres, ur.ers, ur.kpss, ur.pp, ur.sp, ur.za)
 
 # Classes       
-exportClasses("urca", "ca.jo", "cajo.test", "ur.kpss", "ca.po", "ur.ers", "ur.pp", "ur.sp", "ur.za")
+exportClasses("urca", "ca.jo", "cajo.test", "ur.kpss", "ca.po", "ur.ers", "ur.pp", "ur.sp", "ur.za", "sumurca")
 
 # Methods
 exportMethods("show", "plot", "summary")

@@ -5,7 +5,7 @@
 \description{
   This data set contains the time series used by Pierre Perron in his
   article: ``Trend, Unit Root and Structural Change in Macroeconomic
-  Time Series´´. 
+  Time Series". 
 }
 \usage{data(Raotbl4)}
 \format{
@@ -33,3 +33,4 @@
 }
 \author{Bernhard Pfaff}
 \keyword{datasets}
+\concept{data set Rao Perron}

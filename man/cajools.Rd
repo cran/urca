@@ -53,3 +53,4 @@ summary(sjd.vecm.ols2)
 }
 \author{Bernhard Pfaff}
 \keyword{regression}
+\concept{VECM OLS Johansen Juselius Cointegration Co-integration}

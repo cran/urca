@@ -5,7 +5,7 @@
 \description{
   This data set contains quarterly data for the U.S.A. in Yash
   P. Mehra's article: ``Wage Growth and the Inflation Process: An
-  Empirical Approach´´ for his wage-price equations. 
+  Empirical Approach" for his wage-price equations. 
 }
 \usage{data(Raotbl6)}
 \format{
@@ -36,3 +36,4 @@
 }
 \author{Bernhard Pfaff}
 \keyword{datasets}
+\concept{data set Rao Mehra}

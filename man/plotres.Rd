@@ -32,3 +32,4 @@ plotres(sjd.vecm)
 }
 \author{Bernhard Pfaff}
 \keyword{regression}
+\concept{VECM Residuals Johansen Juselius}

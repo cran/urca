@@ -4,7 +4,7 @@
 \title{Data set used by Glenn Otto (1994)}
 \description{
   This data set contains Canadian quarterly data used by Glenn Otto in his
-  article: ``Diagnostic Testing: An Application to the Demand for M1´´. 
+  article: ``Diagnostic Testing: An Application to the Demand for M1". 
 }
 \usage{data(Raotbl7)}
 \format{
@@ -24,3 +24,4 @@
 }
 \author{Bernhard Pfaff}
 \keyword{datasets}
+\concept{data set Rao Otto}

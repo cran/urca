@@ -5,7 +5,7 @@
 \description{
   This data set contains the time series used by David A. Dickey, Dennis
   W. Jansen and Daniel L. Thornton in their article: ``A Primer on
-  Cointegrating with an Application to Money and Income´´. 
+  Cointegrating with an Application to Money and Income''. 
 }
 \usage{data(Raotbl2)}
 \format{
@@ -28,3 +28,4 @@
 }
 \author{Bernhard Pfaff}
 \keyword{datasets}
+\concept{data set Rao Dickey Jansen Thornton}
