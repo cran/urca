@@ -30,9 +30,12 @@
       variables.}
     \item{\code{season}:}{Object of class \code{"ANY"}: The frequency of
       the data, if seasonal dummies should be included, otherwise NULL.}
+    \item{\code{dumvar}:}{Object of class \code{"ANY"}: A matrix
+      containing dummy variables. The row dimension must be equal to
+      \code{x}, otherwise NULL.}
     \item{\code{cval}:}{Object of class \code{"ANY"}: The critical
       values of the test at the 1\%, 5\% and 10\% level of significance.}
-    \item{\code{teststat}:}{Object of class \code{"numeric"}: The values
+    \item{\code{teststat}:}{Object of class \code{"ANY"}: The values
       of the test statistics.}
     \item{\code{lambda}:}{Object of class \code{"vector"}: The eigenvalues.}
     \item{\code{Vorg}:}{Object of class \code{"matrix"}: The matrix of

@@ -7,15 +7,17 @@
   a level shift at an unknown time.
 }
 \usage{
-cajolst(x, type = c("eigen", "trace"), constant = FALSE, K = 2, season = NULL)
+cajolst(x, type = c("eigen", "trace"), constant = FALSE,
+        spec = c("longrun", "transitory"), K = 2, season = NULL)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{Data matrix to be investigated for cointegration.}
   \item{type}{The test to be conducted, either \code{`eigen'} or
     \code{`trace'}.}
   \item{constant}{If TRUE, no linear trend is specified.}
   \item{K}{The lag order of the series (levels) in the VAR.}
+  \item{spec}{Determines the specification of the VECM, see details
+    \code{ca.jo()}.}
   \item{season}{If seasonal dummies should be included, the data
     frequency must be set accordingly, \emph{i.e} `4' for quarterly data.}
 }
@@ -40,7 +42,7 @@ cajolst(x, type = c("eigen", "trace"), constant = FALSE, K = 2, season = NULL)
 \seealso{
   
   \code{\link{plotres}}, \code{\link{alrtest}}, \code{\link{ablrtest}},
-  \code{\link{blrtest}}, \code{\link{cajolst}}, \code{\link{cajools}},
+  \code{\link{blrtest}}, \code{\link{ca.jo}}, \code{\link{cajools}},
   \code{\link{lttest}}, \code{\link{ca.jo-class}} and \code{\link{urca-class}}. 
 }
 \examples{

@@ -27,8 +27,9 @@ setClass("ca.jo", representation(x="ANY",
                                  lag="integer",
                                  P="integer",
                                  season="ANY",
+                                 dumvar="ANY",
                                  cval="ANY",
-                                 teststat="numeric",
+                                 teststat="ANY",
                                  lambda="vector",
                                  Vorg="matrix",
                                  V="matrix",
@@ -231,9 +232,10 @@ ur.ers <- function(y, type=c("DF-GLS", "P-test"), model=c("constant", "trend"), 
 #
 # Johansen Procedure
 #
-ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, season=NULL){
+ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, spec=c("longrun", "transitory"), season=NULL, dumvar=NULL){
   x <- as.matrix(x)
   type <- match.arg(type)
+  spec <- match.arg(spec)
   K <- as.integer(K)
   P <- ncol(x)
   arrsel <- P 
@@ -260,12 +262,28 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, season=NULL)
       dums <- dums[-ind2,]
     }
   }
+  if(!(is.null(dumvar))){
+    dumvar <- as.matrix(dumvar)
+    if(!(nrow(dumvar)==nrow(x))){
+      stop("\nUnequal row length between dummy variables and x matrix.\n")
+    }
+    if(NA%in%x){
+      idx.NA <- 1:N
+      ind <- as.logical(sapply(idx.NA,  function(z) sum(is.na(x[z,])*1)))
+      ind2 <- ind*(1:N)
+      dumvar <- dumvar[-ind2,]
+    }
+  }
   x <- na.omit(x)
   N <- nrow(x)
   Z <- embed(diff(x), K)
   Z0 <- Z[,1:P]
   if(constant){
-    ZK <- cbind(x[-c((N-K+1):N),], 1)
+    if(spec=="longrun"){
+      ZK <- cbind(x[-c((N-K+1):N),], 1)
+    }else if(spec=="transitory"){
+      ZK <- cbind(x[-N,], 1)[K:(N-1),]
+    }
     Z1 <- Z[,-c(1:P)]
     P <- P + 1
     idx <- 0:(P-2)
@@ -274,7 +292,11 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, season=NULL)
   }else{
     Z1 <- Z[,-c(1:P)]
     Z1 <- cbind(1, Z1)
-    ZK <- x[-c((N-K+1):N),]
+    if(spec=="longrun"){
+      ZK <- x[-c((N-K+1):N),]
+    }else if(spec=="transitory"){
+      ZK <- x[-N,][K:(N-1),]
+    }
     idx <- 0:(P-1)
     cvals <- array(c(6.691, 12.783, 18.959, 24.917, 30.818, 8.083, 14.595, 21.279, 27.341, 33.262, 11.576, 18.782, 26.154, 32.616, 38.858, 6.691, 15.583, 28.436, 45.248, 65.956, 8.083, 17.844, 31.256, 48.419, 69.977, 11.576, 21.962, 37.291, 55.551, 77.911), c(5, 3, 2))
     model <- "with linear trend"
@@ -282,6 +304,9 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, season=NULL)
   N <- nrow(Z0)
   if(!(is.null(season))){
     Z1 <- cbind(Z1, dums[-(1:K),])
+  }
+  if(!(is.null(dumvar))){
+    Z1 <- cbind(Z1, dumvar[-(1:K),])
   }
   M00 <- crossprod(Z0)/N
   M11 <- crossprod(Z1)/N
@@ -309,6 +334,11 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, season=NULL)
   lambda <- valeigen$values
   e <- valeigen$vector
   V <- t(Cinv)%*%e
+  if(constant){
+    rownames(V) <- c(colnames(x), "constant")
+  }else{
+    rownames(V) <- colnames(x)
+  }
   Vorg <- V
   V <- sapply(1:P, function(x) V[,x]/V[1,x])
   W <- S0K%*%V%*%solve(t(V)%*%SKK%*%V)
@@ -338,7 +368,7 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, season=NULL)
       rownames(cval) <- c(paste("r <= ", (arrsel-1):1, " |",sep=""), "r = 0  |")
     }
   }
-  new("ca.jo", x=x, Z0=Z0, Z1=Z1, ZK=ZK, type=type, model=model, const=constant, lag=K, P=arrsel, season=season, cval=cval, teststat=as.vector(teststat), lambda=lambda, Vorg=Vorg, V=V, W=W, PI=PI, DELTA=DELTA, GAMMA=GAMMA, R0=R0, RK=RK, bp=NA, test.name="Johansen-Procedure")
+  new("ca.jo", x=x, Z0=Z0, Z1=Z1, ZK=ZK, type=type, model=model, const=constant, lag=K, P=arrsel, season=season, dumvar=dumvar, cval=cval, teststat=as.vector(teststat), lambda=lambda, Vorg=Vorg, V=V, W=W, PI=PI, DELTA=DELTA, GAMMA=GAMMA, R0=R0, RK=RK, bp=NA, test.name="Johansen-Procedure")
 }
 #
 # auxiliary function for residuals' diagnostics and tests
@@ -558,10 +588,10 @@ cajools <- function(z, reg.number=NULL)
     return(lm(z@Z0 ~ z@Z1 + z@ZK -1))
   }
 }
-cajolst <- function(x, type = c("eigen", "trace"), constant = FALSE, K = 2, 
-    season = NULL){
+cajolst <- function(x, type = c("eigen", "trace"), constant = FALSE, spec=c("longrun", "transitory"), K = 2, season = NULL){
   x <- as.matrix(x)
   type <- match.arg(type)
+  spec <- match.arg(spec)
   K <- as.integer(K)
   P <- ncol(x)
   N <- nrow(x)
@@ -628,7 +658,7 @@ cajolst <- function(x, type = c("eigen", "trace"), constant = FALSE, K = 2,
       yfit <- x - coef(reg.opt)[1,] - dt%*%t(coef(reg.opt)[2,]) - trd%*%t(coef(reg.opt)[3,])
     }
   }
-  cajo <- ca.jo(x=yfit, type=type, constant=TRUE, K=K, season=NULL)
+  cajo <- ca.jo(x=yfit, type=type, constant=TRUE, K=K, spec=spec, season=NULL)
   cajo@bp <- as.integer(tau.bp)
   return(cajo)
 }

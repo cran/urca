@@ -7,7 +7,8 @@
   matrix of eigenvectors as well as the loading matrix.
 }
 \usage{
-ca.jo(x, type = c("eigen", "trace"), constant = FALSE, K = 2, season = NULL)
+ca.jo(x, type = c("eigen", "trace"), constant = FALSE, K = 2,
+spec=c("longrun", "transitory"), season = NULL, dumvar = NULL)
 }
 \arguments{
   \item{x}{Data matrix to be investigated for cointegration.}
@@ -15,16 +16,26 @@ ca.jo(x, type = c("eigen", "trace"), constant = FALSE, K = 2, season = NULL)
     \code{`trace'}.}
   \item{constant}{If TRUE, no linear trend is specified.}
   \item{K}{The lag order of the series (levels) in the VAR.}
+  \item{spec}{Determines the specification of the VECM, see details below.}
   \item{season}{If seasonal dummies should be included, the data
-    frequency must be set accordingly, \emph{i.e} `4' for quarterly data.}
+    frequency must be set accordingly, \emph{i.e} `4' for quarterly
+    data.}
+  \item{dumvar}{If dummy variables should be included, a matrix with
+    row dimension equal to \code{x} can be provided.} 
 }
 \details{
 
-  The following VAR is estimated by the function \code{ca.jo()}:
+  Given a general VAR of the form:
+
+  \deqn{\bold{X}_t = \bold{\Pi}_1 \bold{X}_{t-1} + \dots + \bold{\Pi}_k
+    \bold{X}_{t-k} + \bold{\mu} + \bold{\Phi D}_t + \bold{\varepsilon}_t
+    , \quad (t = 1, \dots, T),}
+
+  the following two specifications of a VECM exist:
 
   \deqn{\Delta \bold{X}_t = \bold{\Gamma}_1 \Delta \bold{X}_{t-1} +
-    \dots + \bold{\Gamma}_{k-1} \Delta \bold{X}_{t-k+1} + \bold{\Pi X}_{t-k} + \bold{\mu} +
-    \bold{\Phi D}_t + \bold{\varepsilon}_t}
+    \dots + \bold{\Gamma}_{k-1} \Delta \bold{X}_{t-k+1} + \bold{\Pi
+    X}_{t-k} + \bold{\mu} + \bold{\Phi D}_t + \bold{\varepsilon}_t}
 
   where
 
@@ -35,17 +46,44 @@ ca.jo(x, type = c("eigen", "trace"), constant = FALSE, K = 2, season = NULL)
 
   \deqn{\bold{\Pi} = -(\bold{I} - \bold{\Pi}_1 - \dots - \bold{\Pi}_k)}
 
-  in a general VAR of the form:
+  The \eqn{\bold{\Gamma}_i} matrices contain the cumulative long-run
+  impacts, hence if \code{spec="longrun"} is choosen, the above VECM is
+  estimated.
 
-  \deqn{\bold{X}_t = \bold{\Pi}_1 \bold{X}_{t-1} + \dots + \bold{\Pi}_k
-    \bold{X}_{t-k} + \bold{\mu} + \bold{\Phi D}_t + \bold{\varepsilon}_t
-    , \quad (t = 1, \dots, T).}
+  The other VECM specification is of the form:
 
+  \deqn{\Delta \bold{X}_t = \bold{\Gamma}_1 \Delta \bold{X}_{t-1} +
+    \dots + \bold{\Gamma}_{k-1} \Delta \bold{X}_{t-k+1} + \bold{\Pi
+    X}_{t-1} + \bold{\mu} + \bold{\Phi D}_t + \bold{\varepsilon}_t}
+
+  where
+
+  \deqn{\bold{\Gamma}_i = - (\bold{\Pi}_{i+1} + \dots + \bold{\Pi}_k),
+    \quad(i = 1, \dots , k-1),}
+
+  and
+
+  \deqn{\bold{\Pi} = -(\bold{I} - \bold{\Pi}_1 - \dots - \bold{\Pi}_k).}
+
+  The \eqn{\bold{\Pi}} matrix is the same as in the first specification.
+  However, the \eqn{\bold{\Gamma}_i} matrices now differ, in the sense
+  that they measure transitory effects, hence by setting
+  \code{spec="transitory"} the second VECM form is estimated. Please note
+  that inferences drawn on \eqn{\bold{\Pi}} will be the same, regardless
+  which specification is choosen and that the explanatory power is the
+  same, too. 
 
   If \code{"season"} is not NULL, centered seasonal dummy variables are
-  included. Critical values are only reported for systems with less than
+  included. 
+
+  If \code{"dumvar"} is not NULL, a matrix of dummy variables is included
+  in the VECM. Please note, that the number of rows of the matrix
+  containing the dummy variables must be equal to the row number of
+  \code{x}.
+
+  Critical values are only reported for systems with less than
   five variables.
- 
+  
 }
 \value{
   An object of class \code{`ca.jo'}.
@@ -74,12 +112,14 @@ ca.jo(x, type = c("eigen", "trace"), constant = FALSE, K = 2, season = NULL)
 \examples{
 data(denmark)
 sjd <- denmark[, c("LRM", "LRY", "IBO", "IDE")]
-sjd.vecm <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, season=4)
+sjd.vecm <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, spec="longrun",
+season=4)
 summary(sjd.vecm)
 #
 data(finland)
 sjf <- finland
-sjf.vecm <- ca.jo(sjf, constant=FALSE, type="eigen", K=2, season=4)
+sjf.vecm <- ca.jo(sjf, constant=FALSE, type="eigen", K=2,
+spec="longrun", season=4)
 summary(sjf.vecm)
 }
 \keyword{regression}

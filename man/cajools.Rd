@@ -42,13 +42,13 @@ cajools(z, reg.number = NULL)
 \examples{
 data(denmark)
 sjd <- denmark[, c("LRM", "LRY", "IBO", "IDE")]
-sjd.vecm <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, season=4)
-HD1 <- matrix(c(1, -1, 0, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 0, 1), c(5,3))
-DA <- matrix(c(1,0,0,0, 0, 1, 0, 0, 0, 0, 0, 1), c(4,3))
-sjd.vecm.res <- ablrtest(sjd.vecm, H=HD1, A=DA, r=1)
-sjd.vecm.ols <- cajools(sjd.vecm.res)
-summary(sjd.vecm.ols)
-sjd.vecm.ols1 <- cajools(sjd.vecm.res, reg.number=1)
+sjd.vecm1 <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, spec="longrun",
+season=4)
+sjd.vecm2 <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, spec="transitory",
+season=4)
+sjd.vecm.ols1 <- cajools(sjd.vecm1)
+sjd.vecm.ols2 <- cajools(sjd.vecm2)
 summary(sjd.vecm.ols1)
+summary(sjd.vecm.ols2)
 }
 \keyword{regression}
