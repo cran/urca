@@ -30,7 +30,7 @@
       variables.}
     \item{\code{season}:}{Object of class \code{"ANY"}: The frequency of
       the data, if seasonal dummies should be included, otherwise NULL.}
-    \item{\code{cval}:}{Object of class \code{"matrix"}: The critical
+    \item{\code{cval}:}{Object of class \code{"ANY"}: The critical
       values of the test at the 1\%, 5\% and 10\% level of significance.}
     \item{\code{teststat}:}{Object of class \code{"numeric"}: The values
       of the test statistics.}
@@ -51,6 +51,9 @@
       residuals from the regressions in differences.}
     \item{\code{RK}:}{Object of class \code{"matrix"}: The matrix of
       residuals from the regression in lagged levels.}
+    \item{\code{bp}:}{Object of class \code{"ANY"}: Potential break
+      point, only set if function \code{cajolst} is called, otherwise
+      \code{NA}.}
     \item{\code{test.name}:}{Object of class \code{"character"}: The
       name of the test, \emph{i.e.} `Johansen-Procedure'.}
   }

@@ -27,7 +27,7 @@ setClass("ca.jo", representation(x="ANY",
                                  lag="integer",
                                  P="integer",
                                  season="ANY",
-                                 cval="matrix",
+                                 cval="ANY",
                                  teststat="numeric",
                                  lambda="vector",
                                  Vorg="matrix",
@@ -37,7 +37,8 @@ setClass("ca.jo", representation(x="ANY",
                                  DELTA="matrix",
                                  GAMMA="matrix",
                                  R0="matrix",
-                                 RK="matrix"),
+                                 RK="matrix",
+                                 bp="ANY"),
          contains="urca")
 
 setClass("cajo.test", representation(Z0="matrix",
@@ -47,6 +48,7 @@ setClass("cajo.test", representation(Z0="matrix",
                                      A="ANY",
                                      B="ANY",
                                      type="character",
+                                     const="logical",
                                      teststat="numeric",
                                      pval="vector",
                                      lambda="vector",
@@ -236,10 +238,15 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, season=NULL)
   P <- ncol(x)
   arrsel <- P 
   N <- nrow(x)
-  if(N*P < P + 3*P + K*P^2 + P*(P + 1)/2)
-    stop("Insufficient degrees of freedom")
+  if(!is.null(season)){
+    s <- season - 1
+  }else{
+    s <- 0
+  }
+  if(N*P < P + s*P + K*P^2 + P*(P + 1)/2)
+    stop("\nInsufficient degrees of freedom.\n")
   if(P > 5)
-    warning("Too many variables, critical values cannot be computed.")
+    warning("\nToo many variables, critical values cannot be computed.\n")
   if(!(is.null(season))){
     dum <- (diag(season) - 1/season)[,-season]
     dums <- dum
@@ -331,7 +338,7 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, season=NULL)
       rownames(cval) <- c(paste("r <= ", (arrsel-1):1, " |",sep=""), "r = 0  |")
     }
   }
-  new("ca.jo", x=x, Z0=Z0, Z1=Z1, ZK=ZK, type=type, model=model, const=constant, lag=K, P=arrsel, season=season, cval=cval, teststat=as.vector(teststat), lambda=lambda, Vorg=Vorg, V=V, W=W, PI=PI, DELTA=DELTA, GAMMA=GAMMA, R0=R0, RK=RK, test.name="Johansen-Procedure")
+  new("ca.jo", x=x, Z0=Z0, Z1=Z1, ZK=ZK, type=type, model=model, const=constant, lag=K, P=arrsel, season=season, cval=cval, teststat=as.vector(teststat), lambda=lambda, Vorg=Vorg, V=V, W=W, PI=PI, DELTA=DELTA, GAMMA=GAMMA, R0=R0, RK=RK, bp=NA, test.name="Johansen-Procedure")
 }
 #
 # auxiliary function for residuals' diagnostics and tests
@@ -402,7 +409,7 @@ alrtest <- function(z, A, r){
   teststat <- N*sum(log((1-lambda.res[1:r])/(1-lambda[1:r])))
   df <- r*(z@P - ncol(A))
   pval <- c(1-pchisq(teststat, df), df)
-  new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, H=NULL, A=A, B=B, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=ALPHA, PI=PI, DELTA=NULL, DELTA.bb=DELTA.bb, DELTA.ab=DELTA.ab, DELTA.aa.b=DELTA.aa.b, GAMMA=GAMMA, test.name="Johansen-Procedure")
+  new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, const=z@const, H=NULL, A=A, B=B, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=ALPHA, PI=PI, DELTA=NULL, DELTA.bb=DELTA.bb, DELTA.ab=DELTA.ab, DELTA.aa.b=DELTA.aa.b, GAMMA=GAMMA, test.name="Johansen-Procedure")
 }
 ablrtest <- function(z, H, A, r){
     if(!(class(z)=="ca.jo")){
@@ -478,7 +485,7 @@ ablrtest <- function(z, H, A, r){
     teststat <- N*sum(log((1-lambda.res[1:r])/(1-lambda[1:r])))
     df <- r*(z@P - ncol(A)) + r*(z@P - ncol(H))
     pval <- c(1-pchisq(teststat, df), df)
-    new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, H=H, A=A, B=B, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=ALPHA, PI=PI, DELTA=NULL, DELTA.bb=DELTA.bb, DELTA.ab=DELTA.ab, DELTA.aa.b=DELTA.aa.b, GAMMA=GAMMA, test.name="Johansen-Procedure")
+    new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, const=z@const, H=H, A=A, B=B, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=ALPHA, PI=PI, DELTA=NULL, DELTA.bb=DELTA.bb, DELTA.ab=DELTA.ab, DELTA.aa.b=DELTA.aa.b, GAMMA=GAMMA, test.name="Johansen-Procedure")
 }
 blrtest <- function(z, H, r){
   if(!(class(z)=="ca.jo")){
@@ -534,7 +541,96 @@ blrtest <- function(z, H, r){
   teststat <- N*sum(log((1-lambda.res[1:r])/(1-lambda[1:r])))
   df <- r*(P - ncol(H))
   pval <- c(1-pchisq(teststat, df), df)
-  new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, H=H, A=NULL, B=NULL, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=W, PI=PI, DELTA=DELTA, DELTA.bb=NULL, DELTA.ab=NULL, DELTA.aa.b=NULL, GAMMA=GAMMA, test.name="Johansen-Procedure")
+  new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, const=z@const, H=H, A=NULL, B=NULL, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=W, PI=PI, DELTA=DELTA, DELTA.bb=NULL, DELTA.ab=NULL, DELTA.aa.b=NULL, GAMMA=GAMMA, test.name="Johansen-Procedure")
+}
+cajools <- function(z, reg.number=NULL)
+{
+  if(!(class(z) == "ca.jo") && !(class(z) == "cajo.test")){
+    stop("Please, provide object of class 'ca.jo' or 'cajo.test' as 'z'.\n")
+  }
+  if (!is.null(reg.number)){
+    reg.number <- as.integer(reg.number)
+    if (reg.number > ncol(z@Z0) || reg.number < 1){
+      stop("Please, provide a valid number of the regression within \n the VECM, numbering from 1st to last row.\n")
+    }
+    return(lm(z@Z0[, reg.number] ~ z@Z1 + z@ZK - 1))
+  }else if(is.null(reg.number)){
+    return(lm(z@Z0 ~ z@Z1 + z@ZK -1))
+  }
+}
+cajolst <- function(x, type = c("eigen", "trace"), constant = FALSE, K = 2, 
+    season = NULL){
+  x <- as.matrix(x)
+  type <- match.arg(type)
+  K <- as.integer(K)
+  P <- ncol(x)
+  N <- nrow(x)
+  if (!is.null(season)){
+    s <- season - 1
+  }else{
+    s <- 0
+  }
+  if (N * P < P + s * P + K * P^2 + P * (P + 1)/2)
+    stop("Insufficient degrees of freedom")
+  if (P > 5)
+    warning("Too many variables, critical values cannot be computed.")
+  if(!(is.null(season))){
+    dum <- (diag(season) - 1/season)[, -season]
+    dums <- dum
+    while (nrow(dums) < N){
+      dums <- rbind(dums, dum)
+    }
+    dums <- dums[1:N, ]
+    if (NA %in% x) {
+      idx.NA <- 1:N
+      ind <- as.logical(sapply(idx.NA, function(z) sum(is.na(x[z,]) * 1)))
+      ind2 <- ind * (1:N)
+      dums <- dums[-ind2, ]
+    }
+  }
+  x2 <- na.omit(x)
+  Ntot <- nrow(x2)
+  y <- embed(x2, (K+1))
+  rhs <- y[,-c(1:P)]
+  if(constant){
+    rhs <- y[,-c(1:P)]
+  }else{
+    trd <- seq(K+1, nrow(y)+K)
+    rhs <- cbind(trd, y[,-c(1:P)])
+  }
+  N <- nrow(y)
+  if (!(is.null(season))){
+    rhs <- cbind(dums[-(1:K), ], rhs)
+  }
+  lhs <- y[,1:P]
+  idx <- 1:(N-1)
+  tau <- function(t){
+    dt <- c(rep(0, t), rep(1, N-t)) 
+    det(crossprod(resid(lm(lhs ~ dt + rhs))))
+  }
+  tau.hat <- sapply(idx, tau)
+  tau.opt <- which.min(tau.hat) + K
+  tau.bp <- tau.opt + 1
+  dt <- c(rep(0, tau.opt), rep(1, N-tau.opt))
+  reg.opt <- lm(lhs ~ dt + rhs)
+  dt <- c(rep(0, tau.opt), rep(1, Ntot-tau.opt))
+  if(constant){
+    if(!is.null(season)){
+      yfit <- x - coef(reg.opt)[1,] - dt%*%t(coef(reg.opt)[2,]) - dums%*%coef(reg.opt)[3:(2 + season-1),]
+    }else{
+      yfit <- x - coef(reg.opt)[1,] - dt%*%t(coef(reg.opt)[2,])
+    }
+  }else if(!constant){
+    trd <- 1:Ntot
+    if(!is.null(season)){
+      yfit <- x - coef(reg.opt)[1,] - dt%*%t(coef(reg.opt)[2,]) - dums%*%coef(reg.opt)[3:(2 + season-1),] - trd%*%t(coef(reg.opt)[season + 2,])
+    }else{
+      yfit <- x - coef(reg.opt)[1,] - dt%*%t(coef(reg.opt)[2,]) - trd%*%t(coef(reg.opt)[3,])
+    }
+  }
+  cajo <- ca.jo(x=yfit, type=type, constant=TRUE, K=K, season=NULL)
+  cajo@bp <- as.integer(tau.bp)
+  return(cajo)
 }
 lttest <- function(z, r){
   if(!(class(z)=="ca.jo")){
