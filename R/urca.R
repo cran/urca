@@ -1,7 +1,3 @@
-require(graphics)
-require(stats)
-require(methods)
-require(nlme)
 #
 # Setting classes for unit root tests
 #
@@ -667,7 +663,12 @@ cajolst <- function (x, trend = TRUE, K = 2, season = NULL)
     tau.opt <- which.min(tau.hat) + K
     tau.bp <- tau.opt + 1
     dt <- c(rep(0, tau.opt), rep(1, N - tau.opt))
-    reg.opt <- lm(lhs ~ dt + rhs)
+    if(!trend & is.null(season)){
+      rhs.aux <- dt
+    } else {
+      rhs.aux <- cbind(dt, rhs[, -c((ncol(rhs)-K*ncol(x)+1):ncol(rhs))])
+    }
+    reg.opt <- lm(lhs ~ rhs.aux)
     dt <- c(rep(0, tau.opt), rep(1, Ntot - tau.opt))
     uv <- c(rep(1, Ntot))
     if (!trend) {

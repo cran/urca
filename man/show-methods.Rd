@@ -1,5 +1,6 @@
 \name{show-methods}
 \docType{methods}
+\alias{show}
 \alias{show-methods}
 \alias{show,ur.ers-method}
 \alias{show,ur.kpss-method}

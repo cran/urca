@@ -1,5 +1,6 @@
 \name{plot-methods}
 \docType{methods}
+\alias{plot}
 \alias{plot-methods}
 \alias{plot,ur.ers,missing-method}
 \alias{plot,ur.kpss,missing-method}
