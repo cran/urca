@@ -1,3 +1,14 @@
+2004-11-29  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* inst/Rcmdr-menus.txt: Menu structure for URCA add-in of Rcmdr
+	inserted. 
+
+	* inst/Rcmdr-urca.R: URCA functions for Rcmdr inserted. 
+
+	* inst/README: README file for Rcmdr inserted.
+
+	* man/ablrtest.Rd: Typo in description fixed.
+
 2004-11-23  Bernhard Pfaff  <bernhard@pfaffikus.de>
 
 	* man/sumurca-class.Rd: new class introduced for objects created
@@ -61,7 +72,7 @@
 	* man/cajolst.Rd: \concept added
 
 	* man/blrtest.Rd: \concept added 
-
+	
 	* man/alrtest.Rd: \concept added
 
 	* man/alphaols.Rd: \concept added
@@ -82,7 +93,7 @@
 
 	* man/Raotbl4.Rd: Typo fixed.
 	
-	* man/Raotbl3.Rd: Typo fixed
+	* man/Raotbl3.Rd: Typo fixed.
 
 	* man/Raotbl2.Rd: Typo fixed.
 

@@ -3,7 +3,7 @@
 \title{Likelihood ratio test for restrictions on alpha and beta}
 \description{
   This function estimates a restricted VAR, where the restrictions are
-  base upon \eqn{\bold{\alpha}}, \emph{i.e.} the loading vectors and
+  based upon \eqn{\bold{\alpha}}, \emph{i.e.} the loading vectors and
   \eqn{\bold{\beta}}, \emph{i.e} the matrix of cointegration vectors. The test
   statistic is distributed as \eqn{\chi^2} with \eqn{(p-m)r + (p-s)r} degrees of
   freedom, with \eqn{m} equal to the columns of the restricting matrix
