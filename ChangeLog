@@ -1,3 +1,22 @@
+2005-03-09  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* NAMESPACE: Function 'ur.df' and class 'ur.df' added.
+
+	* man/ur.df-class.Rd: Documentation for class 'ur.df' added.
+
+	* man/ur.df.Rd: Documentation for augmented Dickey-Fuller test added.
+
+	* R/urca.R (ur.df): Augmented-Dickey-Fuller Test added.
+
+2005-03-03  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* man/UKconinc.Rd: Data set used by Hylleberg et al. inserted.
+
+2005-02-24  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* R/urca.R (cajolst): Calculation of test statistic as in
+	Trenkler, C. (2003). 
+
 2005-02-11  Bernhard Pfaff  <bernhard@pfaffikus.de>
 
 	* man/bh6lrtest.Rd: Documentation for function bh6lrtest inserted.

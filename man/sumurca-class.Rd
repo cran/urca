@@ -6,7 +6,8 @@
 \description{
   A class for objects returned by applying method summary() to objects
   from classes: \code{ur.ers}, \code{ca.jo}, \code{cajo.test},
-  \code{ur.kpss}, \code{ca.po}, \code{ur.pp}, \code{ur.sp} or \code{ur.za}.
+  \code{ur.kpss}, \code{ca.po}, \code{ur.pp}, \code{ur.df}, \code{ur.sp}
+  or \code{ur.za}. 
 }
 \section{Slots}{
   \describe{
@@ -53,15 +54,15 @@
   For this class a \code{print} method is available, that nicely prints the
   summary results of objects belonging to either one of the following
   classes: \code{ur.ers}, \code{ca.jo}, \code{cajo.test}, 
-  \code{ur.kpss}, \code{ca.po}, \code{ur.pp}, \code{ur.sp} or
+  \code{ur.kpss}, \code{ca.po}, \code{ur.pp}, \code{ur.df}, \code{ur.sp} or
   \code{ur.za}.
 }
 \seealso{
   \code{\link{summary}}, \code{\link{ur.ers-class}},
   \code{\link{ur.kpss-class}}, \code{\link{ca.jo-class}},
   \code{\link{cajo.test-class}}, \code{\link{ca.po-class}},
-  \code{\link{ur.pp-class}}, \code{\link{ur.sp-class}} and
-  \code{\link{ur.za-class}}. 
+  \code{\link{ur.pp-class}}, \code{\link{ur.df-class}},
+  \code{\link{ur.sp-class}} and \code{\link{ur.za-class}}. 
 }
 \author{Bernhard Pfaff}
 \keyword{classes}
