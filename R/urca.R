@@ -668,21 +668,19 @@ cajolst <- function (x, trend = TRUE, K = 2, season = NULL)
     dt <- c(rep(0, tau.opt), rep(1, N - tau.opt))
     reg.opt <- lm(lhs ~ dt + rhs)
     dt <- c(rep(0, tau.opt), rep(1, Ntot - tau.opt))
+    uv <- c(rep(1, Ntot))
     if (!trend) {
         if (!is.null(season)) {
-            yfit <- x - coef(reg.opt)[1, ] - dt %*% t(coef(reg.opt)[2, ]) - dums %*% coef(reg.opt)[3:(2 + season - 1), ]
+            yfit <- x - uv%*%t(coef(reg.opt)[1, ]) - dt %*% t(coef(reg.opt)[2, ]) - dums %*% coef(reg.opt)[3:(2 + season - 1), ]
+        }else{
+            yfit <- x - uv%*%t(coef(reg.opt)[1, ]) - dt %*% t(coef(reg.opt)[2, ])
         }
-        else {
-            yfit <- x - coef(reg.opt)[1, ] - dt %*% t(coef(reg.opt)[2, ])
-        }
-    }
-    else if (trend) {
+    }else if (trend){
         trd <- 1:Ntot
         if (!is.null(season)) {
-            yfit <- x - coef(reg.opt)[1, ] - dt %*% t(coef(reg.opt)[2, ]) - dums %*% coef(reg.opt)[3:(2 + season - 1), ] - trd %*% t(coef(reg.opt)[season + 2, ])
-        }
-        else {
-            yfit <- x - coef(reg.opt)[1, ] - dt %*% t(coef(reg.opt)[2, ]) - trd %*% t(coef(reg.opt)[3, ])
+            yfit <- x - uv%*%t(coef(reg.opt)[1, ]) - dt %*% t(coef(reg.opt)[2, ]) - dums %*% coef(reg.opt)[3:(2 + season - 1), ] - trd %*% t(coef(reg.opt)[season + 2, ])
+        }else{
+            yfit <- x - uv%*%t(coef(reg.opt)[1, ]) - dt %*% t(coef(reg.opt)[2, ]) - trd %*% t(coef(reg.opt)[3, ])
         }
     }
     x <- na.omit(yfit)
