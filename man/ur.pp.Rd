@@ -43,4 +43,5 @@ gnp <- na.omit(nporg[, "gnp.r"])
 pp.gnp <- ur.pp(gnp, type="Z-tau", model="trend", lags="short")
 summary(pp.gnp)
 }
+\author{Bernhard Pfaff}
 \keyword{regression}

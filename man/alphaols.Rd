@@ -51,4 +51,5 @@ season=4)
 summary(alphaols(sjd.vecm1))
 summary(alphaols(sjd.vecm1, reg.number=1))
 }
+\author{Bernhard Pfaff}
 \keyword{regression}

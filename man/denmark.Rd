@@ -29,4 +29,5 @@
 \references{
   \url{http://www.math.ku.dk/~sjo/}
 }
+\author{Bernhard Pfaff}
 \keyword{datasets}

@@ -29,4 +29,5 @@
   'Discussion Papers (CFDPs)'.
 }
 \seealso{\code{\link{ur.sp}}.}
+\author{Bernhard Pfaff}
 \keyword{regression}

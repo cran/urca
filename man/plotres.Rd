@@ -30,4 +30,5 @@ sjd.vecm <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, spec="longrun",
 season=4)
 plotres(sjd.vecm)
 }
+\author{Bernhard Pfaff}
 \keyword{regression}

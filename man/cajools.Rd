@@ -51,4 +51,5 @@ sjd.vecm.ols2 <- cajools(sjd.vecm2)
 summary(sjd.vecm.ols1)
 summary(sjd.vecm.ols2)
 }
+\author{Bernhard Pfaff}
 \keyword{regression}

@@ -52,4 +52,5 @@
 \references{
   \url{http://korora.econ.yale.edu/phillips/index.htm}
 }
+\author{Bernhard Pfaff}
 \keyword{datasets}

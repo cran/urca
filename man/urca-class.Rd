@@ -28,4 +28,5 @@ No methods defined with class `urca'.
   \code{\link{ur.pp-class}}, \code{\link{ur.sp-class}}
   and \code{\link{ur.za-class}}.
 }
+\author{Bernhard Pfaff}
 \keyword{classes}

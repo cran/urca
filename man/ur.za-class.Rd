@@ -56,4 +56,5 @@ Class \code{`urca'}, directly.
 \seealso{
   \code{\link{ur.za}} and \code{\link{urca-class}}. 
 }
+\author{Bernhard Pfaff}
 \keyword{classes}

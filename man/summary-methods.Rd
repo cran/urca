@@ -77,4 +77,5 @@ summary(sjf.vecm)
 HF0 <- matrix(c(-1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), c(4,3))
 summary(blrtest(sjf.vecm, H=HF0, r=3))
 }
+\author{Bernhard Pfaff}
 \keyword{methods}

@@ -18,4 +18,5 @@ show.urca(object)
 \value{
   The Name and test statistic of a unit root/cointegration test.
 }
+\author{Bernhard Pfaff}
 \keyword{methods}

@@ -50,4 +50,5 @@ gnp <- na.omit(nporg[, "gnp.r"])
 ers.gnp <- ur.ers(gnp, type="DF-GLS", model="const", lag.max=4)
 summary(ers.gnp)
 }
+\author{Bernhard Pfaff}
 \keyword{regression}

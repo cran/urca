@@ -63,5 +63,6 @@ sjd <- denmark[, c("LRM", "LRY", "IBO", "IDE")]
 sjd.vecm <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, season=4)
 plot(sjd.vecm)
 }
+\author{Bernhard Pfaff}
 \keyword{methods}
 

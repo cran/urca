@@ -50,4 +50,5 @@ sjf.vecm <- ca.jo(sjf, constant=FALSE, type="eigen", K=2,
 spec="longrun", season=4)
 lttest(sjf.vecm, r=3)
 }
+\author{Bernhard Pfaff}
 \keyword{regression}
