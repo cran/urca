@@ -54,4 +54,5 @@
   \emph{Journal of Business and Economic Statistics}, \bold{12}, 95--107. 
 }
 \references{\url{http://www.amstat.org/publications/jbes/}}
+\author{Bernhard Pfaff}
 \keyword{datasets}

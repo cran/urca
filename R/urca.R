@@ -1,4 +1,5 @@
-.packageName <- "urca"
+require(graphics)
+require(stats)
 require(methods)
 require(nlme)
 #

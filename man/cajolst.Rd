@@ -54,4 +54,5 @@ sjd <- denmark[, c("LRM", "LRY", "IBO", "IDE")]
 sjd.lst <- cajolst(sjd, trend=TRUE, K=2, season=4)
 summary(sjd.lst)
 }
+\author{Bernhard Pfaff}
 \keyword{regression}

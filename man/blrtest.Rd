@@ -54,4 +54,5 @@ season=4)
 HD0 <- matrix(c(-1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1), c(5,4))
 summary(blrtest(sjd.vecm, H=HD0, r=1))
 }
+\author{Bernhard Pfaff}
 \keyword{regression}

@@ -44,4 +44,5 @@ gnp.l <- log(gnp)
 kpss.gnp <- ur.kpss(gnp.l, type="tau", lags="short")
 summary(kpss.gnp)
 }
+\author{Bernhard Pfaff}
 \keyword{regression}

@@ -46,4 +46,5 @@ ecb.data <- cbind(m3.real, gdp.real, rl)
 m3d.po <- ca.po(ecb.data, type="Pz")
 summary(m3d.po)
 }
+\author{Bernhard Pfaff}
 \keyword{regression}

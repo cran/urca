@@ -40,4 +40,5 @@ gnp <- na.omit(nporg[, "gnp.r"])
 sp.gnp <- ur.sp(gnp, type="tau", pol.deg=1, signif=0.01)
 summary(sp.gnp)
 }
+\author{Bernhard Pfaff}
 \keyword{regression}

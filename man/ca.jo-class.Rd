@@ -95,4 +95,5 @@ Class \code{`urca'}, directly.
 \seealso{
   \code{\link{ca.jo}}, \code{\link{plotres}} and \code{\link{urca-class}}.
 }
+\author{Bernhard Pfaff}
 \keyword{classes}

@@ -89,4 +89,5 @@ Class \code{`urca'}, directly.
   \code{\link{ablrtest}}, \code{\link{alrtest}}, \code{\link{blrtest}},
   \code{\link{ca.jo}}, \code{\link{ca.jo-class}} and \code{\link{urca-class}}.
 }
+\author{Bernhard Pfaff}
 \keyword{classes}

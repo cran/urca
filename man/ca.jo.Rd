@@ -122,4 +122,5 @@ sjf.vecm <- ca.jo(sjf, constant=FALSE, type="eigen", K=2,
 spec="longrun", season=4)
 summary(sjf.vecm)
 }
+\author{Bernhard Pfaff}
 \keyword{regression}

@@ -38,4 +38,5 @@ gnp <- na.omit(nporg[, "gnp.r"])
 za.gnp <- ur.za(gnp, model="both", lag=2)
 summary(za.gnp)
 }
+\author{Bernhard Pfaff}
 \keyword{regression}
