@@ -1,0 +1,810 @@
+.packageName <- "urca"
+require(methods)
+require(nlme)
+#
+# Setting classes for unit root tests
+#
+
+setClass("urca", representation(test.name="character"))
+
+setClass("ur.ers", representation(y="vector",
+                                  yd="vector",
+                                  type="character",
+                                  model="character",
+                                  lag="integer",
+                                  cval="matrix",
+                                  teststat="numeric",
+                                  testreg="ANY"),
+         contains="urca")
+
+setClass("ur.kpss", representation(y="vector",
+                                   type="character",
+                                   lag="integer",
+                                   cval="matrix",
+                                   teststat="numeric",
+                                   res="vector"),
+         contains="urca")
+
+setClass("ca.po", representation(z="ANY",
+                                 type="character",
+                                 model="character",
+                                 lag="integer",
+                                 cval="matrix",
+                                 res="matrix",
+                                 teststat="numeric",
+                                 testreg="ANY"),
+         contains="urca")
+
+setClass("ur.pp", representation(y="vector",
+                                 type="character",
+                                 model="character",
+                                 lag="integer",
+                                 cval="matrix",
+                                 teststat="numeric",
+                                 testreg="ANY",
+                                 auxstat="matrix",
+                                 res="vector"),
+         contains="urca")
+
+setClass("ur.sp", representation(y="vector",
+                                 type="character",
+                                 polynomial="integer",
+                                 signif="numeric",
+                                 teststat="numeric",
+                                 cval="numeric",
+                                 res="vector",
+                                 testreg="ANY"),
+         contains="urca")
+
+setClass("ur.za", representation(y="vector",
+                                 model="character",
+                                 lag="integer",
+                                 teststat="numeric",
+                                 cval="vector",
+                                 bpoint="integer",
+                                 tstats="vector",
+                                 res="vector",
+                                 testreg="ANY"),
+         contains="urca")
+
+#
+# Functions for unit root tests
+#
+
+#
+# Elliott, Rothenberg & Stock-Test
+#
+ur.ers <- function(y, type=c("DF-GLS", "P-test"), model=c("constant", "trend"), lag.max=4){
+  type <- match.arg(type)
+  model <- match.arg(model)
+  lag.max <- as.integer(lag.max)
+  if(lag.max < 0){
+    warning("\nlag.max bust be greater or equal to one and integer; setting lag.max=4")
+  lag.max <- 4}
+  lag.max <- lag.max+1
+  idx <- 2:lag.max
+  y <- na.omit(as.vector(y))
+  nobs <- length(y)
+  if(nobs < 50){
+    rowsel <- 1
+  }else if(nobs < 100){
+    rowsel <- 2
+  }else if(nobs <= 200){
+    rowsel <- 3
+  }else if(nobs > 200){
+    rowsel <- 4}
+  if(model=="constant"){
+    ahat <- 1 - 7.0/nobs
+    ya <- c(y[1], y[2:nobs]-ahat*y[1:(nobs-1)])
+    za1 <- c(1, rep(1-ahat, nobs-1))
+    yd.reg <- summary(lm(ya ~ -1 + za1))
+    yd <- y - coef(yd.reg)[1]
+  }else if(model=="trend"){
+    ahat <- 1 - 13.5/nobs
+    ya <- c(y[1], y[2:nobs]-ahat*y[1:(nobs-1)])
+    za1 <- c(1, rep(1-ahat, nobs-1))
+    trd <- 1:nobs
+    za2 <- c(1, trd[2:nobs]-ahat*trd[1:(nobs-1)])
+    yd.reg <- summary(lm(ya ~ -1 + za1 + za2))
+    yd <- y - coef(yd.reg)[1] - coef(yd.reg)[2]*trd 
+  }
+  what <- function(x, z=y){
+    z.l <-  z[1:(nobs-1)]
+    z.diff <- diff(z)
+    z.dlags <- embed(diff(z), x)[, -1]
+    data.what <- data.frame(cbind(z.diff[-(1:(x-1))], z.l[-(1:(x-1))], z.dlags))
+    bic <- BIC(lm(data.what))
+    return(bic)
+  }
+  if(type=="P-test"){
+    cvals.ptest <- array(c(1.87, 1.95, 1.91, 1.99, 2.97, 3.11, 3.17, 3.26, 3.91, 4.17, 4.33, 4.48, 4.22, 4.26, 4.05, 3.96, 5.72, 5.64, 5.66, 5.62, 6.77, 6.79, 6.86, 6.89), c(4, 3, 2))
+    res <- residuals(yd.reg)
+    if(model=="constant"){
+      null.res <- c(0, diff(y))
+      cvals <- as.matrix(t(cvals.ptest[rowsel, , 1]))
+      model <- "with intercept"
+    }else if(model=="trend"){
+      null.res <- c(0, diff(y))
+      null.res <- null.res - mean(null.res)
+      cvals <- as.matrix(t(cvals.ptest[rowsel, , 2]))
+      model <- "with intercept and trend"
+    }
+  sig.null <- sum(null.res^2)
+  sig.res <- sum(res^2)
+  if(lag.max > 1){
+    bic <- sapply(idx, what, z=y)
+    BIC.opt <- which.min(bic)+1
+    y.l <-  y[1:(nobs-1)]
+    y.diff <- diff(y)
+    y.dlags <- embed(diff(y), BIC.opt)[, -1]
+    data.what <- data.frame(cbind(y.diff[-(1:(BIC.opt-1))], y.l[-(1:(BIC.opt-1))], y.dlags))
+    what.reg <- summary(lm(data.what))
+    npar <- nrow(what.reg$coef)
+    sumlc <- sum(what.reg$coef[3:npar,1])
+    lag.max <- BIC.opt-1
+  }else if(lag.max <= 1){
+    y.diff <- diff(y)
+    y.l <- y[1:(nobs-1)]
+    what.reg <- summary(lm(y.diff ~ y.l))
+    sumlc <- 0
+    lag.max <- lag.max-1
+  }
+  what.sq <- what.reg$sigma^2/(1-sumlc)^2
+  teststat <- (sig.res - ahat*sig.null)/what.sq
+  test.reg <- NULL
+  }else if(type=="DF-GLS"){
+    if(model=="constant"){
+      cvals <- as.matrix(t(c(-2.5658-1.960/nobs-10.04/(nobs**2),-1.9393-0.398/nobs,-1.6156-0.181/nobs)))
+      model <- "with intercept"
+    }else if(model=="trend"){
+      cvals.dfgls.tau <- matrix(-1*c(3.77, 3.58, 3.46, 3.48, 3.19, 3.03, 2.93, 2.89, 2.89, 2.74, 2.64, 2.57), nrow=4, ncol=3)
+      cvals <- as.matrix(t(cvals.dfgls.tau[rowsel,]))
+      model <- "with intercept and trend"
+    }
+    yd.l <-  yd[1:(nobs-1)]
+    yd.diff <- diff(yd)
+    if(lag.max > 1){
+      yd.dlags <- embed(diff(yd), lag.max)[, -1]
+      data.dfgls <- data.frame(cbind(yd.diff[-(1:(lag.max-1))], yd.l[-(1:(lag.max-1))], yd.dlags))
+      colnames(data.dfgls) <- c("yd.diff", "yd.lag", paste("yd.diff.lag", 1:(lag.max-1), sep=""))
+      dfgls.form <- formula(paste("yd.diff ~ -1 + ", paste(colnames(data.dfgls)[-1], collapse=" + ")))
+    }else if(lag.max <=1){
+      data.dfgls <- data.frame(cbind(yd.diff, yd.l))
+      colnames(data.dfgls) <- c("yd.diff", "yd.lag")
+      dfgls.form <- formula("yd.diff ~ -1 + yd.lag")
+    }
+    dfgls.reg <- summary(lm(dfgls.form, data=data.dfgls))
+    teststat <- coef(dfgls.reg)[1,3]
+    test.reg <- dfgls.reg
+    lag.max <- lag.max-1
+  }
+  colnames(cvals) <- c("1%", "5%", "10%")
+  rownames(cvals) <- c("critical values")
+  new("ur.ers", y=y, yd=yd, type=type, model=model, lag=as.integer(lag.max), cval=round(cvals, 2), teststat=teststat, testreg=test.reg, test.name="Elliot, Rothenberg \& Stock")
+}
+#
+# KPSS-Test
+#
+ur.kpss <- function(y, type=c("mu", "tau"), lags=c("short", "long", "nil"), use.lag=NULL){
+  y <- na.omit(as.vector(y))
+  n <- length(y)
+  type <- match.arg(type)
+  lags <- match.arg(lags)
+  if(!(is.null(use.lag))){
+    lmax <- as.integer(use.lag)
+    if(lmax < 0){
+      warning("\nuse.lag has to be positive and integer; lags='short' used.")
+    lmax <- trunc(4*(n/100)^0.25)}
+  }else if(lags == "short"){
+    lmax <- trunc(4*(n/100)^0.25)
+  }else if(lags == "long"){
+    lmax <- trunc(12*(n/100)^0.25)
+  }else if(lags == "nil"){
+    lmax <- 0
+  }
+  if(type=="mu"){
+    cval <- as.matrix(t(c(0.347, 0.463, 0.574, 0.739)))
+    colnames(cval) <- c("10%", "5%", "2.5%", "1%")
+    rownames(cval) <- "critical values"
+    res <- y - mean(y)
+  }else if(type=="tau"){
+    cval <- as.matrix(t(c(0.119, 0.146, 0.176, 0.216)))
+    colnames(cval) <- c("10%", "5%", "2.5%", "1%")
+    rownames(cval) <- "critical values"
+    trend <- 1:n
+    res <- residuals(lm(y ~ trend))
+  }
+  S <- cumsum(res)
+  nominator <- sum(S^2)/n^2
+  s2 <- sum(res^2)/n
+  if(lmax == 0){
+    denominator <- s2
+  }else{
+    index <- 1:lmax
+    x.cov <- sapply(index, function(x) t(res[-c(1:x)])%*%res[-c((n-x+1):n)])
+    bartlett <- 1-index/(lmax+1)
+    denominator <- s2 + 2/n*t(bartlett)%*%x.cov
+  }
+  teststat <- nominator/denominator
+  new("ur.kpss", y=y, type=type, lag=as.integer(lmax), teststat=as.numeric(teststat), cval=cval, res=res , test.name="KPSS") 
+}
+#
+# Phillips-Ouliaris Test
+#
+ca.po <- function(z, demean=c("none", "constant", "trend"), lag=c("short", "long"), type=c("Pu", "Pz"), tol=NULL){
+  z <- na.omit(as.matrix(z))
+  if(ncol(z)<2 || ncol(z)>6){
+    stop("Please provide a matrix with at least two and maximal six columns")}
+  demean <- match.arg(demean)
+  lag <- match.arg(lag)
+  type <- match.arg(type)
+  nobs <- nrow(z)
+  m <- ncol(z)
+  zl <- z[2:nobs,]
+  zr <- z[1:(nobs-1),]
+  nobs <- nobs-1
+  if(lag == "short"){
+    lmax <- trunc(4*(nobs/100)^0.25)
+  }else if(lag == "long"){
+    lmax <- trunc(12*(nobs/100)^0.25)
+  }
+  if(demean=="none"){
+    ari3 <- 1
+    model <- "none"
+    res <- residuals(lm(zl ~ zr - 1))
+    if(type=="Pu"){
+      resu <- residuals(lm(z[,1] ~ z[,-1] -1))
+      test.reg <- summary(lm(z[,1] ~ z[,-1] -1))
+    }else if(type=="Pz"){
+      test.reg <- summary(lm(zl ~ zr - 1))}
+  }else if(demean=="constant"){
+    ari3 <- 2
+    model <- "with constant only"
+    res <- residuals(lm(zl ~ zr))
+    if(type=="Pu"){
+      resu <- residuals(lm(z[,1] ~ z[,-1]))
+      test.reg <- summary(lm(z[,1] ~ z[,-1]))
+    }else if(type=="Pz"){
+      test.reg <- summary(lm(zl ~ zr))}
+  }else if(demean=="trend"){
+    ari3 <- 3
+    model <- "with constant and linear trend"
+    trd <- 1:nobs
+    res <- residuals(lm(zl ~ zr + trd))
+    if(type=="Pu"){
+      resu <- residuals(lm(z[,1] ~ z[,-1] + trd))
+      test.reg <- summary(lm(z[,1] ~ z[,-1] + trd))
+    }else if(type=="Pz"){
+      test.reg <- summary(lm(zl ~ zr + trd))}
+  }
+  xi2 <- 1/nobs*t(res)%*%res
+  index <- 1:lmax
+  wsl <- 1-index/(lmax+1)
+  xi.mat <- sapply(index, function(x){
+    wsl[x]*(t(res[-c(1:x),])%*%res[-c((nobs-x+1):nobs),] +  t(res[-c((nobs-x+1):nobs),])%*%res[-c(1:x),])
+  })
+  xi.mat <- array(xi.mat, c(m, m, lmax))
+  smat <- matrix(0, m, m)
+  for(i in 1:lmax)
+    smat <- smat + xi.mat[,,i]
+  omega <- xi2 + 1/nobs*smat
+  if(type=="Pz"){
+    Mzz <- (1/nobs*t(zl)%*%zl)
+    Mzzinv <- solve(Mzz, tol=tol)
+    teststat <- nobs*sum(diag(omega%*%Mzzinv))
+    cvals <- array(c(20.3933, 26.7022, 33.5359, 39.2826, 44.3725, 25.9711, 32.9392, 40.1220, 46.2691, 51.8614, 38.3413, 46.4097, 55.7341, 63.2149, 69.4939, 27.8536, 33.6955, 39.6949, 45.3308, 50.3537, 33.713, 40.5252, 46.7281, 53.2502, 57.7855, 48.0021, 53.8731, 63.4128, 71.5214, 76.7705, 41.2488, 46.1061, 52.0015, 57.3667, 61.6155, 48.8439, 53.8300, 60.2384, 65.8706, 70.7416, 65.1714, 69.2629, 78.3470, 84.5480, 91.0392)  , c(5, 3, 3))
+    cval <- as.matrix(t(cvals[m-1, ,ari3]))
+  }else if(type=="Pu"){
+    w11 <- omega[1,1]
+    w21 <- omega[2:m,1]
+    O22 <- omega[-1,-1]
+    O22inv <- solve(O22, tol=tol)
+    w112 <- w11 - t(w21)%*%O22inv%*%w21
+    ssqr <- 1/nobs*sum(resu^2)
+    teststat <- as.numeric(nobs*w112/ssqr)
+    cvals <- array(c(33.9267, 62.1436, 99.2664, 143.0775, 195.6202, 40.8217, 71.2751, 109.7426, 155.8019, 210.2910, 55.1911, 89.6679, 131.5716, 180.4845, 237.7723, 47.5877, 80.2034, 120.3035, 168.8572, 225.2303, 55.2202, 89.7619, 132.2207, 182.0749, 241.3316, 71.9273, 109.4525, 153.4504, 209.8054, 270.5018, 71.9586, 113.4929, 163.1050, 219.5098, 284.0100, 81.3812, 124.3933, 175.9902, 234.2865, 301.0949, 102.0167, 145.8644, 201.0905, 264.4988, 335.9054), c(5, 3, 3))
+    cval <- as.matrix(t(cvals[m-1, ,ari3]))
+    res <- as.matrix(resu)
+  }
+  colnames(cval) <- c("10\%", "5\%", "1\%")
+  rownames(cval) <- "critical values"
+  new("ca.po", z=z, type=type, model=model, lag=as.integer(lmax), cval=cval, res=res, teststat=teststat, testreg=test.reg, test.name="Phillips \& Ouliaris")
+}
+#
+# Phillips-Perron Test
+#
+ur.pp <- function(x, type=c("Z-alpha", "Z-tau"), model=c("constant", "trend"), lags=c("short", "long"), use.lag=NULL){
+  x <- na.omit(as.vector(x))
+  n <- length(x)
+  y <- x[-1]
+  y.l1 <- x[-n]
+  n <- n-1
+  lags <- match.arg(lags)
+  model <- match.arg(model)
+  type <- match.arg(type)
+  if(!(is.null(use.lag))){
+    lmax <- as.integer(use.lag)
+    if(lmax < 0){
+      warning("\nuse.lag has to be positive and integer; lags='short' used.")
+      lmax <- trunc(4*(n/100)^0.25)}
+  }else if(lags == "short"){
+    lmax <- trunc(4*(n/100)^0.25)
+  }else if(lags == "long"){
+    lmax <- trunc(12*(n/100)^0.25)}
+  if(model=="trend"){
+    cval <- as.matrix(t(c(-3.9638-8.353/n-47.44/(n^2), -3.4126-4.039/n-17.83/(n^2), -3.1279-2.418/n-7.58/(n^2))))
+    colnames(cval) <- c("1%", "5%", "10%")
+    rownames(cval) <- "critical values"
+    model <- "with intercept and trend"
+    trend <- (1:n) - n/2
+    test.reg <- summary(lm(y ~ y.l1 + trend))
+    res <- residuals(test.reg)
+    my.tstat <- coef(test.reg)[1, 3]
+    beta.tstat <- coef(test.reg)[3, 3]
+    res <- residuals(test.reg)
+    s <- 1/n*(sum(res^2))
+    myybar <- (1/n^2)*sum((y-mean(y))^2)
+    myy <- (1/n^2)*sum(y^2)
+    mty <- (n^(-5/2))*(t(1:n)%*%y)
+    my <- (n^(-3/2))*sum(y)
+    idx <- 1:lmax
+    coprods <- sapply(idx, function(l) t(res[-c(1:l)])%*%(res[-c((n-l+1):n)]))
+    weights <- 1 - idx/(lmax+1)
+    sig <- s + (2/n)*(t(weights)%*%coprods)
+    lambda <- 0.5*(sig-s)
+    lambda.prime <- lambda/sig
+    M <- (1-n^(-2))*myy - 12*mty^2 + 12*(1 + 1/n)*mty*my - (4 + 6/n + 2/n^2)*my^2
+    my.stat <- sqrt(s/sig)*my.tstat - lambda.prime*sqrt(sig)*my/(sqrt(M)*sqrt((M+my^2)))
+    beta.stat <- sqrt(s/sig)*beta.tstat - lambda.prime*sqrt(sig)*(0.5*my - mty)/(sqrt(M/12)*sqrt(myybar))
+    aux.stat <- as.matrix(c(round(my.stat, 4), round(beta.stat, 4)))
+    rownames(aux.stat) <- c("Z-tau-mu", "Z-tau-beta")
+    colnames(aux.stat) <- "aux. Z statistics"
+    if(type=="Z-tau"){
+      tstat <- (coef(test.reg)[2, 1] - 1)/coef(test.reg)[2, 2]
+      teststat <- sqrt(s/sig)*tstat-lambda.prime*sqrt(sig)/sqrt(M)
+    }else if(type=="Z-alpha"){
+      alpha <- coef(test.reg)[2, 1]
+      teststat <- n*(alpha-1)-lambda/M
+    }
+  }else if(model=="constant"){
+    cval <- as.matrix(t(c(-3.4335-5.999/n-29.25/(n^2), -2.8621-2.738/n-8.36/(n^2), -2.5671-1.438/n-4.48/(n^2))))
+    colnames(cval) <- c("1%", "5%", "10%")
+    rownames(cval) <- "critical values"
+    model <- "with intercept"
+    test.reg <- summary(lm(y ~ y.l1))
+    my.tstat <- coef(test.reg)[1, 3]
+    res <- residuals(test.reg)
+    s <- 1/n*(sum(res^2))
+    myybar <- (1/n^2)*sum((y-mean(y))^2)
+    myy <- (1/n^2)*sum(y^2)
+    my <- (n^(-3/2))*sum(y)
+    idx <- 1:lmax
+    coprods <- sapply(idx, function(l) t(res[-c(1:l)])%*%(res[-c((n-l+1):n)]))
+    weights <- 1 - idx/(lmax+1)
+    sig <- s + (2/n)*(t(weights)%*%coprods)
+    lambda <- 0.5*(sig-s)
+    lambda.prime <- lambda/sig
+    my.stat <- sqrt(s/sig)*my.tstat + lambda.prime*sqrt(sig)*my/(sqrt(myy)*sqrt(myybar))
+    aux.stat <- as.matrix(round(my.stat, 4))
+    rownames(aux.stat) <- "Z-tau-mu"
+    colnames(aux.stat) <- "aux. Z statistics"
+    if(type=="Z-tau"){
+      tstat <- (coef(test.reg)[2, 1] - 1)/coef(test.reg)[2, 2]
+      teststat <- sqrt(s/sig)*tstat-lambda.prime*sqrt(sig)/sqrt(myybar)
+    }else if(type=="Z-alpha"){
+      alpha <- coef(test.reg)[2, 1]
+      teststat <- n*(alpha-1)-lambda/myybar
+    }
+  }
+  new("ur.pp", y=y, type=type, model=model, lag=as.integer(lmax), cval=cval, teststat=as.numeric(teststat), testreg=test.reg, auxstat=aux.stat, res=res, test.name="Phillips-Perron")
+}
+#
+# Schmidt-Phillips Test
+#
+ur.sp <- function(y, type=c("tau", "rho"), pol.deg=c(1, 2, 3, 4), signif=c(0.01, 0.05, 0.1)){
+  y <- na.omit(as.vector(y))
+  type <- match.arg(type)
+  signif.val <- c(0.01, 0.05, 0.1)
+  if(!(signif %in% signif.val)){
+    warning("\nPlease, provide as signif one of c(0.01, 0.05, 0.1); signif=0.01 used")
+  signif <- 0.01}
+  if(!(pol.deg %in% c(1:4))){
+    warning("\nPlease, provide as polynomial degree one of c(1, 2, 3, 4); po.deg=1 used")
+  pol.deg <- 1}
+  n <- length(y)
+  lag <- trunc(12*(n/100)^0.25)
+  idx <- 1:lag
+  trend1 <- 1:n
+  y.diff <- diff(y)
+  if(pol.deg==1){
+    yi.hat <- (y[n]-y[1])/(n-1)
+    phi.y <- y[1]-yi.hat
+    S.hat <- y - phi.y - yi.hat*trend1
+    S.hat.l1 <- S.hat[-n]
+    test.reg <- summary(lm(y.diff ~ 1 + S.hat.l1))
+    sp.data <- data.frame(cbind(y[2:n],  y[1:(n-1)], trend1[2:n]))
+    colnames(sp.data) <- c("y", "y.lagged", "trend.exp1")
+    corr.reg <- summary(lm(sp.data))
+    res <- residuals(corr.reg)
+    sig.eps <- (1/n)*sum(res^2)
+    coprods <- sapply(idx, function(x) t(res[-c(1:x)])%*%(res[-c((n-x):(n-1))]))
+    weights <- (2*(lag-idx)/lag)^2
+    sig <- sig.eps + (2/n)*(t(weights)%*%coprods)
+    omega2.hat <- sig.eps/sig
+  }else if(pol.deg==2){
+    trend2 <- trend1^2
+    S.hat <- c(0, cumsum(residuals(summary(lm(y.diff ~ trend1[2:n])))))
+    test.reg <- summary(lm(y.diff ~ S.hat[-n] + trend1[2:n]))
+    sp.data <- data.frame(cbind(y[2:n],  y[1:(n-1)], trend1[2:n], trend2[2:n]))
+    colnames(sp.data) <- c("y", "y.lagged", "trend.exp1", "trend.exp2")
+    corr.reg <- summary(lm(sp.data))
+    res <- residuals(corr.reg)
+    sig.eps <- (1/n)*sum(res^2)
+    coprods <- sapply(idx, function(x) t(res[-c(1:x)])%*%(res[-c((n-x):(n-1))]))
+    weights <- (2*(lag-idx)/lag)^2
+    sig <- sig.eps + (2/n)*(t(weights)%*%coprods)
+    omega2.hat <- sig.eps/sig
+  }else if(pol.deg==3){
+    trend2 <- trend1^2
+    trend3 <- trend1^3    
+    S.hat <- c(0, cumsum(residuals(summary(lm(y.diff ~ trend1[2:n] + trend2[2:n])))))
+    test.reg <- summary(lm(y.diff ~ S.hat[-n] + trend1[2:n] + trend2[2:n]))
+    sp.data <- data.frame(cbind(y[2:n],  y[1:(n-1)], trend1[2:n], trend2[2:n], trend3[2:n]))
+    colnames(sp.data) <- c("y", "y.lagged", "trend.exp1", "trend.exp2", "trend.exp3")
+    corr.reg <- summary(lm(sp.data))
+    res <- residuals(corr.reg)
+    sig.eps <- (1/n)*sum(res^2)
+    coprods <- sapply(idx, function(x) t(res[-c(1:x)])%*%(res[-c((n-x):(n-1))]))
+    weights <- (2*(lag-idx)/lag)^2
+    sig <- sig.eps + (2/n)*(t(weights)%*%coprods)
+    omega2.hat <- sig.eps/sig
+  }else if(pol.deg==4){
+    trend2 <- trend1^2
+    trend3 <- trend1^3
+    trend4 <- trend1^4
+    S.hat <- c(0, cumsum(residuals(summary(lm(y.diff ~ trend1[2:n] + trend2[2:n] + trend3[2:n])))))
+    test.reg <- summary(lm(y.diff ~ S.hat[-n] + trend1[2:n] + trend2[2:n] + trend3[2:n]))
+    sp.data <- data.frame(cbind(y[2:n],  y[1:(n-1)], trend1[2:n], trend2[2:n], trend3[2:n], trend4[2:n]))
+    colnames(sp.data) <- c("y", "y.lagged", "trend.exp1", "trend.exp2", "trend.exp3", "trend.exp4")
+    corr.reg <- summary(lm(sp.data))
+    res <- residuals(corr.reg)
+    sig.eps <- (1/n)*sum(res^2)
+    coprods <- sapply(idx, function(x) t(res[-c(1:x)])%*%(res[-c((n-x):(n-1))]))
+    weights <- (2*(lag-idx)/lag)^2
+    sig <- sig.eps + (2/n)*(t(weights)%*%coprods)
+    omega2.hat <- sig.eps/sig
+  }
+  if(type=="rho"){
+    rho <- n*coef(test.reg)[2,1]
+    teststat <- rho/omega2.hat
+    cval <- .spcv(obs=n, type="rho", pol.deg=pol.deg, signif=signif)
+  }else if(type=="tau"){
+    tau <- coef(test.reg)[2,3]
+    teststat <- tau/sqrt(omega2.hat)
+    cval <- .spcv(obs=n, type="tau", pol.deg=pol.deg, signif=signif)
+  }
+  new("ur.sp", y=y, type=type, polynomial=as.integer(pol.deg), teststat=as.numeric(teststat), cval=cval, signif=signif, res=res, testreg=corr.reg, test.name="Schmidt-Phillips")
+}
+#
+# Function for critical values of ur.sp
+#
+.spcv <- function(obs, type=c("tau", "rho"), pol.deg=c(1, 2, 3, 4), signif=c(0.01, 0.025, 0.05, 0.1)){
+  obs <- as.integer(obs)
+  obs.ranges <- c(25, 50, 100, 200, 500, 1000, 1e30)
+  type <- match.arg(type)
+  dim.1 <- which(obs.ranges >= obs, arr.ind=TRUE)[1]
+  signif.val <- c(0.01, 0.05, 0.1)
+  if(!(signif %in% signif.val)){
+    warning("\nPlease, provide as signif one of c(0.01, 0.05, 0.1), signif=0.01 used")
+    signif <- 0.01}
+  dim.2 <- which(signif==signif.val, arr.ind=TRUE)
+  if(!(pol.deg %in% c(1:4))){
+    warning("\nPlease, provide as polynomial degree one of c(1, 2, 3, 4); pol.deg=1 used")
+    pol.deg <- 1}
+  dim.3 <- pol.deg
+  if(type=="tau"){
+  cvs.tau <- -1*c(3.9, 3.73, 3.63, 3.61, 3.59, 3.58, 3.56, 3.18, 3.11, 3.06, 3.04, 3.04, 3.02, 3.02, 2.85, 2.8, 2.77, 2.76, 2.76, 2.75, 2.75, 4.52, 4.28, 4.16, 4.12, 4.08, 4.06, 4.06, 3.78, 3.77, 3.65, 3.6, 3.55, 3.55, 3.53, 3.52, 3.41, 3.34, 3.31, 3.28, 3.26, 3.26, 3.26, 5.07, 4.73, 4.59, 4.53, 4.5, 4.49, 4.44, 4.26, 4.08, 4.03, 3.99, 3.96, 3.95, 3.93, 3.89, 3.77, 3.72, 3.69, 3.68, 3.68, 3.67, 5.57, 5.13, 4.99, 4.9, 4.85, 4.83, 4.81, 4.7, 4.47, 4.39, 4.33, 4.31, 4.31, 4.29, 4.3, 4.15, 4.1, 4.06, 4.03, 4.03, 4.01)
+  cv.array <- array(cvs.tau, dim=c(7, 3, 4), dimnames=c("obs", "signif", "pol.deg"))
+  cval <- cv.array[dim.1, dim.2, dim.3]
+}else if(type=="rho"){
+    cvs.rho <- -1*c(20.4, 22.8, 23.8, 24.8, 25.3, 25.3, 25.2, 15.7, 17.0, 17.5, 17.9, 18.1, 18.1, 18.1, 13.4, 14.3, 14.6, 14.9, 15.0, 15.0, 15.0, 24.6, 28.4, 30.4, 31.8, 32.4, 32.5, 32.6, 20.1, 22.4, 23.7, 24.2, 24.8, 24.6, 24.7, 17.8, 19.5, 20.4, 20.7, 21.0, 21.1, 21.1, 28.1, 33.1, 36.3, 38.0, 39.1, 39.5, 39.7, 23.8, 27.0, 29.1, 30.1, 30.6, 30.8, 30.6, 21.5, 24.0, 25.4, 26.1, 26.6, 26.7, 26.7, 31.0, 37.4, 41.8, 44.0, 45.3, 45.7, 45.8, 26.9, 31.2, 34.0, 35.2, 36.2, 36.6, 36.4, 24.7,28.1, 30.2, 31.2, 31.8, 32.0, 31.9)
+  cv.array <- array(cvs.rho, dim=c(7, 3, 4), dimnames=c("obs", "signif", "pol.deg"))
+  cval <- cv.array[dim.1, dim.2, dim.3]}
+  return(cval)
+}
+#
+# Zivot-Andrews Test
+#
+ur.za <- function(y, model=c("intercept", "trend", "both"), lag){
+  y <- na.omit(as.vector(y))
+  n <- length(y)
+  model <- match.arg(model)
+  lag <- as.integer(lag)
+  if(length(lag) > 1 || lag < 1){
+    warning("\nPlease, specify maximal number of lags for differenced series as positive integer; lags=1 is now used.")
+    lags <- 1}
+  datmat <- matrix(NA, n, lag + 3)
+  if(n < ncol(datmat) + 2){
+    stop("\nInsufficient number of obeservations.")}
+  idx <- 1:(n-1)
+  trend <- seq(1, n)
+  datmat[,1] <- y
+  datmat[,2] <- c(NA, y)[1:n]
+  datmat[,3] <- trend
+  for(i in 1:lag){
+    datmat[ , i + 3] <- c(rep(NA, i + 1), diff(y))[1:n]}
+  datmat <- as.data.frame(datmat)
+  colnames(datmat) <- c("y", "y.l1", "trend", paste("y.dl", 1:lag, sep=""))
+  if(model=="intercept"){
+    roll <- function(z){
+      du <- c(rep(0, z), rep(1, (n-z)))
+      rollmat <- cbind(datmat, du)
+      roll.reg <- coef(summary(lm(rollmat)))
+      (roll.reg[2,1]-1.0)/roll.reg[2,2]
+    }
+    roll.stat <- sapply(idx, roll)
+    cval <- c(-5.34, -4.8, -4.58)
+    bpoint <- which.min(roll.stat)
+    du <- c(rep(0, bpoint), rep(1, (n-bpoint)))
+    testmat <- cbind(datmat, du)
+    test.reg <- summary(lm(testmat)) 
+  }else if(model=="trend"){
+    roll <- function(z){
+      dt <- c(rep(0, z), 1:(n-z))
+      rollmat <- cbind(datmat, dt)
+      roll.reg <- coef(summary(lm(rollmat)))
+      (roll.reg[2,1]-1.0)/roll.reg[2,2]
+    }
+    roll.stat <- sapply(idx, roll)
+    cval <- c(-4.93, -4.42, -4.11)
+    bpoint <- which.min(roll.stat)
+    dt <- c(rep(0, bpoint), 1:(n-bpoint))
+    testmat <- cbind(datmat, dt)
+    test.reg <- summary(lm(testmat)) 
+  }else if(model=="both"){
+    test.reg <- summary(lm(datmat))
+    roll <- function(z){
+      du <- c(rep(0, z), rep(1, (n-z)))
+      dt <- c(rep(0, z), 1:(n-z))
+      rollmat <- cbind(datmat, du, dt)
+      roll.reg <- coef(summary(lm(rollmat)))
+      (roll.reg[2,1]-1.0)/roll.reg[2,2]
+    }
+    roll.stat <- sapply(idx, roll)
+    cval <- c(-5.57, -5.08, -4.82)
+    bpoint <- which.min(roll.stat)
+    du <- c(rep(0, bpoint), rep(1, (n-bpoint)))
+    dt <- c(rep(0, bpoint), 1:(n-bpoint))
+    testmat <- cbind(datmat, du, dt)
+    test.reg <- summary(lm(testmat)) 
+  }
+  teststat <- roll.stat[bpoint]
+  new("ur.za", y=y, model=model, lag=lag, teststat=teststat, cval=cval, bpoint=bpoint, tstats=roll.stat, res=test.reg$residuals, testreg=test.reg, test.name="Zivot-Andrews")
+}
+#
+# Setting methods for classes
+#
+
+show.urca <- function(object){
+  title <- paste("#", object@test.name, "Unit Root Test #", sep=" ")
+  row <- paste(rep("#", nchar(title)), collapse="")
+  cat("\n")
+  cat(row, "\n")
+  cat(title, "\n")
+  cat(row, "\n")
+  cat("\n")
+  cat("The value of the test statistic is:", round(object@teststat, 4), "\n")
+  cat('\n')
+}
+
+setMethod("show", "ur.kpss", show.urca)
+setMethod("show", "ca.po", show.urca)
+setMethod("show", "ur.pp", show.urca)
+setMethod("show", "ur.sp", show.urca)
+setMethod("show", "ur.za", show.urca)
+setMethod("show", "ur.ers", show.urca)
+
+setMethod("summary", "ur.ers", function(object){
+  title <- paste("#", object@test.name, "Unit Root Test #", sep=" ")
+  row <- paste(rep("#", nchar(title)), collapse="")
+  cat("\n")
+  cat(row, "\n")
+  cat(title, "\n")
+  cat(row, "\n")
+  cat("\n")
+  cat("Test of type", object@type, "\ndetrending of series", object@model, "\n")
+  cat("\n")
+  if(!is.null(object@testreg)){
+    print(object@testreg)
+    cat('\n')
+  }
+  cat('Value of test-statistic is:', round(object@teststat, 4), '\n')
+  cat('\n')
+  cat('Critical values of', object@type, "are:\n")
+  print(object@cval)
+  cat('\n')
+})
+
+setMethod("summary", "ur.kpss", function(object){
+  title <- paste("#", object@test.name, "Unit Root Test #", sep=" ")
+  row <- paste(rep("#", nchar(title)), collapse="")
+  cat("\n")
+  cat(row, "\n")
+  cat(title, "\n")
+  cat(row, "\n")
+  cat("\n")
+  cat('Test is of type:', object@type, 'with', object@lag, 'lags. \n')
+  cat('\n')
+  cat('Value of test-statistic is:', round(object@teststat, 4), '\n')
+  cat('\n')
+  cat('Critical value for a significance level of: \n')
+  print(object@cval)
+  cat('\n')
+})
+
+setMethod("summary", "ca.po", function(object){
+  title <- paste("#", object@test.name, "Unit Root Test #", sep=" ")
+  row <- paste(rep("#", nchar(title)), collapse="")
+  cat("\n")
+  cat(row, "\n")
+  cat(title, "\n")
+  cat(row, "\n")
+  cat("\n")
+  cat("Test of type", object@type, "\ndetrending of series", object@model, "\n")
+  cat("\n")
+  print(object@testreg)
+  cat('\n')
+  cat('Value of test-statistic is:', round(object@teststat, 4), '\n')
+  cat('\n')
+  cat('Critical values of', object@type, "are:\n")
+  print(object@cval)
+  cat('\n')
+})
+
+setMethod("summary", "ur.pp", function(object){
+  title <- paste("#", object@test.name, "Unit Root Test #", sep=" ")
+  row <- paste(rep("#", nchar(title)), collapse="")
+  cat("\n")
+  cat(row, "\n")
+  cat(title, "\n")
+  cat(row, "\n")
+  cat("\n")
+  cat('Test regression', object@model, '\n')
+  cat('\n')
+  print(object@testreg)
+  cat('\n')
+  cat('Value of test-statistic, type:', object@type,' is:', round(object@teststat, 4), '\n')
+  cat('\n')
+  print(object@auxstat)
+  cat('\n')
+  cat('Critical values for Z statistics: \n')
+  print(object@cval)
+  cat('\n')
+})
+  
+setMethod("summary", "ur.sp", function(object){
+  title <- paste("#", object@test.name, "Unit Root Test #", sep=" ")
+  row <- paste(rep("#", nchar(title)), collapse="")
+  cat("\n")
+  cat(row, "\n")
+  cat(title, "\n")
+  cat(row, "\n")
+  cat("\n")
+  print(object@testreg)
+  cat('\n')
+  cat('Value of test-statistic is:', round(object@teststat, 4), '\n')
+  cat('Critical value for a significance level of', object@signif, '\n')
+  cat('is:', object@cval, '\n')
+  cat('\n')
+})
+
+setMethod("summary", "ur.za", function(object){
+  title <- paste("#", object@test.name, "Unit Root Test #", sep=" ")
+  row <- paste(rep("#", nchar(title)), collapse="")
+  cat("\n")
+  cat(row, "\n")
+  cat(title, "\n")
+  cat(row, "\n")
+  cat("\n")
+  print(object@testreg)
+  cat('\n')
+  cat('Teststatistic:', round(object@teststat, 4), '\n')
+  cat('Critical values: 0.01=', object@cval[1], '0.05=', object@cval[2], '0.1=', object@cval[3], '\n')
+  cat('\n')
+  cat('Potential break point at position:', object@bpoint, '\n')
+  cat('\n')
+})
+
+setMethod("plot", signature(x="ur.ers", y="missing"), function(x){
+  if(is.null(x@testreg)){
+    stop("No plot method for P-test available")}
+  oldpar <- par(no.readonly=TRUE)
+  on.exit(par(oldpar))
+  par(mfrow=c(1,1))
+  layout(matrix(c(1, 2, 3, 1, 2, 4), 3 , 2))
+  suppressWarnings(plot.ts(diff(x@yd)[-c(1:x@lag)], main="Diagram of fit for test regression", sub=paste("detrending ", x@model, " and ", x@lag, " lagged differences used in test regression",  sep=""), ylab="Actual and fitted values", xlab=""))
+  lines(diff(x@yd)[-c(1:x@lag)] - resid(x@testreg), col="seagreen")
+  plot.ts(resid(x@testreg), main="Residuals", ylab="", xlab="")
+  abline(h=0, col="red")
+  acf(resid(x@testreg), main="Autocorrelations of Residuals")
+  pacf(resid(x@testreg), main="Partial Autocorrelations of Residuals")
+})
+
+setMethod("plot", signature(x="ur.kpss", y="missing"), function(x){
+  oldpar <- par(no.readonly=TRUE)
+  on.exit(par(oldpar))
+  par(mfrow=c(1,1))
+  layout(matrix(c(1, 2, 1, 3), 2 , 2))
+  plot.ts(x@res, main=paste("Residuals from test regression of type:", x@type, " with", x@lag, "lags", sep=" "), ylab="residuals", xlab="")
+  abline(h=0, col="red")
+  acf(x@res, main="Autocorrelations of Residuals")
+  pacf(x@res, main="Partial Autocorrelations of Residuals")
+})
+
+setMethod("plot", signature(x="ca.po", y="missing"), function(x){
+  oldpar <- par(no.readonly=TRUE)
+  on.exit(par(oldpar))
+  par(mfrow=c(1,1))
+  if(x@type=="Pu"){
+    layout(matrix(c(1, 2, 1, 3), 2 , 2))
+    suppressWarnings(plot.ts(x@res[,1], main="Residuals of CI-regression for y1", sub=paste("detrending:", x@model, sep=" "), ylab="", xlab=""))
+    abline(h=0, col="red")
+    acf(x@res[,1], main="Autocorrelations of Residuals")
+    pacf(x@res[,1], main="Partial Autocorrelations of Residuals")
+  }else if(x@type=="Pz"){
+    m <- ncol(x@z)
+    for( i in 1:m){
+      layout(matrix(c(1, 2, 1, 3), 2 , 2))
+      suppressWarnings(plot.ts(x@res[,i], main=paste("Residuals of CI-regression with y", i, " as lhs", sep=""), sub=paste("detrending:", x@model, sep=" "), ylab="", xlab=""))
+      abline(h=0, col="red")
+      acf(x@res[,i], main="Autocorrelations of Residuals")
+      pacf(x@res[,i], main="Partial Autocorrelations of Residuals")
+      if(interactive()){
+        cat("\nType <Return> to continue: ")
+        readline()
+      }
+    }
+  }     
+})
+
+setMethod("plot", signature(x="ur.pp", y="missing"), function(x){
+  oldpar <- par(no.readonly=TRUE)
+  on.exit(par(oldpar))
+  par(mfrow=c(1,1))
+  layout(matrix(c(1, 2, 3, 1, 2, 4), 3 , 2))
+  plot.ts(x@y[-1], main=paste("Diagram of fit for model", x@model, sep=" "), ylab="Actual and fitted values", xlab="")
+  lines(x@y - x@res, col="seagreen")
+  plot.ts(x@res, main="Residuals", ylab="", xlab="")
+  abline(h=0, col="red")
+  acf(x@res, main="Autocorrelations of Residuals")
+  pacf(x@res, main="Partial Autocorrelations of Residuals")
+})
+
+setMethod("plot", signature(x="ur.sp", y="missing"), function(x){
+  oldpar <- par(no.readonly=TRUE)
+  on.exit(par(oldpar))
+  par(mfrow=c(1,1))
+  layout(matrix(c(1, 2, 3, 1, 2, 4), 3 , 2))
+  plot.ts(x@y[-1], main=paste("Diagram of fit for model with polynomial degree of ", x@polynomial, sep="") , ylab="Actual and fitted values", xlab="")
+  lines(x@y[-1] - x@res, col="seagreen")
+  plot.ts(x@res, main="Residuals", ylab="", xlab="")
+  abline(h=0, col="red")
+  acf(x@res, main="Autocorrelations of Residuals")
+  pacf(x@res, main="Partial Autocorrelations of Residuals")
+})
+
+setMethod("plot", signature(x="ur.za", y="missing"), function(x){
+  oldpar <- par(no.readonly=TRUE)
+  on.exit(par(oldpar))
+  par(mfrow=c(1,1))
+  yvals <- sort(c(x@cval, x@tstats))
+  n <- length(x@y)
+  xvals <- pretty(1:n)
+  plot.ts(x@tstats, main="Zivot and Andrews Unit Root Test", ylab="t-statistics for lagged endogenous variable", ylim=c(min(yvals), max(yvals)))
+  abline(h=x@cval, col=c("red", "blue", "seagreen"))
+  if(x@teststat < x@cval[3]){
+    abline(v=x@bpoint, col="red", lty=2)}
+  mtext(paste("Model type:", x@model, sep=" "), side=1, line=4)
+  legend(x=n, y=max(yvals), c("1% c.v.", "2.5% c.v.", "5% c.v."), col=c("red", "blue", "seagreen"), xjust=1, yjust=1, lty=1, horiz=TRUE, cex=0.66, bty="n")
+})
+  
