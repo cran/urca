@@ -1,6 +1,6 @@
 Package: urca
-Version: 0.2-0
-Date: 2004-03-15
+Version: 0.2-1
+Date: 2004-03-17
 Title: Unit root and cointegration tests for time series data
 Author: Bernhard Pfaff <bernhard.pfaff@drkw.com>
 Maintainer: Bernhard Pfaff <bernhard.pfaff@drkw.com>
