@@ -163,7 +163,10 @@ urcaza <- function(){
     logger(paste("ZAstat <- ", command, sep=""))
     assign("ZAstat", justDoIt(command), envir=.GlobalEnv)
     doItAndPrint("summary(ZAstat)")
-    if(ptype==TRUE) justDoIt("plot(ZAstat)")
+    if(ptype==TRUE) {
+      justDoIt("x11()")
+      justDoIt("plot(ZAstat)")
+    }
     logger("remove(ZAstat)") 
     remove(ZAstat, envir=.GlobalEnv)       
     tkdestroy(top)
