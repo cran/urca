@@ -56,3 +56,4 @@
 \references{\url{http://www.amstat.org/publications/jbes/}}
 \author{Bernhard Pfaff}
 \keyword{datasets}
+\concept{data set Nelson Plosser macroeconomic variables}

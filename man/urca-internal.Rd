@@ -1,4 +1,4 @@
-\name{.spcv}
+\name{urca-internal}
 \alias{.spcv}
 \title{Critical values for Schmidt \& Phillips Unit Root Test}
 \description{

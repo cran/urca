@@ -53,3 +53,4 @@ summary(alphaols(sjd.vecm1, reg.number=1))
 }
 \author{Bernhard Pfaff}
 \keyword{regression}
+\concept{VECM OLS Loading Johansen Juselius Cointegration Co-integration}

@@ -12,7 +12,7 @@
 \alias{summary,ur.za-method}
 \title{Methods for Function summary in Package `urca'}
 \description{
-  Summarises the outcome of unit root/cointegration tests.
+  Summarises the outcome of unit root/cointegration tests by creating a new object of class \code{sumurca}.
 }
 \section{Methods}{\describe{
     \item{object = "ur.ers"}{The test type, its statistic and the
@@ -49,7 +49,8 @@
   \code{\link{ur.ers-class}}, \code{\link{ur.kpss-class}},
   \code{\link{ca.jo-class}}, \code{\link{cajo.test-class}},
   \code{\link{ca.po-class}}, \code{\link{ur.pp-class}},
-  \code{\link{ur.sp-class}} and \code{\link{ur.za-class}}.}
+  \code{\link{ur.sp-class}} \code{\link{ur.za-class}} and 
+  \code{\link{sumurca-class}}.}
 \examples{
 data(nporg)
 gnp <- na.omit(nporg[, "gnp.r"])

@@ -32,3 +32,4 @@
 }
 \author{Bernhard Pfaff}
 \keyword{datasets}
+\concept{data set ECB money demand macroeconomic data Eurozone}

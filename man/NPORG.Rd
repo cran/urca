@@ -54,3 +54,4 @@
 }
 \author{Bernhard Pfaff}
 \keyword{datasets}
+\concept{data set Nelson Plosser macroeconomic variables}

@@ -1,3 +1,93 @@
+2004-11-23  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* man/sumurca-class.Rd: new class introduced for objects created
+	by method-summary.
+
+	* man/show-methods.Rd: show-method for objects of class sumurca included.
+
+	* R/urca.R: new class `sumurca' inserted, that holds results of
+	applying method-summary.
+	show-method inserted for objects of class `sumurca'.
+
+	* man/UKconsumption.Rd: data set used in Charemza, W. (1997) for analysing
+	U.K. private consumption inserted.
+
+2004-11-19  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* man/ur.za.Rd: \concept added
+
+	* man/ur.sp.Rd: \concept added
+
+	* man/ur.pp.Rd: \concept added
+
+	* man/ur.kpss.Rd: \concept added
+
+	* man/ur.ers.Rd: \concept added
+
+	* man/Raotbl7.Rd: \concept added
+
+	* man/Raotbl6.Rd: \concept added
+
+	* man/Raotbl4.Rd: \concept added
+
+	* man/Raotbl5.Rd: \concept added
+
+	* man/Raotbl3.Rd: \concept added
+
+	* man/Raotbl2.Rd: \concept added
+
+	* man/Raotbl1.Rd: \concept added
+
+	* man/nporg.Rd: \concept added
+
+	* man/plotres.Rd: \concept added 
+
+	* man/npext.Rd: \concept added
+
+	* man/lttest.Rd: \concept added
+
+	* man/finland.Rd: \concept added
+
+	* man/ecb.Rd: \concept added
+
+	* man/denmark.Rd: \concept added
+
+	* man/ca.po.Rd: \concept added
+
+	* man/ca.jo.Rd: \concept added 
+
+	* man/cajools.Rd: \concept added 
+
+	* man/cajolst.Rd: \concept added
+
+	* man/blrtest.Rd: \concept added 
+
+	* man/alrtest.Rd: \concept added
+
+	* man/alphaols.Rd: \concept added
+
+	* man/ablrtest.Rd: \concept added
+
+2004-11-14  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* COPYING: inserted file.
+
+2004-11-01  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* man/Raotbl7.Rd: Typo fixed.
+
+	* man/Raotbl6.Rd: Typo fixed.
+
+	* man/Raotbl5.Rd: Typo fixed.
+
+	* man/Raotbl4.Rd: Typo fixed.
+	
+	* man/Raotbl3.Rd: Typo fixed
+
+	* man/Raotbl2.Rd: Typo fixed.
+
+	* man/Raotbl1.Rd: Typo fixed.
+
 2004-10-31  Bernhard Pfaff  <bernhard@pfaffikus.de>
 
 	* DESCRIPTION (Date): 2004-10-31

@@ -10,6 +10,8 @@
 \alias{show,ur.pp-method}
 \alias{show,ur.sp-method}
 \alias{show,ur.za-method}
+\alias{show,sumurca-method}
+
 \title{Methods for Function show in Package `urca'}
 \description{
   Displays the outcome of the unit root/cointegration tests.
@@ -31,6 +33,8 @@
   Phillips unit root test.}
 \item{object = "ur.za"}{Displays the test statistic of the Zivot \&
   Andrews unit root test.}
+\item{object = "sumurca"}{Displays the summary output.}
+
 }}
 \seealso{
   \code{\link{ca.jo-class}}, \code{\link{cajo.test-class}},
