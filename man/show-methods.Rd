@@ -8,6 +8,7 @@
 \alias{show,ca.po-method}
 \alias{show,cajo.test-method}
 \alias{show,ur.pp-method}
+\alias{show,ur.df-method}
 \alias{show,ur.sp-method}
 \alias{show,ur.za-method}
 \alias{show,sumurca-method}
@@ -29,6 +30,8 @@
   \emph{et al.} unit root test.}
 \item{object = "ur.pp"}{Displays the test statistic of the Phillips \&
   Perron unit root test.}
+\item{object = "ur.df"}{Displays the test statistic of the augmented
+  Dickey-Fuller unit root test.}
 \item{object = "ur.sp"}{Displays the test statistic of the Schmidt \&
   Phillips unit root test.}
 \item{object = "ur.za"}{Displays the test statistic of the Zivot \&
@@ -40,7 +43,7 @@
   \code{\link{ca.jo-class}}, \code{\link{cajo.test-class}},
   \code{\link{ca.po-class}}, \code{\link{ur.ers-class}},
   \code{\link{ur.kpss-class}}, \code{\link{ur.pp-class}},
-  \code{\link{ur.sp-class}} and \code{\link{ur.za-class}}.
+  \code{\link{ur.sp-class}}, \code{\link{ur.df-class}} and \code{\link{ur.za-class}}.
 }
 \examples{
 data(nporg)
@@ -55,6 +58,9 @@ show(kpss.gnp)
 #
 pp.gnp <- ur.pp(gnp, type="Z-tau", model="trend", lags="short")
 show(pp.gnp)
+#
+df.gnp <- ur.df(gnp, type="trend", lags=4)
+show(df.gnp)
 #
 sp.gnp <- ur.sp(gnp, type="tau", pol.deg=1, signif=0.01)
 show(sp.gnp)

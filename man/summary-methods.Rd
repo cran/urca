@@ -8,6 +8,7 @@
 \alias{summary,cajo.test-method}
 \alias{summary,ca.po-method}
 \alias{summary,ur.pp-method}
+\alias{summary,ur.df-method}
 \alias{summary,ur.sp-method}
 \alias{summary,ur.za-method}
 \title{Methods for Function summary in Package `urca'}
@@ -38,6 +39,9 @@
       well as the summary output of the test regression for the Phillips
       \& Perron test, as well as the test statistics for the
       coefficients of the deterministic part is returned.}
+    \item{object = "ur.df"}{The relevant tau statistic, the critical
+      values as well as the summary output of the test regression for
+      the augmented Dickey-Fuller test is returned.}
     \item{object = "ur.sp"}{The test statistic, the critical value as
       well as the summary output of the test regression for the Schmidt
       \& Phillips test is returned.}
@@ -49,8 +53,8 @@
   \code{\link{ur.ers-class}}, \code{\link{ur.kpss-class}},
   \code{\link{ca.jo-class}}, \code{\link{cajo.test-class}},
   \code{\link{ca.po-class}}, \code{\link{ur.pp-class}},
-  \code{\link{ur.sp-class}} \code{\link{ur.za-class}} and 
-  \code{\link{sumurca-class}}.}
+  \code{\link{ur.df-class}}, \code{\link{ur.sp-class}},
+  \code{\link{ur.za-class}} and \code{\link{sumurca-class}}.}
 \examples{
 data(nporg)
 gnp <- na.omit(nporg[, "gnp.r"])
@@ -64,6 +68,9 @@ summary(kpss.gnp)
 #
 pp.gnp <- ur.pp(gnp, type="Z-tau", model="trend", lags="short")
 summary(pp.gnp)
+#
+df.gnp <- ur.df(gnp, type="trend", lags=4)
+summary(df.gnp)
 #
 sp.gnp <- ur.sp(gnp, type="tau", pol.deg=1, signif=0.01)
 summary(sp.gnp)

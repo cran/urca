@@ -90,6 +90,15 @@ setClass("ur.pp", representation(y="vector",
                                  res="vector"),
          contains="urca")
 
+setClass("ur.df", representation(y="vector",
+                                 model="character",
+                                 lags="integer",
+                                 cval="matrix",
+                                 res="vector",
+                                 teststat="numeric",
+                                 testreg="ANY"),
+         contains="urca")
+
 setClass("ur.sp", representation(y="vector",
                                  type="character",
                                  polynomial="integer",
@@ -933,7 +942,7 @@ cajolst <- function (x, trend = TRUE, K = 2, season = NULL)
         t(V) %*% SK0
     GAMMA <- M01 %*% M11inv - PI %*% MK1 %*% M11inv
     type <- "trace statistic"
-    teststat <- as.matrix(rev(sapply(idx, function(x) -N * sum(log(1 - lambda[(x + 1):P])))))
+    teststat <- as.matrix(rev(sapply(idx, function(x) N * sum(log(1 + lambda[(x + 1):P])))))
     colnames(teststat) <- "trace"
     if (arrsel > 5) {
       cval <- NULL
@@ -1123,6 +1132,106 @@ ca.po <- function(z, demean=c("none", "constant", "trend"), lag=c("short", "long
   colnames(cval) <- c("10\%", "5\%", "1\%")
   rownames(cval) <- "critical values"
   new("ca.po", z=z, type=type, model=model, lag=as.integer(lmax), cval=cval, res=res, teststat=teststat, testreg=test.reg, test.name="Phillips \& Ouliaris")
+}
+#
+# Augmented-Dickey-Fuller Test
+#
+ur.df <- function (y, type = c("none", "drift", "trend"), lags = 1) 
+{
+    if (ncol(as.matrix(y)) > 1) 
+        stop("\ny is not a vector or univariate time series.\n")
+    if (any(is.na(y))) 
+        stop("\nNAs in y.\n")
+    lag <- as.integer(lags)
+    if (lag < 0) 
+        stop("\nLags must be set to an non negative integer value.\n")
+    CALL <- match.call()
+    DNAME <- deparse(substitute(y))
+    type <- type[1]
+    x.name <- deparse(substitute(y))
+    lags <- lags + 1
+    z <- diff(y)
+    n <- length(z)
+    x <- embed(z, lags)
+    z.diff <- x[, 1]
+    z.lag.1 <- y[lags:n]
+    tt <- lags:n
+    if (lags > 1) {
+        z.diff.lag = x[, 2:lags]
+        if (type == "none") {
+            result <- lm(z.diff ~ z.lag.1 - 1 + z.diff.lag)
+        }
+        if (type == "drift") {
+            result <- lm(z.diff ~ z.lag.1 + 1 + z.diff.lag)
+        }
+        if (type == "trend") {
+            result <- lm(z.diff ~ z.lag.1 + 1 + tt + z.diff.lag)
+        }
+    }
+    else {
+        if (type == "none") {
+            result <- lm(z.diff ~ z.lag.1 - 1)
+        }
+        if (type == "drift") {
+            result <- lm(z.diff ~ z.lag.1 + 1)
+        }
+        if (type == "trend") {
+            result <- lm(z.diff ~ z.lag.1 + 1 + tt)
+        }
+    }
+    testreg <- summary(result)
+    res <- residuals(testreg)
+    if (type == "none") 
+        coefNum <- 1
+    else coefNum <- 2
+    teststat <- testreg$coefficients[coefNum, 1]/testreg$coefficients[coefNum, 
+        2]
+    if (type == "none"){ 
+        cval <- rbind(
+          c(-2.66, -1.95, -1.60),
+          c(-2.62, -1.95, -1.61),
+          c(-2.6,  -1.95, -1.61),
+          c(-2.58, -1.95, -1.62),
+          c(-2.58, -1.95, -1.62),
+          c(-2.58, -1.95, -1.62))
+        tau <- 'tau1'
+      }
+    if (type == "drift"){ 
+        cval <- rbind(
+          c(-3.75, -3.00, -2.63),
+          c(-3.58, -2.93, -2.60),
+          c(-3.51, -2.89, -2.58),
+          c(-3.46, -2.88, -2.57),
+          c(-3.44, -2.87, -2.57),
+          c(-3.43, -2.86, -2.57))
+        tau <- 'tau2'
+      }
+    if (type == "trend"){ 
+        cval <- rbind(
+          c(-4.38, -3.60, -3.24),
+          c(-4.15, -3.50, -3.18),
+          c(-4.04, -3.45, -3.15),
+          c(-3.99, -3.43, -3.13),
+          c(-3.98, -3.42, -3.13),
+          c(-3.96, -3.41, -3.12))
+        tau <- 'tau3'
+      }
+    if(n < 25)
+      cvals <- t(cval[1,])
+    if(n < 50)
+      cvals <- t(cval[2,])
+    if(n < 100)
+      cvals <- t(cval[3,])
+    if(n < 250)
+      cvals <- t(cval[4,])
+    if(n <= 500)
+      cvals <- t(cval[5,])
+    if(n > 500)
+      cvals <- t(cval[6,])
+    colnames(cvals) <- c('1%', '5%', '10%')
+    rownames(cvals) <- tau
+   
+    new("ur.df", y = y, model = type, cval=cvals, lags=lag, teststat = teststat, testreg=testreg, res=res, test.name="Augmented Dickey-Fuller Test")
 }
 #
 # Phillips-Perron Test
@@ -1415,6 +1524,7 @@ setMethod("show", "ca.jo", show.urca)
 setMethod("show", "cajo.test", show.urca)
 setMethod("show", "ca.po", show.urca)
 setMethod("show", "ur.pp", show.urca)
+setMethod("show", "ur.df", show.urca)
 setMethod("show", "ur.sp", show.urca)
 setMethod("show", "ur.za", show.urca)
 setMethod("show", "ur.ers", show.urca)
@@ -1442,7 +1552,11 @@ setMethod("summary", "ca.po", function(object){
 setMethod("summary", "ur.pp", function(object){
   return(new("sumurca", classname="ur.pp", test.name=object@test.name, testreg=object@testreg, teststat=object@teststat, cval=object@cval, bpoint=NULL, signif=NULL, model=object@model, type=object@type, auxstat=object@auxstat, lag=NULL, H=NULL, A=NULL, lambda=NULL, pval=NULL, V=NULL, W=NULL, P=NULL))
 })
-  
+
+setMethod("summary", "ur.df", function(object){
+  return(new("sumurca", classname="ur.df", test.name=object@test.name, testreg=object@testreg, teststat=object@teststat, cval=object@cval, bpoint=NULL, signif=NULL, model=object@model, type=NULL, auxstat=NULL, lag=NULL, H=NULL, A=NULL, lambda=NULL, pval=NULL, V=NULL, W=NULL, P=NULL))
+})
+
 setMethod("summary", "ur.sp", function(object){
   return(new("sumurca", classname="ur.sp", test.name=object@test.name, testreg=object@testreg, teststat=object@teststat, cval=object@cval, bpoint=NULL, signif=object@signif, model=NULL, type=NULL, auxstat=NULL, lag=NULL, H=NULL, A=NULL, lambda=NULL, pval=NULL, V=NULL, W=NULL, P=NULL))
 })
@@ -1500,6 +1614,24 @@ setMethod("show", "sumurca", function(object){
     print(object@auxstat)
     cat('\n')
     cat('Critical values for Z statistics: \n')
+    print(object@cval)
+    cat('\n')
+    invisible(object)
+  }else if(object@classname=="ur.df"){
+    title <- paste("#", object@test.name, "Unit Root Test #", sep=" ")
+    row <- paste(rep("#", nchar(title)), collapse="")
+    cat("\n")
+    cat(row, "\n")
+    cat(title, "\n")
+    cat(row, "\n")
+    cat("\n")
+    cat('Test regression', object@model, '\n')
+    cat('\n')
+    print(object@testreg)
+    cat('\n')
+    cat('Value of test-statistic is:', round(object@teststat, 4), '\n')
+    cat('\n')
+    cat('Critical values for test statistics: \n')
     print(object@cval)
     cat('\n')
     invisible(object)
@@ -1718,6 +1850,24 @@ setMethod("plot", signature(x="ur.pp", y="missing"), function(x){
   layout(matrix(c(1, 2, 3, 1, 2, 4), 3 , 2))
   plot.ts(x@y[-1], main=paste("Diagram of fit for model", x@model, sep=" "), ylab="Actual and fitted values", xlab="")
   lines(x@y - x@res, col="seagreen")
+  plot.ts(x@res, main="Residuals", ylab="", xlab="")
+  abline(h=0, col="red")
+  acf(x@res, main="Autocorrelations of Residuals")
+  pacf(x@res, main="Partial Autocorrelations of Residuals")
+})
+
+setMethod("plot", signature(x="ur.df", y="missing"), function(x){
+  oldpar <- par(no.readonly=TRUE)
+  on.exit(par(oldpar))
+  par(mfrow=c(1,1))
+  layout(matrix(c(1, 2, 3, 1, 2, 4), 3 , 2))
+  if(x@lags <= 1){
+    plot.ts(x@y[-1], main=paste("Diagram of fit for model", x@model, sep=" "), ylab="Actual and fitted values", xlab="")
+    lines(x@y[-1] - x@res, col="seagreen")
+  }else{
+    plot.ts(x@y[-c(1:(x@lags+1))], main=paste("Diagram of fit for model", x@model, sep=" "), ylab="Actual and fitted values", xlab="")
+    lines(x@y[-c(1:(x@lags+1))] - x@res, col="seagreen")
+  }
   plot.ts(x@res, main="Residuals", ylab="", xlab="")
   abline(h=0, col="red")
   acf(x@res, main="Autocorrelations of Residuals")
