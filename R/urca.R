@@ -254,10 +254,11 @@ ur.ers <- function(y, type=c("DF-GLS", "P-test"), model=c("constant", "trend"), 
 #
 # Johansen Procedure
 #
-ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, spec=c("longrun", "transitory"), season=NULL, dumvar=NULL){
+ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, spec=c("longrun", "transitory"), season=NULL, dumvar=NULL, ctable=c("A1", "A2", "A3")){
   x <- as.matrix(x)
   type <- match.arg(type)
   spec <- match.arg(spec)
+  ctable <- match.arg(ctable)
   K <- as.integer(K)
   P <- ncol(x)
   arrsel <- P 
@@ -300,6 +301,16 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, spec=c("long
   N <- nrow(x)
   Z <- embed(diff(x), K)
   Z0 <- Z[,1:P]
+  a1 <- array(c(2.816, 12.099, 18.697, 24.712, 30.774, 3.962, 14.036, 20.778, 27.169, 33.178, 6.936, 17.936, 25.521, 31.943, 38.341, 2.816, 13.338, 26.791, 43.964, 65.063, 3.962, 15.197, 29.509, 47.181, 68.905, 6.936, 19.310, 35.397, 53.792, 76.955), c(5, 3, 2))
+  a2 <- array(c(6.691, 12.783, 18.959, 24.917, 30.818, 8.083, 14.595, 21.279, 27.341, 33.262, 11.576, 18.782, 26.154, 32.616, 38.858, 6.691, 15.583, 28.436, 45.248, 65.956, 8.083, 17.844, 31.256, 48.419, 69.977, 11.576, 21.962, 37.291, 55.551, 77.911), c(5, 3, 2))
+  a3 <- array(c(7.563, 13.781, 19.796, 25.611, 31.592, 9.094, 15.752, 21.894, 28.167, 34.397, 12.740, 19.834, 26.409, 33.121, 39.672, 7.563, 17.957, 32.093, 49.925, 71.472, 9.094, 20.168, 35.068, 53.347, 75.328, 12.741, 24.988, 40.198, 60.054, 82.969), c(5, 3, 2))
+  if(ctable=="A1"){
+    cvals <- a1
+  }else if(ctable=="A2"){
+    cvals <- a2
+  }else if(ctable=="A3"){
+    cvals <- a3
+  }                                         
   if(constant){
     if(spec=="longrun"){
       ZK <- cbind(x[-c((N-K+1):N),], 1)
@@ -309,8 +320,7 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, spec=c("long
     Z1 <- Z[,-c(1:P)]
     P <- P + 1
     idx <- 0:(P-2)
-    cvals <- array(c(7.563, 13.781, 19.796, 25.611, 31.592, 9.094, 15.752, 21.894, 28.167, 34.397, 12.740, 19.834, 26.409, 33.121, 39.672, 7.563, 17.957, 32.093, 49.925, 71.472, 9.094, 20.168, 35.068, 53.347, 75.328, 12.741, 24.988, 40.198, 60.054, 82.969), c(5, 3, 2))
-    model <- "without linear trend"
+    model <- "without linear trend and constant in cointegration"
   }else{
     Z1 <- Z[,-c(1:P)]
     Z1 <- cbind(1, Z1)
@@ -320,7 +330,6 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, spec=c("long
       ZK <- x[-N,][K:(N-1),]
     }
     idx <- 0:(P-1)
-    cvals <- array(c(6.691, 12.783, 18.959, 24.917, 30.818, 8.083, 14.595, 21.279, 27.341, 33.262, 11.576, 18.782, 26.154, 32.616, 38.858, 6.691, 15.583, 28.436, 45.248, 65.956, 8.083, 17.844, 31.256, 48.419, 69.977, 11.576, 21.962, 37.291, 55.551, 77.911), c(5, 3, 2))
     model <- "with linear trend"
   }
   N <- nrow(Z0)
@@ -612,6 +621,169 @@ blrtest <- function(z, H, r){
   df <- r*(P - ncol(H))
   pval <- c(1-pchisq(teststat, df), df)
   new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, const=z@const, H=H, A=NULL, B=NULL, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=W, PI=PI, DELTA=DELTA, DELTA.bb=NULL, DELTA.ab=NULL, DELTA.aa.b=NULL, GAMMA=GAMMA, test.name="Johansen-Procedure")
+}
+bh5lrtest <- function (z, H, r) 
+{
+    if (!(class(z) == "ca.jo")) {
+        stop("\nPlease, provide object of class 'ca.jo' as 'z'.\n")
+    }
+    if (r >= z@P || r < 1) {
+        stop("\nCount of cointegrating relationships is out of allowable range.\n")
+    }
+    if (z@const == TRUE) {
+        P <- z@P + 1
+    } else {
+        P <- z@P
+    }
+    r <- as.integer(r)
+    H <- as.matrix(H)
+    if (!(nrow(H) == P)) {
+        stop("\nRow number of 'H' is unequal to VAR order.\n")
+    }
+    if(ncol(H) > r - 1){
+      stop("\nToo many columns in H for provided r.\n")
+    }
+    r1 <- ncol(H)
+    r2 <- r - r1
+    type <- "Estimation and testing under partly known beta"
+    N <- nrow(z@Z0)
+    M00 <- crossprod(z@Z0)/N
+    M11 <- crossprod(z@Z1)/N
+    MKK <- crossprod(z@ZK)/N
+    M01 <- crossprod(z@Z0, z@Z1)/N
+    M0K <- crossprod(z@Z0, z@ZK)/N
+    MK0 <- crossprod(z@ZK, z@Z0)/N
+    M10 <- crossprod(z@Z1, z@Z0)/N
+    M1K <- crossprod(z@Z1, z@ZK)/N
+    MK1 <- crossprod(z@ZK, z@Z1)/N
+    M11inv <- solve(M11)
+    S00 <- M00 - M01 %*% M11inv %*% M10
+    S0K <- M0K - M01 %*% M11inv %*% M1K
+    SK0 <- MK0 - MK1 %*% M11inv %*% M10
+    SKK <- MKK - MK1 %*% M11inv %*% M1K
+    S00.h <- S00 - S0K%*%H%*%solve(t(H)%*%SKK%*%H)%*%t(H)%*%SK0
+    S0K.h <- S0K - S0K%*%H%*%solve(t(H)%*%SKK%*%H)%*%t(H)%*%SKK
+    SK0.h <- SK0 - SKK%*%H%*%solve(t(H)%*%SKK%*%H)%*%t(H)%*%SK0
+    SKK.h <- SKK - SKK%*%H%*%solve(t(H)%*%SKK%*%H)%*%t(H)%*%SKK
+    valeigen <- eigen(SKK.h)
+    C <- valeigen$vectors[ ,1:(P-r1)]%*%diag(1/sqrt(valeigen$values[1:(P-r1)]))
+    valeigen <- eigen(t(C)%*%SK0.h%*%solve(S00.h)%*%S0K.h%*%C)
+    PSI <- C%*%valeigen$vectors[,1:r2]
+    Dtemp <- chol(t(H)%*%SKK%*%H, pivot = TRUE)
+    pivot <- attr(Dtemp, "pivot")
+    oo <- order(pivot)
+    D <- t(Dtemp[, oo])
+    Dinv <- solve(D)
+    rho <- eigen(Dinv %*% t(H) %*% SK0 %*% solve(S00) %*% S0K %*% H %*% t(Dinv))
+    Vorg <- cbind(H, PSI)
+    idx <- ncol(PSI)
+    PSI <- sapply(1:idx, function(x) PSI[, x]/PSI[1, x])
+    V <- cbind(H, PSI)
+    W <- S0K %*% V %*% solve(t(V) %*% SKK %*% V)
+    PI <- W %*% t(V)
+    DELTA <- S00 - S0K %*% V %*% solve(t(V) %*% SKK %*% V) %*% t(V) %*% SK0
+    GAMMA <- M01 %*% M11inv - PI %*% MK1 %*% M11inv
+    lambda.res <- valeigen$values
+    lambda <- z@lambda
+    teststat <- N *(sum(log(1 - rho$values[1:r1])) + sum(log(1-lambda.res[1:r2])) - sum(log(1 - lambda[1:r])))
+    df <- (P - r)*r1
+    pval <- c(1 - pchisq(teststat, df), df)
+    new("cajo.test", Z0 = z@Z0, Z1 = z@Z1, ZK = z@ZK, const = z@const,         H = H, A = NULL, B = NULL, type = type, teststat = teststat, 
+        pval = pval, lambda = lambda.res, Vorg = Vorg, V = V, 
+        W = W, PI = PI, DELTA = DELTA, DELTA.bb = NULL, DELTA.ab = NULL,       DELTA.aa.b = NULL, GAMMA = GAMMA, test.name = "Johansen-Procedure")
+}
+bh6lrtest <- function (z, H, r, r1, conv.val=0.0001, max.iter=50) 
+{
+    if (!(class(z) == "ca.jo")) {
+        stop("\nPlease, provide object of class 'ca.jo' as 'z'.\n")
+    }
+    if (r >= z@P || r < 1) {
+        stop("\nCount of cointegrating relationships is out of allowable range.\n")
+    }
+    if (z@const == TRUE) {
+        P <- z@P + 1
+    } else {
+        P <- z@P
+    }
+    r <- as.integer(r)
+    H <- as.matrix(H)
+    if (!(nrow(H) == P)) {
+        stop("\nRow number of 'H' is unequal to VAR order.\n")
+    }
+    s <- ncol(H)
+    r2 <- r - r1
+    lambda <- z@lambda
+    type <- "Estimation and testing under partly known beta"
+    N <- nrow(z@Z0)
+    M00 <- crossprod(z@Z0)/N
+    M11 <- crossprod(z@Z1)/N
+    MKK <- crossprod(z@ZK)/N
+    M01 <- crossprod(z@Z0, z@Z1)/N
+    M0K <- crossprod(z@Z0, z@ZK)/N
+    MK0 <- crossprod(z@ZK, z@Z0)/N
+    M10 <- crossprod(z@Z1, z@Z0)/N
+    M1K <- crossprod(z@Z1, z@ZK)/N
+    MK1 <- crossprod(z@ZK, z@Z1)/N
+    M11inv <- solve(M11)
+    S00 <- M00 - M01 %*% M11inv %*% M10
+    S0K <- M0K - M01 %*% M11inv %*% M1K
+    SK0 <- MK0 - MK1 %*% M11inv %*% M10
+    SKK <- MKK - MK1 %*% M11inv %*% M1K
+    Dtemp <- chol(t(H)%*%SKK%*%H, pivot = TRUE)
+    pivot <- attr(Dtemp, "pivot")
+    oo <- order(pivot)
+    D <- t(Dtemp[, oo])
+    Dinv <- solve(D)
+    valeigen <- eigen(Dinv %*% t(H) %*% SK0 %*% solve(S00) %*% S0K %*% H %*% t(Dinv))
+    beta1 <- H%*%valeigen$vectors[,1:r1]
+    i <- 0
+    last <- 1
+    diff <- 1
+    while(diff > conv.val){
+      S00.b1 <- S00 - S0K%*%beta1%*%solve(t(beta1)%*%SKK%*%beta1)%*%t(beta1)%*%SK0
+      S0K.b1 <- S0K - S0K%*%beta1%*%solve(t(beta1)%*%SKK%*%beta1)%*%t(beta1)%*%SKK
+      SK0.b1 <- SK0 - SKK%*%beta1%*%solve(t(beta1)%*%SKK%*%beta1)%*%t(beta1)%*%SK0
+      SKK.b1 <- SKK - SKK%*%beta1%*%solve(t(beta1)%*%SKK%*%beta1)%*%t(beta1)%*%SKK
+      valeigen <- eigen(SKK.b1)
+      C <- valeigen$vectors[ ,1:(P-r1)]%*%diag(1/sqrt(valeigen$values[1:(P-r1)]))
+      valeigen <- eigen(t(C)%*%SK0.b1%*%solve(S00.b1)%*%S0K.b1%*%C)
+      lambda.res <- valeigen$values
+      diff <- t(lambda.res-last)%*%(lambda.res-last)
+      last <- lambda.res
+      beta2 <- C%*%valeigen$vectors[,1:r2]
+      S00.b2 <- S00 - S0K%*%beta2%*%solve(t(beta2)%*%SKK%*%beta2)%*%t(beta2)%*%SK0
+      S0K.b2 <- S0K - S0K%*%beta2%*%solve(t(beta2)%*%SKK%*%beta2)%*%t(beta2)%*%SKK
+      SK0.b2 <- SK0 - SKK%*%beta2%*%solve(t(beta2)%*%SKK%*%beta2)%*%t(beta2)%*%SK0
+      SKK.b2 <- SKK - SKK%*%beta2%*%solve(t(beta2)%*%SKK%*%beta2)%*%t(beta2)%*%SKK
+      valeigen <- eigen(t(H)%*%SKK.b2%*%H)
+      C <- valeigen$vectors[ ,1:s]%*%diag(1/sqrt(valeigen$values[1:s]))
+      valeigen <- eigen(t(C)%*%t(H)%*%SK0.b2%*%solve(S00.b2)%*%S0K.b2%*%H%*%C)
+      beta1 <- H%*%valeigen$vectors[,1:r1]
+      i <- i + 1
+      if(i>max.iter){
+        warning("\nNo convergence, used last iterations values.\n")
+        break
+      }
+    }
+    Vorg <- cbind(beta1, beta2)
+    V <- Vorg
+    idx <- ncol(V)
+    V <- sapply(1:idx, function(x) V[, x]/V[1, x])
+    W <- S0K %*% V %*% solve(t(V) %*% SKK %*% V)
+    PI <- W %*% t(V)
+    DELTA <- S00 - S0K %*% V %*% solve(t(V) %*% SKK %*% V) %*% t(V) %*% SK0
+    GAMMA <- M01 %*% M11inv - PI %*% MK1 %*% M11inv
+    Dtemp <- chol(t(beta1)%*%SKK%*%beta1, pivot = TRUE)
+    pivot <- attr(Dtemp, "pivot")
+    oo <- order(pivot)
+    D <- t(Dtemp[, oo])
+    Dinv <- solve(D)
+    valeigen <- eigen(Dinv %*% t(beta1) %*% SK0 %*% solve(S00) %*% S0K %*% beta1 %*% t(Dinv))
+    rho <- valeigen$values
+    teststat <- N*(sum(log(1-rho[1:r1])) + sum(log(1-lambda.res[1:r2])) - sum(log(1-lambda[1:r])))
+    df <- (P - s - r2)*r1
+    pval <- c(1 - pchisq(teststat, df), df)
+    new("cajo.test", Z0 = z@Z0, Z1 = z@Z1, ZK = z@ZK, const = z@const, H = H, A = NULL, B = NULL, type = type, teststat = teststat, pval = pval, lambda = lambda.res, Vorg = Vorg, V = V, W = W, PI = PI, DELTA = DELTA, DELTA.bb = NULL, DELTA.ab = NULL, DELTA.aa.b = NULL, GAMMA = GAMMA, test.name = "Johansen-Procedure")
 }
 cajools <- function(z, reg.number=NULL)
 {

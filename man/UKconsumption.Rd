@@ -9,7 +9,7 @@
 }
 \usage{data(UKconsumption)}
 \format{
-  A data frame of quearterly \code{ts} objects ranging from 1957:Q1
+  A data frame of quarterly \code{ts} objects ranging from 1957:Q1
   until 1975:Q4.
  
 

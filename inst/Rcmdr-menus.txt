@@ -13,12 +13,11 @@
     item    joMenu	    command	    "Linear Trend Test ..."			    urcalttest
     item    joMenu	    command	    "Restrictions on Loading Matrix ..."	    urcaalrtest
     item    joMenu	    command	    "Restrictions on Cointegration Matrix ..."	    urcablrtest
+    item    joMenu	    command	    "Partly known Cointegration Matrix ..."	    urcabh5lrtest
+    item    joMenu	    command	    "Restrictions on partly known CI Matrix ..."    urcabh6lrtest
     item    joMenu	    command	    "Restrictions on Loading & Cointegration ..."   urcaablrtest
     item    urcaMenu        cascade         "Unit Root Tests"				    urMenu         
     item    urcaMenu        cascade         "Cointegration Analysis"			    ciMenu         
     item    ciMenu	    cascade	    "Johansen's procedure"			    joMenu
     item    ciMenu	    command	    "VECM with Level Shift ..."			    urcacajolst
     item    topMenu         cascade         "urca"                                          urcaMenu
-
-
-

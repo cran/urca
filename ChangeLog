@@ -1,3 +1,27 @@
+2005-02-11  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* man/bh6lrtest.Rd: Documentation for function bh6lrtest inserted.
+
+	* R/urca.R (bh5lrtest): New function for testing the validity of
+	partly known cointegration relations. 
+	(bh6lrtest): New functions for testing restrictions on partly
+	known cointegration relationships. 
+
+	* man/bh5lrtest.Rd: Documentation for function bh5lrtest inserted.
+
+2005-02-08  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* R/urca.R (ca.jo): Tables of critical values explicity
+	incorporated as argument 'table': A1, A2, A3
+
+	* man/ca.jo.Rd (spec): new argument 'table' documented.
+
+2005-02-07  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* man/UKconsumption.Rd: Typo fixed.
+
+	* man/UKpppuip.Rd: Data set of Johansen and Juselius (1992) added.
+
 2004-12-08  Bernhard Pfaff  <bernhard@pfaffikus.de>
 
 	* DESCRIPTION (Maintainer): Email adress changed
