@@ -9,7 +9,7 @@
 \usage{data(ecb)}
 \format{
   A data frame containing five series.
-
+  
   \tabular{rl}{
     \code{period} \tab Time index from Q31997 until Q42003.\cr  
     \code{gdp.defl} \tab Gross Domestic Product Deflator,\cr 
@@ -21,9 +21,8 @@
     adjusted] \cr 
     \code{rl} \tab Benchmark Government Bond yield with a maturity of 10
     years, \cr
-    \tab [percentages per annum, average of last quarter's month]\cr 
+    \tab [percentages per annum, average of last quarter's month].
     }
-  }
 }
 \source{
   European Central Bank, Monthly Bulletins, Frankfurt am Main, Germany.

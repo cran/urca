@@ -1,0 +1,29 @@
+2004-10-31  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* DESCRIPTION (Date): 2004-10-31
+	(Depends): R (>= 2.0.0)
+
+	* man/Raotbl7.Rd: new data set introduced.
+
+	* man/Raotbl6.Rd: new data set introduced.
+
+	* man/Raotbl5.Rd: new data set introduced.
+
+	* man/Raotbl4.Rd: new data set introduced.
+
+	* man/Raotbl3.Rd: new data set introduced. 
+	
+	* man/Raotbl2.Rd: new data set introduced.
+
+	* man/Raotbl1.Rd: new data set introduced.
+
+	* man/nporg.Rd: data saved with compress=TRUE.
+
+	* man/npext.Rd: data saved with compress=TRUE.
+
+	* man/finland.Rd: data saved with compress=TRUE. 
+
+	* man/ecb.Rd: data saved with compress=TRUE.
+
+	* man/denmark.Rd: data saved with compress=TRUE.
+
