@@ -2,9 +2,9 @@
 \alias{ur.kpss}
 \title{Kwiatkowski et al. Unit Root Test}
 \description{
-  Performs the KPSS Unit Root Test, where the Null hypothesis is
+  Performs the KPSS unit root test, where the Null hypothesis is
   stationarity. The test types specify as deterministic component either
-  a constant (mu) or a constant with linear trend (tau).
+  a constant \code{"mu"} or a constant with linear trend \code{"tau"}.
 }
 \usage{
 ur.kpss(y, type = c("mu", "tau"), lags = c("short", "long", "nil"),
@@ -17,14 +17,15 @@ ur.kpss(y, type = c("mu", "tau"), lags = c("short", "long", "nil"),
   \item{use.lag}{User specified number of lags.}
 }
 \details{
-  \code{lags="short"} sets the number of lags to \code{4*(n/100)^0.25},
-  whereas \code{lags="long"} sets the number of lags to
-  \code{12*(n/100)^0.25}. If \code{lags="nil"} is choosen, then no error 
+  \code{lags="short"} sets the number of lags to \eqn{\root 4 \of {4
+      \times (n/100)}},
+  whereas \code{lags="long"} sets the number of lags to \eqn{\root 4 \of
+    {12 \times (n/100)}}. If \code{lags="nil"} is choosen, then no error
   correction is made. Furthermore, one can specify a different number of
-  maximum lags by seting \code{use.lag} accordingly.
+  maximum lags by setting \code{use.lag} accordingly.
 }
 \value{
-  An object of class \code{"ur.kpss"}.
+  An object of class \code{`ur.kpss'}.
 }
 \references{
   Kwiatkowski, D., Phillips, P.C.B., Schmidt, P. and Shin, Y., (1992),

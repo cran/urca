@@ -3,9 +3,9 @@
 \alias{npext}
 \title{Nelson \& Plosser extended data set}
 \description{
-  This data set contains the fourteen U.S. economic time series used
-  first by Schotman \& Dijk. All series are transformed by taking
-  logarithms except for the bond yield. The sample period ends in 1988.
+  This data set contains the fourteen U.S. economic time series used by
+  Schotman \& Dijk. All series are transformed by taking logarithms
+  except for the bond yield. The sample period ends in 1988.
 }
 \usage{data(npext)}
 \format{

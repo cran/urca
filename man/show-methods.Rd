@@ -3,7 +3,9 @@
 \alias{show-methods}
 \alias{show,ur.ers-method}
 \alias{show,ur.kpss-method}
+\alias{show,ca.jo-method}
 \alias{show,ca.po-method}
+\alias{show,cajo.test-method}
 \alias{show,ur.pp-method}
 \alias{show,ur.sp-method}
 \alias{show,ur.za-method}
@@ -13,23 +15,27 @@
 }
 \section{Methods}{\describe{
 
-\item{object = "ca.po"}{Displays the test-statistic of the Phillips \&
+\item{object = "ca.jo"}{Displays the test statistic of the Johansen procedure.}
+\item{object = "cajo.test"}{Displays the test statistic of a restricted
+  VAR with respect to \eqn{\bold{\alpha}} and/or \eqn{\bold{\beta}}.}
+\item{object = "ca.po"}{Displays the test statistic of the Phillips \&
   Ouliaris cointegration test.}
-\item{object = "ur.ers"}{Displays the test-statistic of the Elliott,
+\item{object = "ur.ers"}{Displays the test statistic of the Elliott,
   Rothenberg \& Stock unit root test.}
-\item{object = "ur.kpss"}{Displays the test-statistic of the Kwiatkowski
+\item{object = "ur.kpss"}{Displays the test statistic of the Kwiatkowski
   \emph{et al.} unit root test.}
-\item{object = "ur.pp"}{Displays the test-statistic of the Phillips \&
+\item{object = "ur.pp"}{Displays the test statistic of the Phillips \&
   Perron unit root test.}
-\item{object = "ur.sp"}{Displays the test-statistic of the Schmidt \&
+\item{object = "ur.sp"}{Displays the test statistic of the Schmidt \&
   Phillips unit root test.}
-\item{object = "ur.za"}{Displays the test-statistic of the Zivot \&
+\item{object = "ur.za"}{Displays the test statistic of the Zivot \&
   Andrews unit root test.}
 }}
 \seealso{
+  \code{\link{ca.jo-class}}, \code{\link{cajo.test-class}},
   \code{\link{ca.po-class}}, \code{\link{ur.ers-class}},
   \code{\link{ur.kpss-class}}, \code{\link{ur.pp-class}},
-  \code{\link{ur.sp-class}} and \link{ur.za-class}}.
+  \code{\link{ur.sp-class}} and \code{\link{ur.za-class}}.
 }
 \examples{
 data(nporg)
@@ -50,5 +56,13 @@ show(sp.gnp)
 #
 za.gnp <- ur.za(gnp, model="both", lag=2)
 show(za.gnp)
+#
+data(denmark)
+sjd <- denmark[, c("LRM", "LRY", "IBO", "IDE")]
+sjd.vecm <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, season=4)
+show(sjd.vecm)
+#
+HD0 <- matrix(c(-1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1), c(5,4))
+show(blrtest(sjd.vecm, H=HD0, r=1))
 }
 \keyword{methods}

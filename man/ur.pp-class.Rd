@@ -4,17 +4,17 @@
 \title{Representation of class `ur.pp'}
 \description{
   This class contains the relevant information by applying the Phillips
-  \& Perron Unit Root Test to a time series.
+  \& Perron unit root test to a time series.
 }
 \section{Slots}{
   \describe{
     \item{\code{y}:}{Object of class \code{"vector"}: The time series to
       be tested.}
     \item{\code{type}:}{Object of class \code{"character"}: Test type of
-      Z statistic, either \code{Z-alpha} or \code{Z-tau}.}
+      Z statistic, either \code{"Z-alpha"} or \code{"Z-tau"}.}
     \item{\code{model}:}{Object of class \code{"character"}: The type of
-      the deterministic part, either \code{constant} or
-      \code{trend}. The latter includes a constant term, too.}
+      the deterministic part, either \code{"constant"} or
+      \code{"trend"}. The latter includes a constant term, too.}
     \item{\code{lag}:}{Object of class \code{"integer"}: Number of lags
       for error correction.}
     \item{\code{cval}:}{Object of class \code{"matrix"}: Critical values
@@ -28,11 +28,11 @@
     \item{\code{res}:}{Object of class \code{"vector"}: The residuals of
       the test regression.}
     \item{\code{test.name}:}{Object of class \code{"character"}: The
-      name of the test, \emph{i.e} "Phillips-Perron".}
+      name of the test, \emph{i.e} `Phillips-Perron'.}
   }
 }
 \section{Extends}{
-Class \code{"urca"}, directly.
+Class \code{`urca'}, directly.
 }
 \section{Methods}{
   Type \code{showMethods(classes="ur.sp")} at the R prompt for a
@@ -40,7 +40,7 @@ Class \code{"urca"}, directly.
   
   Useful methods include
   \describe{
-    \item{\code{show}:}{test-statistic.}
+    \item{\code{show}:}{test statistic.}
     \item{\code{summary}:}{like show, but critical value and summary of
       test regression added.}
     \item{\code{plot}:}{Diagram of fit plot, residual plot and their
@@ -60,6 +60,6 @@ Class \code{"urca"}, directly.
   \url{http://www.econ.ucsd.edu/papers/files/90-4.pdf}.
 }
 \seealso{
-  \code{\link{ur.pp}}, \code{\link{urca-class}}
+  \code{\link{ur.pp}} and \code{\link{urca-class}}
 }
 \keyword{classes}

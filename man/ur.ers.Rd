@@ -2,7 +2,7 @@
 \alias{ur.ers}
 \title{Elliott, Rothenberg \& Stock Unit Root Test}
 \description{
-  Performs the Elliott, Rothenberg \& Stock Unit Root Test. 
+  Performs the Elliott, Rothenberg \& Stock unit root test. 
 }
 \usage{
 ur.ers(y, type = c("DF-GLS", "P-test"), model = c("constant", "trend"),

@@ -11,17 +11,17 @@
   A data frame containing five series.
 
   \tabular{rl}{
-    \code{period} \tab Time index from Q31997 until Q42003. \cr 
-    \code{gdp.defl} \tab Gross Domestic Product Deflator, \cr
+    \code{period} \tab Time index from Q31997 until Q42003.\cr  
+    \code{gdp.defl} \tab Gross Domestic Product Deflator,\cr 
     \tab [Index 2000=100, seasonally adjusted] \cr
-    \code{gdp.nom} \tab Nominal Gross Domestic Product, \cr
-    \tab [Current prices, EUR billions, seasonally adjusted] \cr
+    \code{gdp.nom} \tab Nominal Gross Domestic Product, \cr 
+    \tab [Current prices, EUR billions, seasonally adjusted] \cr 
     \code{m3} \tab Monetary Aggregate M3, \cr
     \tab [outstanding amount at end of quarter, EUR billions, seasonally
-    adjusted] \cr
+    adjusted] \cr 
     \code{rl} \tab Benchmark Government Bond yield with a maturity of 10
     years, \cr
-    \tab [percentages per annum, average of last quarter's month] \cr
+    \tab [percentages per annum, average of last quarter's month]\cr 
     }
   }
 }

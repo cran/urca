@@ -13,7 +13,7 @@
     \item{\code{yd}:}{Object of class \code{"vector"}: The detrended
       time series.}
     \item{\code{type}:}{Object of class \code{"character"}: Test type,
-      either \code{DF-GLS} (default), or \code{P-test}.}
+      either \code{"DF-GLS"} (default), or \code{"P-test"}.}
     \item{\code{model}:}{Object of class \code{"character"}: The
       deterministic model used for detrending, either intercept only, or
       intercept with linear trend.}
@@ -24,13 +24,13 @@
     \item{\code{teststat}:}{Object of class \code{"numeric"}: The value
       of the test statistic.}
     \item{\code{testreg}:}{Object of class \code{"ANY"}: The test
-      regression, only set for \code{DF-GLS}.}
+      regression, only set for \code{"DF-GLS"}.}
     \item{\code{test.name}:}{Object of class \code{"character"}: The
-      name of the test, \emph{i.e.} "Elliott, Rothenberg \& Stock".}
+      name of the test, \emph{i.e.} `Elliott, Rothenberg \& Stock'.}
   }
 }
 \section{Extends}{
-Class \code{"urca"}, directly.
+Class \code{`urca'}, directly.
 }
 \section{Methods}{
   Type \code{showMethods(classes="ur.ers")} at the R prompt for a
@@ -57,6 +57,6 @@ Class \code{"urca"}, directly.
   Download possible at: \url{http://www.econ.ucsd.edu/papers/files/90-4.pdf}.
 }
 \seealso{
-  \code{\link{ur.ers}}, \code{\link{urca-class}}.
+  \code{\link{ur.ers}} and \code{\link{urca-class}}.
 }
 \keyword{classes}

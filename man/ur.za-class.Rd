@@ -24,13 +24,13 @@
     \item{\code{res}:}{Object of class \code{"vector"} The residuals of
       the test regression.}
     \item{\code{test.name}:}{Object of class \code{"character"} The name
-      of the test, \emph{i.e.} "Zivot \& Andrews".}
+      of the test, \emph{i.e.} `Zivot \& Andrews'.}
     \item{\code{testreg}:}{Object of class \code{"ANY"} The summary
       output of the test regression.}
   }
 }
 \section{Extends}{
-Class \code{"urca"}, directly.
+Class \code{`urca'}, directly.
 }
 \section{Methods}{
   Type \code{showMethods(classes="ur.za")} at the R prompt for a
@@ -38,7 +38,7 @@ Class \code{"urca"}, directly.
   
   Useful methods include
   \describe{
-    \item{\code{show}:}{test-statistic and critical values.}
+    \item{\code{show}:}{test statistic and critical values.}
     \item{\code{summary}:}{like show, but summary of test regression
       added.}
     \item{\code{plot}:}{plot of recursive t-statistics.}
@@ -54,6 +54,6 @@ Class \code{"urca"}, directly.
   'Discussion Papers (CFDPs)'.
 }
 \seealso{
-  \code{\link{ur.za}}, \code{\link{urca-class}}. 
+  \code{\link{ur.za}} and \code{\link{urca-class}}. 
 }
 \keyword{classes}

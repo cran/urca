@@ -3,13 +3,15 @@
 \alias{summary-methods}
 \alias{summary,ur.ers-method}
 \alias{summary,ur.kpss-method}
+\alias{summary,ca.jo-method}
+\alias{summary,cajo.test-method}
 \alias{summary,ca.po-method}
 \alias{summary,ur.pp-method}
 \alias{summary,ur.sp-method}
 \alias{summary,ur.za-method}
 \title{Methods for Function summary in Package `urca'}
 \description{
-  Summarise the outcome of unit root/cointegration tests.
+  Summarises the outcome of unit root/cointegration tests.
 }
 \section{Methods}{\describe{
     \item{object = "ur.ers"}{The test type, its statistic and the
@@ -17,10 +19,18 @@
       returned. In case of test \code{"DF-GLS"} the summary output
       of the test regression is provided, too.}
     \item{object = "ur.kpss"}{The test statistic, the critical value as
-      well as the test type and the number of lags used for the error
+      well as the test type and the number of lags used for error
       correction for the Kwiatkowski \emph{et al.} unit root test is
       returned.}
-    \item{object = "ca.po"}{The \code{"Pz"} ot \code{"Pu"} statistic,
+    \item{object = "ca.jo"}{The \code{"trace"} or \code{"eigen"} statistic,
+      the critical values as well as the eigenvalues, eigenvectors and
+      the loading matrix of the Johansen procedure are reported.}
+    \item{object = "cajo.test"}{The test statistic of a restricted VAR
+      with respect to \eqn{\bold{\alpha}} and/or \eqn{\bold{\beta}} with
+      p-value and degrees of freedom is reported. Furthermore, the
+      restriction matrix(ces), the eigenvalues and eigenvectors as well
+      as the loading matrix are returned.}  
+    \item{object = "ca.po"}{The \code{"Pz"} or \code{"Pu"} statistic,
       the critical values as well as the summary output of the test
       regression for the Phillips \& Ouliaris cointegration test.}
     \item{object = "ur.pp"}{The Z statistic, the critical values as
@@ -36,6 +46,7 @@
 }}
 \seealso{
   \code{\link{ur.ers-class}}, \code{\link{ur.kpss-class}},
+  \code{\link{ca.jo-class}}, \code{\link{cajo.test-class}},
   \code{\link{ca.po-class}}, \code{\link{ur.pp-class}},
   \code{\link{ur.sp-class}} and \code{\link{ur.za-class}}.}
 \examples{
@@ -57,5 +68,13 @@ summary(sp.gnp)
 #
 za.gnp <- ur.za(gnp, model="both", lag=2)
 summary(za.gnp)
+#
+data(finland)
+sjf <- finland
+sjf.vecm <- ca.jo(sjf, constant=FALSE, type="eigen", K=2, season=4)
+summary(sjf.vecm)
+#
+HF0 <- matrix(c(-1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), c(4,3))
+summary(blrtest(sjf.vecm, H=HF0, r=3))
 }
 \keyword{methods}

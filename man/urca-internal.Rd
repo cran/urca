@@ -28,5 +28,5 @@
   Download possible at: \url{http://cowles.econ.yale.edu/}, see rubric
   'Discussion Papers (CFDPs)'.
 }
-\seealso{\code{\link{ur.sp}}}
+\seealso{\code{\link{ur.sp}}.}
 \keyword{regression}

@@ -2,7 +2,7 @@
 \alias{ur.pp}
 \title{Phillips \& Perron Unit Root Test}
 \description{
-  Performs the Phillips \& Perron Unit Root Test. Beside the Z
+  Performs the Phillips \& Perron unit root test. Beside the Z
   statistics Z-alpha and Z-tau, the Z statistics for the deterministic
   part of the test regression are computed, too.
 }
@@ -12,7 +12,7 @@ ur.pp(x, type = c("Z-alpha", "Z-tau"), model = c("constant", "trend"),
 }
 \arguments{
   \item{x}{Vector to be tested for a unit root.}
-  \item{type}{Test type, either \code{Z-alpha} or \code{Z-tau}.}
+  \item{type}{Test type, either \code{"Z-alpha"} or \code{"Z-tau"}.}
   \item{model}{Determines the deterministic part in the test regression.}
   \item{lags}{Lags used for correction of error term.}
   \item{use.lag}{Use of a different lag number, specified by the user.}
@@ -22,7 +22,7 @@ ur.pp(x, type = c("Z-alpha", "Z-tau"), model = c("constant", "trend"),
   correction of the error term a Bartlett window is used. 
 }
 \value{
-  An object of class \code{"ur.pp"}.
+  An object of class \code{`ur.pp'}.
 }
 \references{
   Phillips, P.C.B. and Perron, P. (1988), Testing for a unit root in
@@ -36,7 +36,7 @@ ur.pp(x, type = c("Z-alpha", "Z-tau"), model = c("constant", "trend"),
   'Discussion Papers (CFDPs)' and
   \url{http://www.econ.ucsd.edu/papers/files/90-4.pdf}.
 }
-\seealso{\code{\link{ur.pp-class}}}
+\seealso{\code{\link{ur.pp-class}}.}
 \examples{
 data(nporg)
 gnp <- na.omit(nporg[, "gnp.r"])
