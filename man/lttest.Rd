@@ -40,12 +40,14 @@ lttest(z, r)
 \examples{
 data(denmark)
 sjd <- as.matrix(denmark[, c("LRM", "LRY", "IBO", "IDE")])
-sjd.vecm <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, season=4)
+sjd.vecm <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, spec="longrun",
+season=4)
 lttest(sjd.vecm, r=1)
 #
 data(finland)
 sjf <- as.matrix(finland)
-sjf.vecm <- ca.jo(sjf, constant=FALSE, type="eigen", K=2, season=4)
+sjf.vecm <- ca.jo(sjf, constant=FALSE, type="eigen", K=2,
+spec="longrun", season=4)
 lttest(sjf.vecm, r=3)
 }
 \keyword{regression}
