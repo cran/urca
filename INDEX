@@ -2,6 +2,7 @@
                         Root Test
 ablrtest                Likelihood ratio test for restrictions on
                         alpha and beta
+alphaols                OLS regression of VECM weighting matrix
 alrtest                 Likelihood ratio test for restrictions on
                         alpha
 blrtest                 Likelihood ratio test for restrictions on beta
