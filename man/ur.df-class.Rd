@@ -17,7 +17,7 @@
       for error correction.}
     \item{\code{cval}:}{Object of class \code{"matrix"}: Critical values
       at the 1\%, 5\% and 10\% level of significance.}
-    \item{\code{teststat}:}{Object of class \code{"numeric"}: Value of
+    \item{\code{teststat}:}{Object of class \code{"matrix"}: Value of
       the test statistic.}
     \item{\code{testreg}:}{Object of class \code{"ANY"}: The summary
       output of the test regression.}
@@ -39,14 +39,17 @@ Class \code{`urca'}, directly.
     \item{\code{show}:}{test statistic.}
     \item{\code{summary}:}{like show, but critical value and summary of
       test regression added.}
-    \item{\code{plot}:}{Diagram of fit plot, residual plot and their
-      acfs' and pacfs'.}
+    \item{\code{plot}:}{Residual plot, acfs' and pacfs'.}
   }
 }
 \references{
   Dickey, D. A. and Fuller, W. A. (1979), Distributions of the
   Estimators For Autoregressive Time Series with a Unit Root,
   \emph{Journal of the American Statistical Association},  \bold{75}, 427--431.
+  
+  Dickey, D. A. and Fuller, W. A. (1981), Likelihood Ratio Statistics
+  for Autoregressive Time Series with a Unit Root, \emph{Econometrica},
+  \bold{49}, 1057--1072.
 
   Hamilton (1994), \emph{Time Series Analysis}, Princeton University Press.
 }
