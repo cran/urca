@@ -18,7 +18,8 @@ ur.df <- function (y, type = c("none", "drift", "trend"), lags = 1)
   test. If type is set to \code{"none"} neither an intercept nor a trend
   is included in the test regression. If it is set to \code{"drift"} an
   intercept is added and if it is set to \code{"trend"} both an intercept
-    and a trend is added. The critical values are taken from Hamilton (1994).
+    and a trend is added. The critical values are taken from Hamilton
+    (1994) and Dickey and Fuller(1981).
   }
 \value{
   An object of class \code{`ur.df'}.
@@ -26,8 +27,13 @@ ur.df <- function (y, type = c("none", "drift", "trend"), lags = 1)
 \references{
   Dickey, D. A. and Fuller, W. A. (1979), Distributions of the
   Estimators For Autoregressive Time Series with a Unit Root,
-  \emph{Journal of the American Statistical Association},  \bold{75}, 427--431.
+  \emph{Journal of the American Statistical Association},  \bold{75},
+  427--431.
 
+  Dickey, D. A. and Fuller, W. A. (1981), Likelihood Ratio Statistics
+  for Autoregressive Time Series with a Unit Root, \emph{Econometrica},
+  \bold{49}, 1057--1072.
+  
   Hamilton (1994), \emph{Time Series Analysis}, Princeton University Press.
 }
 \seealso{\code{\link{ur.df-class}}.}

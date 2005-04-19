@@ -108,6 +108,46 @@ urcapp <- function(){
   dialogSuffix(rows=4, columns=2)
 }
 
+
+urcadf <- function(){
+  if (!checkActiveDataSet()) return()
+  if (!checkNumeric(n=1)) return()
+  initializeDialog(title="ADF Test")
+  xBox <- variableListBox(top, .numeric, title="Variable (pick one)")
+  onOK <- function(){
+    x <- getSelection(xBox)
+    var <- paste(.activeDataSet, "$", x, sep="")
+    ttype <- tclvalue(testtypeVariable)
+    lags <- tclvalue(lagsVariable)
+    if (length(x) == 0){
+      errorCondition(recall=urcadf, message="You must select a variable.")
+      return()
+      }
+    if (.grab.focus) tkgrab.release(top)
+    tkdestroy(top)
+    doItAndPrint(paste("summary(ur.df(y= ", var, ", type = ", ttype, ", lags = ",  lags, "))", sep=""))
+    tkdestroy(top)
+    tkfocus(.commander)
+  }
+  OKCancelHelp(helpSubject="ur.df")
+  radioButtons(name="testtype", buttons=c("none", "drift", "trend"), values=c("'none'", "'drift'", "'trend'" ), labels=c("no deterministic regressor", "drift only", "drift and trend"), title="Type of test")
+  rightFrame <- tkframe(top)
+  lagsFrame <- tkframe(rightFrame)
+  lagsVariable <- tclVar("4")
+  lagsField <- tkentry(lagsFrame, width="2", textvariable=lagsVariable)
+  tkgrid(getFrame(xBox), sticky="nw")
+  tkgrid(tklabel(rightFrame, text=""))
+  tkgrid(tklabel(lagsFrame, text="Maximum number of lags = ", fg="blue"), lagsField, sticky="w")
+  tkgrid(lagsFrame, sticky="w")
+  tkgrid(testtypeFrame, rightFrame, sticky="nw")
+  tkgrid(buttonsFrame, columnspan=2, sticky="w")
+  tkgrid.configure(lagsField, sticky="e")
+  dialogSuffix(rows=4, columns=2)
+}
+
+
+
+
 urcasp <- function(){
   if (!checkActiveDataSet()) return()
   if (!checkNumeric(n=1)) return()

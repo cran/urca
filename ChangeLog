@@ -1,3 +1,12 @@
+2005-03-11  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* R/urca.R (ur.df): Phi1, phi2 and phi3 statistic added.
+
+2005-03-10  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* R/urca.R (ur.df): Content of slot testreg changed to object of
+	class 'lm'.
+
 2005-03-09  Bernhard Pfaff  <bernhard@pfaffikus.de>
 
 	* NAMESPACE: Function 'ur.df' and class 'ur.df' added.
