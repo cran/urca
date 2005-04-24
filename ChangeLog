@@ -1,3 +1,10 @@
+2005-04-24  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* inst/Rcmdr-menus.txt: Added columne "activation" as introduced
+	with version 1.0-0 of Rcmdr
+
+	* inst/Rcmdr-urca.R: Rewrite according to Rcmdr 1.0-0 functions defintion
+
 2005-03-11  Bernhard Pfaff  <bernhard@pfaffikus.de>
 
 	* R/urca.R (ur.df): Phi1, phi2 and phi3 statistic added.

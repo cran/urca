@@ -5,7 +5,7 @@
   Performs the augmented Dickey-Fuller unit root test. 
 }
 \usage{
-ur.df <- function (y, type = c("none", "drift", "trend"), lags = 1) 
+ur.df(y, type = c("none", "drift", "trend"), lags = 1) 
 }
 \arguments{
   \item{y}{Vector to be tested for a unit root.}
