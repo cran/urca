@@ -1,232 +1,25 @@
-# R Commander Menu Definitions
-
-# last modified 15 January 2005 by J. Fox
-
-#   type    menu/item      operation/parent  label                                          command/menu
-
-    menu    fileMenu        topMenu         ""                                              ""
-    item    fileMenu        command         "Load package(s)..."                            loadPackages    
-    item    fileMenu        command         "Load script from file..."                      loadLog
-    item    fileMenu        command         "Save script..."                                saveLog
-    item    fileMenu        command         "Save script as..."                             saveLogAs
-    item    fileMenu        command         "Save output..."                                saveOutput
-    item    fileMenu        command         "Save output as..."                             saveOutputAs
-    item    fileMenu        command         "Save R workspace..."                           saveWorkspace
-    item    fileMenu        command         "Save R workspace as..."                        saveWorkspaceAs
-    item    fileMenu        command         "Options..."                                    Options
-    item    fileMenu        command         "Reset output width..."                         setOutputWidth
-    menu    exitMenu        fileMenu        ""                                              ""
-    item    exitMenu        command         "From Commander"                                closeCommander
-    item    exitMenu        command         "From Commander and R"                          closeCommanderAndR
-    item    fileMenu        cascade         "Exit"                                          exitMenu
-    item    topMenu         cascade         "File"                                          fileMenu
-    menu    editMenu        topMenu         ""                                              ""
-    item    editMenu        command         "Clear window"                                  onClear
-    item    editMenu        command         "Cut"                                           onCut
-    item    editMenu        command         "Copy"                                          onCopy
-    item    editMenu        command         "Paste"                                         onPaste
-    item    editMenu        command         "Delete"                                        onDelete
-    item    editMenu        command         "Find..."                                       onFind
-    item    editMenu        command         "Select all"                                    onSelectAll
-    item    topMenu         cascade         "Edit"                                          editMenu
-    menu    dataMenu        topMenu         ""                                              ""
-    item    dataMenu        command         "New data set..."                               newDataSet
-    menu    importMenu      dataMenu        ""                                              ""
-    item    importMenu      command         "from text file..."                             readDataSet
-    item    importMenu      command         "from SPSS data set..."                         importSPSS
-    item    importMenu      command         "from Minitab data set..."                      importMinitab
-    item    importMenu      command         "from STATA data set..."                        importSTATA
-    item    dataMenu        cascade         "Import data"                                   importMenu
-    menu    packagesMenu    dataMenu        ""                                              ""
-    item    packagesMenu    command         "List data sets in packages"                    listDataSetsInPackages
-    item    packagesMenu    command         "Read data set from an attached package..."     readDataFromPackage
-    item    dataMenu        cascade         "Data in packages"                              packagesMenu
-    menu    activeMenu      dataMenu        ""                                              ""
-    item    activeMenu      command         "Select active data set..."                     selectActiveDataSet
-    item    activeMenu      command         "Help on active data set (if available)"        helpDataSet
-    item    activeMenu      command         "Variables in active data set"                  variablesDataSet
-    item    activeMenu      command         "Set case names..."                             setCaseNames
-    item    activeMenu      command         "Subset active data set..."                     subsetDataSet
-    item    activeMenu      command         "Remove cases with missing data..."             filterNA
-    item    activeMenu      command         "Export active data set..."                     exportDataSet
-    item    dataMenu        cascade         "Active data set"                               activeMenu
-    menu    variablesMenu   dataMenu        ""                                              ""
-    item    variablesMenu   command         "Recode variable..."                            Recode
-    item    variablesMenu   command         "Compute new variable..."                       Compute
-    item    variablesMenu   command         "Standardize variables..."                      standardize
-    item    variablesMenu   command         "Convert numeric variable to factor..."         numericToFactor
-    item    variablesMenu   command         "Bin numeric variable..."                       binVariable
-    item    variablesMenu   command         "Reorder factor levels..."                      reorderFactor
-    item    variablesMenu   command         "Define contrasts for a factor..."              setContrasts
-    item    variablesMenu   command         "Rename variables..."                           renameVariables
-    item    variablesMenu   command         "Delete variables from data set ..."            deleteVariable
-    item    dataMenu        cascade         "Manage variables in active data set"           variablesMenu
-    item    topMenu         cascade         "Data"                                          dataMenu
-    menu    statisticsMenu  topMenu         ""                                              ""
-    menu    summariesMenu   statisticsMenu  ""                                              ""
-    item    summariesMenu   command         "Active data set"                               summarizeDataSet
-    item    summariesMenu   command         "Numerical summaries..."                        numericalSummaries
-    item    summariesMenu   command         "Frequency distribution..."                     frequencyDistribution
-    item    summariesMenu   command         "Table of statistics..."                        statisticsTable
-    item    summariesMenu   command         "Correlation matrix..."                         correlationMatrix
-    menu    tablesMenu      statisticsMenu  ""                                              ""
-    item    tablesMenu      command         "Two-way table..."                              twoWayTable
-    item    tablesMenu      command         "Multi-way table..."                            multiWayTable
-    item    tablesMenu      command         "Enter and analyze two-way table..."            enterTable
-    menu    meansMenu       statisticsMenu  ""                                              ""
-    item    meansMenu       command         "Single-sample t-test..."                       singleSampleTTest
-    item    meansMenu       command         "Independent samples t-test..."                 independentSamplesTTest
-    item    meansMenu       command         "Paired t-test..."                              pairedTTest
-    item    meansMenu       command         "One-way ANOVA..."                              oneWayAnova
-    item    meansMenu       command         "Multi-way ANOVA..."                            multiWayAnova
-    menu    proportionsMenu statisticsMenu  ""                                              ""
-    item    proportionsMenu command         "Single-sample proportion test..."              singleProportionTest
-    item    proportionsMenu command         "Two-sample proportions test..."                twoSampleProportionsTest
-    menu    variancesMenu   statisticsMenu  ""                                              ""
-    item    variancesMenu   command         "Two-variances F-test..."                       twoVariancesFTest
-    item    variancesMenu   command         "Bartlett's test..."                            BartlettTest
-    item    variancesMenu   command         "Levene's test..."                              LeveneTest
-    menu    nonparametricMenu statisticsMenu    ""                                          ""
-    item    nonparametricMenu command       "Two-sample Wilcoxon test..."                   twoSampleWilcoxonTest
-    item    nonparametricMenu command       "Paired-samples Wilcoxon test..."               pairedWilcoxonTest
-    item    nonparametricMenu command       "Kruskal-Wallis test..."                        KruskalWallisTest
-    menu    dimensionalMenu statisticsMenu  ""                                              ""
-    item    dimensionalMenu command         "Scale reliability..."                          Reliability
-    item    dimensionalMenu command         "Principal-components analysis..."              principalComponents
-    item    dimensionalMenu command         "Factor analysis..."                            factorAnalysis
-    menu    clusterMenu     dimensionalMenu ""                                              ""
-    item    clusterMenu     command         "k-means cluster analysis..."                   kmeansClustering
-    item    clusterMenu     command         "Hierarchical cluster analysis..."              hierarchicalCluster
-    item    clusterMenu     command         "Summarize hierarchical clustering..."          hclustSummary
-    item    clusterMenu     command         "Add hierarchical clustering to data set..."    appendHclustGroup 
-    item    dimensionalMenu cascade         "Cluster analysis"                              clusterMenu
-    menu    modelsMenu      statisticsMenu  ""                                              ""
-    item    modelsMenu      command         "Linear regression..."                          linearRegressionModel
-    item    modelsMenu      command         "Linear model..."                               linearModel
-    item    modelsMenu      command         "Generalized linear model..."                   generalizedLinearModel
-    item    modelsMenu      command         "Multinomial logit model..."                    multinomialLogitModel
-    item    modelsMenu      command         "Proportional-odds logit model..."              proportionalOddsModel
-
-#    menu    transformMenu   statisticsMenu  ""                                              ""
-#    item    transformMenu   command         "Multivariate Box-Cox transformations..."       BoxCox
-
-    item    topMenu         cascade         "Statistics"                                    statisticsMenu
-    item    statisticsMenu  cascade         "Summaries"                                     summariesMenu
-    item    statisticsMenu  cascade         "Contingency tables"                            tablesMenu
-    item    statisticsMenu  cascade         "Means"                                         meansMenu
-    item    statisticsMenu  cascade         "Proportions"                                   proportionsMenu
-    item    statisticsMenu  cascade         "Variances"                                     variancesMenu
-    item    statisticsMenu  cascade         "Nonparametric tests"                           nonparametricMenu
-    item    statisticsMenu  cascade         "Dimensional analysis"                          dimensionalMenu
-    item    statisticsMenu  cascade         "Fit models"                                    modelsMenu
-
-#    item    statisticsMenu  cascade         "Transform"                                     transformMenu
-
-    menu    graphsMenu      topMenu         ""                                              ""
-    item    graphsMenu      command         "Index plot..."                                 indexPlot
-    item    graphsMenu      command         "Histogram..."                                  Histogram
-    item    graphsMenu      command         "Stem-and-leaf display..."                      stemAndLeaf
-    item    graphsMenu      command         "Boxplot..."                                    boxPlot
-    item    graphsMenu      command         "Quantile-comparison plot..."                   QQPlot
-    item    graphsMenu      command         "Scatterplot..."                                scatterPlot
-    item    graphsMenu      command         "Scatterplot matrix..."                         scatterPlotMatrix
-    item    graphsMenu      command         "3D scatterplot..."                             Scatter3D
-    item    graphsMenu      command         "Line graph..."                                 linePlot
-    item    graphsMenu      command         "Plot of means..."                              PlotMeans
-    item    graphsMenu      command         "Bar graph..."                                  barGraph
-    item    graphsMenu      command         "Pie chart..."                                  pieChart
-    menu    saveGraphsMenu  graphsMenu      ""                                              ""
-    item    saveGraphsMenu  command         "as bitmap..."                                  saveBitmap
-    item    saveGraphsMenu  command         "as PDF/Postscript/EPS..."                      savePDF
-    item    saveGraphsMenu  command         "3D RGL graph..."                               saveRglGraph
-    item    graphsMenu      cascade         "Save graph to file"                            saveGraphsMenu
-    item    topMenu         cascade         "Graphs"                                        graphsMenu
-    menu    modelsMenu      topMenu         ""                                              ""
-    item    modelsMenu      command         "Select active model..."                        selectActiveModel
-    item    modelsMenu      command         "Summarize model"                               summarizeModel
-    item    modelsMenu      command         "Add observation statistics to data..."         addObservationStatistics
-    menu    hypothesisMenu  modelsMenu      ""                                              ""
-    item    modelsMenu      cascade         "Hypothesis tests"                              hypothesisMenu
-    item    hypothesisMenu  command         "ANOVA table"                                   anovaTable
-    item    hypothesisMenu  command         "Compare two models..."                         compareModels
-    item    hypothesisMenu  command         "Linear hypothesis..."                          testLinearHypothesis
-    menu    diagnosticsMenu modelsMenu      ""                                              ""
-    item    modelsMenu      cascade         "Numerical diagnostics"                         diagnosticsMenu
-    item    diagnosticsMenu command         "Variance-inflation factors"                    VIF
-    item    diagnosticsMenu command         "Breusch-Pagan test for heteroscedasticity..."  BreuschPaganTest
-    item    diagnosticsMenu command         "Durbin-Watson test for autocorrelation..."     DurbinWatsonTest
-    item    diagnosticsMenu command         "RESET test for nonlinearity..."                RESETtest
-    item    diagnosticsMenu command         "Bonferroni outlier test"                       outlierTest
-    menu    graphsMenu      modelsMenu      ""                                              ""
-    item    modelsMenu      cascade         "Graphs"                                        graphsMenu
-    item    graphsMenu      command         "Basic diagnostic plots"                        plotModel
-    item    graphsMenu      command         "Residual quantile-comparison plot..."          residualQQPlot
-    item    graphsMenu      command         "Component+residual plots"                      CRPlots
-    item    graphsMenu      command         "Added-variable plots"                          AVPlots
-    item    graphsMenu      command         "Influence plot"                                influencePlot
-    item    graphsMenu      command         "Effect plots"                                  effectPlots
-    item    topMenu         cascade         "Models"                                        modelsMenu
-    menu    distributionsMenu topMenu       ""                                              ""
-    menu    normalMenu      distributionsMenu ""                                            ""
-    item    distributionsMenu cascade       "Normal distribution"                           normalMenu
-    item    normalMenu      command         "Normal quantiles..."                           normalQuantiles
-    item    normalMenu      command         "Normal probabilities..."                       normalProbabilities
-    item    normalMenu     command          "Plot normal distribution..."                   normalDistributionPlot
-    menu    tMenu           distributionsMenu ""                                            ""
-    item    distributionsMenu cascade       "t distribution"                                tMenu
-    item    tMenu           command         "t quantiles..."                                tQuantiles
-    item    tMenu           command         "t probabilities..."                            tProbabilities
-    item    tMenu           command         "Plot t distribution..."                        tDistributionPlot
-    menu    chisqMenu       distributionsMenu ""                                            ""
-    item    distributionsMenu cascade       "Chi-squared distribution"                      chisqMenu
-    item    chisqMenu       command         "Chi-squared quantiles..."                      chisqQuantiles
-    item    chisqMenu       command         "Chi-squared probabilities..."                  chisqProbabilities
-    item    chisqMenu       command         "Plot chi-squared distribution..."              chisquareDistributionPlot
-    menu    FMenu           distributionsMenu ""                                            ""
-    item    distributionsMenu cascade       "F distribution"                                FMenu
-    item    FMenu           command         "F quantiles..."                                FQuantiles
-    item    FMenu           command         "F probabilities..."                            FProbabilities
-    item    FMenu           command         "Plot F distribution..."                        FDistributionPlot
-    menu    binomialMenu    distributionsMenu ""                                            ""
-    item    distributionsMenu cascade       "Binomial distribution"                         binomialMenu
-    item    binomialMenu    command         "Binomial quantiles..."                         binomialQuantiles
-    item    binomialMenu    command         "Binomial tail probabilities..."                binomialProbabilities
-    item    binomialMenu    command         "Binomial probabilities..."                     binomialMass
-    item    binomialMenu    command         "Plot binomial distribution..."                 binomialDistributionPlot
-    menu    PoissonMenu     distributionsMenu ""                                            ""
-    item    distributionsMenu cascade       "Poisson distribution"                          PoissonMenu
-    item    PoissonMenu     command         "Poisson probabilities..."                      PoissonMass
-    item    PoissonMenu     command         "Plot Poisson distribution..."                  PoissonDistributionPlot
-    item    topMenu         cascade         "Distributions"                                 distributionsMenu
-    menu    spaceMenu       topMenu         ""                                              ""
-    item    topMenu         cascade         "        "                                      spaceMenu
-# Rcmdr urca add-in
-    menu    urcaMenu        topMenu         ""                                              ""
-    menu    urMenu          urcaMenu        ""                                              ""
-    item    urMenu	    command	    "ADF test ..."				    urcadf
-    item    urMenu	    command	    "ERS test ..."				    urcaers
-    item    urMenu          command         "KPSS test ..."                                 urcakpss
-    item    urMenu          command         "Schmidt & Phillips test ..."		    urcasp
-    item    urMenu          command         "Phillips & Perron test ..."		    urcapp
-    item    urMenu	    command	    "Zivot & Andrews test ..."			    urcaza
-    menu    ciMenu          urcaMenu        ""						    ""
-    item    ciMenu	    command	    "Phillips & Ouliaris test ..."		    urcacapo
-    menu    joMenu	    ciMenu	    ""						    ""
-    item    joMenu	    command	    "VECM estimation ..."			    urcacajo
-    item    joMenu	    command	    "Linear Trend Test ..."			    urcalttest
-    item    joMenu	    command	    "Restrictions on Loading Matrix ..."	    urcaalrtest
-    item    joMenu	    command	    "Restrictions on Cointegration Matrix ..."	    urcablrtest
-    item    joMenu	    command	    "Partly known Cointegration Matrix ..."	    urcabh5lrtest
-    item    joMenu	    command	    "Restrictions on partly known CI Matrix ..."    urcabh6lrtest
-    item    joMenu	    command	    "Restrictions on Loading & Cointegration ..."   urcaablrtest
-    item    urcaMenu        cascade         "Unit Root Tests"				    urMenu         
-    item    urcaMenu        cascade         "Cointegration Analysis"			    ciMenu         
-    item    ciMenu	    cascade	    "Johansen's procedure"			    joMenu
-    item    ciMenu	    command	    "VECM with Level Shift ..."			    urcacajolst
-    item    topMenu         cascade         "urca"                                          urcaMenu
-    menu    helpMenu        topMenu         ""                                              ""
-    item    helpMenu        command         "Commander help"                                helpCommander
-    item    helpMenu        command         "About Rcmdr"                                   helpAboutCommander
-    item    helpMenu        command         "Introduction to the R Commander"               browseManual
-    item    helpMenu        command         "Help on active data set (if available)"        helpDataSet
-    item    topMenu         cascade         "Help"                                          helpMenu
+# start urca add-in
+    menu    urcaMenu	    topMenu	    ""						    "" 				""
+    menu    urMenu	    urcaMenu	    ""						    ""				""
+    item    urMenu	    command	    "ADF test ..."				    urcadf            "packageLoaded('urca')"
+    item    urMenu	    command	    "ERS test ..."				    urcaers            "packageLoaded('urca')"
+    item    urMenu	    command	    "KPSS test ..."				    urcakpss	       "packageLoaded('urca')"
+    item    urMenu	    command	    "Schmidt & Phillips test ..."		    urcasp            "packageLoaded('urca')"
+    item    urMenu	    command	    "Phillips & Perron test ..."	  	    urcapp       	  "packageLoaded('urca')"
+    item    urMenu	    command	    "Zivot & Andrews test ..." 			    urcaza            "packageLoaded('urca')"
+    menu    ciMenu	    urcaMenu	    ""   					    ""   	                ""
+    item    ciMenu	    command	    "Phillips & Ouliaris test ..."  		    urcacapo          "packageLoaded('urca')"
+    menu    joMenu	    ciMenu	    ""						    ""                          ""
+    item    joMenu	    command	    "VECM estimation ..."			    urcacajo          "packageLoaded('urca')"
+    item    joMenu	    command	    "Linear Trend Test ..." 			    urcalttest        "packageLoaded('urca')"
+    item    joMenu	    command	    "Restrictions on Loading Matrix ..." 	    urcaalrtest       "packageLoaded('urca')"
+    item    joMenu	    command	    "Restrictions on Cointegration Matrix ..."	    urcablrtest	      "packageLoaded('urca')"
+    item    joMenu	    command	    "Partly known Cointegration Matrix ..." 	    urcabh5lrtest     "packageLoaded('urca')"
+    item    joMenu	    command	    "Restrictions on partly known CI Matrix ..."    urcabh6lrtest     "packageLoaded('urca')"
+    item    joMenu	    command	    "Restrictions on Loading & Cointegration ..."   urcaablrtest      "packageLoaded('urca')"
+    item    urcaMenu	    cascade	    "Unit Root Tests"				    urMenu                      ""
+    item    urcaMenu	    cascade	    "Cointegration Analysis"    		    ciMenu	                ""
+    item    ciMenu	    cascade	    "Johansen's procedure" 			    joMenu		        ""
+    item    ciMenu	    command	    "VECM with Level Shift ..."	    		    urcacajolst       "packageLoaded('urca')"
+    item    topMenu	    cascade	    "urca"				 	    urcaMenu		        ""
+# end urca add-in
