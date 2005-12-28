@@ -1,3 +1,7 @@
+2005-12-28  Dr. Bernhard Pfaff  <bp@>
+
+	* inst/CITATION: Citation for package urca added.
+
 2005-04-24  Bernhard Pfaff  <bernhard@pfaffikus.de>
 
 	* inst/Rcmdr-menus.txt: Added columne "activation" as introduced

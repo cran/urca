@@ -1,0 +1,17 @@
+citHeader("To cite the urca package in publications use:")
+
+citEntry(entry="Book",
+         title = "Analysis of Integrated and Cointegrated Time Series with R",
+         author = personList(as.person("B. Pfaff")),
+	 publisher = "Springer",
+         edition = "First",
+         address      = "New York",
+         year         = 2006,
+         note         = "ISBN 0-387-27960-1",
+         url          = "http://www.pfaffikus.de",
+         
+         textVersion = 
+         paste("Pfaff, B. (2006)", 
+               "Analysis of Integrated and Cointegrated Time Series with R.",
+               "First Edition. Springer, New York. ISBN 0-387-27960-1")
+)
