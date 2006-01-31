@@ -8,8 +8,7 @@
   the test regression, the test type and the sample size.
 }
 \usage{
-.spcv(obs, type = c("tau", "rho"), pol.deg = c(1, 2, 3, 4),
-      signif = c(0.01, 0.025, 0.05, 0.1))
+.spcv(obs, type, pol.deg, signif)
 }
 \arguments{
   \item{obs}{The sample size.}

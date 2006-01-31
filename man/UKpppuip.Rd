@@ -26,7 +26,8 @@
 \references{
   Johansen, S. and K. Juselius (1992), Testing structural hypothesis in
   a multivariate cointegration analysis of the PPP and UIP for UK,
-  Journal of Econometrics, 53, 211-244. 
+  Journal of Econometrics, 53, 211-244.
+ 
 }
 \author{Bernhard Pfaff}
 \keyword{datasets}

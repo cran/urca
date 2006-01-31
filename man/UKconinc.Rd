@@ -25,7 +25,8 @@
 \references{
 Hylleberg, S., R. F. Engle, C. W. J. Granger and B. S. Yoo (1990),
 Seasonal Integration and Cointegration, \emph{Journal of econometrics},
-\bold{44}, 215--238.} 
+\bold{44}, 215--238.}
+ 
 \author{Bernhard Pfaff}
 \keyword{datasets}
 \concept{data set UK consumption income HEGY}

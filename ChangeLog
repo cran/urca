@@ -1,4 +1,20 @@
-2005-12-28  Dr. Bernhard Pfaff  <bp@>
+2006-01-31  Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* R/urca.R (lttest): Added 'dumvar=z@dumvar' in function calls 'ca.jo' for test1 and test2. 
+
+	* R/urca.R (ur.df): Coercion of 'y': 'y <- as.vector(y)'.
+
+	* R/urca.R (.spcv): Omittance of argument checking and dropping of optinal arguments in function header. Furthermore, 'pol.deg <- pol.deg[1]' and 'signif <- signif[1]' has been introduced such that calls like 'summary(ur.sp(y))' are executed properly.
+
+	* R/urca.R (ca.jo): Enhanced labeling of slots: Vorg, V, W, PI, Z0, Z1, ZK, R0, RK implemented. Inserted conditionally stop for 'K < 2'.
+
+	* R/urca.R (cajools): Arguments to 'lm()' call is replaced with a formula and a data frame. 
+
+	* R/urca.R (alphaols): colnames for matrix 'RKV' inserted and arguments to 'lm()' call is replaced with a formula and a data frame. 
+
+	* R/urca.R (cajolst): Enhanced labeling of slots: Vorg, V, W, PI, Z0, Z1, ZK, R0, RK implemented.
+
+2005-12-28  Bernhard Pfaff  <bernhard@pfaffikus.de>
 
 	* inst/CITATION: Citation for package urca added.
 
@@ -43,8 +59,8 @@
 
 	* R/urca.R (bh5lrtest): New function for testing the validity of
 	partly known cointegration relations. 
-	(bh6lrtest): New functions for testing restrictions on partly
-	known cointegration relationships. 
+	
+	* R/urca.R (bh6lrtest): New functions for testing restrictions on partly known cointegration relationships. 
 
 	* man/bh5lrtest.Rd: Documentation for function bh5lrtest inserted.
 

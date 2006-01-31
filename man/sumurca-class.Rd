@@ -7,7 +7,8 @@
   A class for objects returned by applying method summary() to objects
   from classes: \code{ur.ers}, \code{ca.jo}, \code{cajo.test},
   \code{ur.kpss}, \code{ca.po}, \code{ur.pp}, \code{ur.df}, \code{ur.sp}
-  or \code{ur.za}. 
+  or \code{ur.za}.
+ 
 }
 \section{Slots}{
   \describe{
