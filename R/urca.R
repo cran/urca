@@ -1,6 +1,6 @@
-#
-# Setting classes for unit root tests
-#
+##
+## Setting classes for unit root tests
+##
 
 setClass("urca", representation(test.name="character"))
 
@@ -145,13 +145,13 @@ setClass("sumurca", representation(classname="character",
 
 
 
-#
-# Functions for unit root tests and cointegration analysis
-#
+##
+## Functions for unit root tests and cointegration analysis
+##
 
-#
-# Elliott, Rothenberg & Stock-Test
-#
+##
+## Elliott, Rothenberg & Stock-Test
+##
 ur.ers <- function(y, type=c("DF-GLS", "P-test"), model=c("constant", "trend"), lag.max=4){
   type <- match.arg(type)
   model <- match.arg(model)
@@ -260,177 +260,258 @@ ur.ers <- function(y, type=c("DF-GLS", "P-test"), model=c("constant", "trend"), 
   rownames(cvals) <- c("critical values")
   new("ur.ers", y=y, yd=yd, type=type, model=model, lag=as.integer(lag.max), cval=round(cvals, 2), teststat=teststat, testreg=test.reg, test.name="Elliot, Rothenberg \& Stock")
 }
-#
-# Johansen Procedure
-#
-ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, spec=c("longrun", "transitory"), season=NULL, dumvar=NULL, ctable=c("A1", "A2", "A3")){
-  x <- as.matrix(x)
-  type <- match.arg(type)
-  spec <- match.arg(spec)
-  ctable <- match.arg(ctable)
-  K <- as.integer(K)
-  P <- ncol(x)
-  arrsel <- P 
-  N <- nrow(x)
-  if(!is.null(season)){
-    s <- season - 1
-  }else{
-    s <- 0
-  }
-  if(N*P < P + s*P + K*P^2 + P*(P + 1)/2)
-    stop("\nInsufficient degrees of freedom.\n")
-  if(P > 5)
-    warning("\nToo many variables, critical values cannot be computed.\n")
-  if(!(is.null(season))){
-    dum <- (diag(season) - 1/season)[,-season]
-    dums <- dum
-    while(nrow(dums) < N){
-      dums <- rbind(dums, dum)}
-    dums <- dums[1:N,]
-    if(NA%in%x){
-      idx.NA <- 1:N
-      ind <- as.logical(sapply(idx.NA,  function(z) sum(is.na(x[z,])*1)))
-      ind2 <- ind*(1:N)
-      dums <- dums[-ind2,]
+##
+## Johansen Procedure
+##
+ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, spec=c("longrun", "transitory"), season=NULL, dumvar=NULL, ctable=c("A1", "A2", "A3"))
+{
+    x <- as.matrix(x)
+    colnames(x) <- make.names(colnames(x))
+    type <- match.arg(type)
+    spec <- match.arg(spec)
+    ctable <- match.arg(ctable)
+    K <- as.integer(K)
+    if (K < 2) {
+        stop("\nK must be at least K=2.\n")
     }
-  }
-  if(!(is.null(dumvar))){
-    dumvar <- as.matrix(dumvar)
-    if(!(nrow(dumvar)==nrow(x))){
-      stop("\nUnequal row length between dummy variables and x matrix.\n")
+    P <- ncol(x)
+    arrsel <- P
+    N <- nrow(x)
+    if (!is.null(season)) {
+        s <- season - 1
+    } else {
+        s <- 0
     }
-    if(NA%in%x){
-      idx.NA <- 1:N
-      ind <- as.logical(sapply(idx.NA,  function(z) sum(is.na(x[z,])*1)))
-      ind2 <- ind*(1:N)
-      dumvar <- dumvar[-ind2,]
+    if (N * P < P + s * P + K * P^2 + P * (P + 1)/2) 
+        stop("\nInsufficient degrees of freedom.\n")
+    if (P > 5) 
+        warning("\nToo many variables, critical values cannot be computed.\n")
+    if (!(is.null(season))) {
+        dum <- (diag(season) - 1/season)[, -season]
+        dums <- dum
+        while (nrow(dums) < N) {
+            dums <- rbind(dums, dum)
+        }
+        dums <- dums[1:N, ]
+        if (NA %in% x) {
+            idx.NA <- 1:N
+            ind <- as.logical(sapply(idx.NA, function(z) sum(is.na(x[z, 
+                ]) * 1)))
+            ind2 <- ind * (1:N)
+            dums <- dums[-ind2, ]
+        }
+        colnames(dums) <- paste("sd", 1:ncol(dums), sep="")
     }
-  }
-  x <- na.omit(x)
-  N <- nrow(x)
-  Z <- embed(diff(x), K)
-  Z0 <- Z[,1:P]
-  a1 <- array(c(2.816, 12.099, 18.697, 24.712, 30.774, 3.962, 14.036, 20.778, 27.169, 33.178, 6.936, 17.936, 25.521, 31.943, 38.341, 2.816, 13.338, 26.791, 43.964, 65.063, 3.962, 15.197, 29.509, 47.181, 68.905, 6.936, 19.310, 35.397, 53.792, 76.955), c(5, 3, 2))
-  a2 <- array(c(6.691, 12.783, 18.959, 24.917, 30.818, 8.083, 14.595, 21.279, 27.341, 33.262, 11.576, 18.782, 26.154, 32.616, 38.858, 6.691, 15.583, 28.436, 45.248, 65.956, 8.083, 17.844, 31.256, 48.419, 69.977, 11.576, 21.962, 37.291, 55.551, 77.911), c(5, 3, 2))
-  a3 <- array(c(7.563, 13.781, 19.796, 25.611, 31.592, 9.094, 15.752, 21.894, 28.167, 34.397, 12.740, 19.834, 26.409, 33.121, 39.672, 7.563, 17.957, 32.093, 49.925, 71.472, 9.094, 20.168, 35.068, 53.347, 75.328, 12.741, 24.988, 40.198, 60.054, 82.969), c(5, 3, 2))
-  if(ctable=="A1"){
-    cvals <- a1
-  }else if(ctable=="A2"){
-    cvals <- a2
-  }else if(ctable=="A3"){
-    cvals <- a3
-  }                                         
-  if(constant){
-    if(spec=="longrun"){
-      ZK <- cbind(x[-c((N-K+1):N),], 1)
-    }else if(spec=="transitory"){
-      ZK <- cbind(x[-N,], 1)[K:(N-1),]
+    if (!(is.null(dumvar))) {
+        dumvar <- as.matrix(dumvar)
+        colnames(dumvar) <- make.names(colnames(dumvar))
+        if (!(nrow(dumvar) == nrow(x))) {
+            stop("\nUnequal row length between dummy variables and x matrix.\n")
+        }
+        if (NA %in% x) {
+            idx.NA <- 1:N
+            ind <- as.logical(sapply(idx.NA, function(z) sum(is.na(x[z, 
+                ]) * 1)))
+            ind2 <- ind * (1:N)
+            dumvar <- dumvar[-ind2, ]
+        }
     }
-    Z1 <- Z[,-c(1:P)]
-    P <- P + 1
-    idx <- 0:(P-2)
-    model <- "without linear trend and constant in cointegration"
-  }else{
-    Z1 <- Z[,-c(1:P)]
-    Z1 <- cbind(1, Z1)
-    if(spec=="longrun"){
-      ZK <- x[-c((N-K+1):N),]
-    }else if(spec=="transitory"){
-      ZK <- x[-N,][K:(N-1),]
+    x <- na.omit(x)
+    N <- nrow(x)
+    Z <- embed(diff(x), K)
+    Z0 <- Z[, 1:P]
+    a1 <- array(c(2.816, 12.099, 18.697, 24.712, 30.774, 3.962, 
+        14.036, 20.778, 27.169, 33.178, 6.936, 17.936, 25.521, 
+        31.943, 38.341, 2.816, 13.338, 26.791, 43.964, 65.063, 
+        3.962, 15.197, 29.509, 47.181, 68.905, 6.936, 19.31, 
+        35.397, 53.792, 76.955), c(5, 3, 2))
+    a2 <- array(c(6.691, 12.783, 18.959, 24.917, 30.818, 8.083, 
+        14.595, 21.279, 27.341, 33.262, 11.576, 18.782, 26.154, 
+        32.616, 38.858, 6.691, 15.583, 28.436, 45.248, 65.956, 
+        8.083, 17.844, 31.256, 48.419, 69.977, 11.576, 21.962, 
+        37.291, 55.551, 77.911), c(5, 3, 2))
+    a3 <- array(c(7.563, 13.781, 19.796, 25.611, 31.592, 9.094, 
+        15.752, 21.894, 28.167, 34.397, 12.74, 19.834, 26.409, 
+        33.121, 39.672, 7.563, 17.957, 32.093, 49.925, 71.472, 
+        9.094, 20.168, 35.068, 53.347, 75.328, 12.741, 24.988, 
+        40.198, 60.054, 82.969), c(5, 3, 2))
+    if (ctable == "A1") {
+        cvals <- a1
+    } else if (ctable == "A2") {
+        cvals <- a2
+    } else if (ctable == "A3") {
+        cvals <- a3
     }
-    idx <- 0:(P-1)
-    model <- "with linear trend"
-  }
-  N <- nrow(Z0)
-  if(!(is.null(season))){
-    Z1 <- cbind(Z1, dums[-(1:K),])
-  }
-  if(!(is.null(dumvar))){
-    Z1 <- cbind(Z1, dumvar[-(1:K),])
-  }
-  M00 <- crossprod(Z0)/N
-  M11 <- crossprod(Z1)/N
-  MKK <- crossprod(ZK)/N
-  M01 <- crossprod(Z0, Z1)/N
-  M0K <- crossprod(Z0, ZK)/N
-  MK0 <- crossprod(ZK, Z0)/N
-  M10 <- crossprod(Z1, Z0)/N
-  M1K <- crossprod(Z1, ZK)/N
-  MK1 <- crossprod(ZK, Z1)/N
-  M11inv <- solve(M11)
-  R0 <- Z0 - t(M01%*%M11inv%*%t(Z1))
-  RK <- ZK - t(MK1%*%M11inv%*%t(Z1))
-  S00 <- M00 - M01%*%M11inv%*%M10
-  S0K <- M0K - M01%*%M11inv%*%M1K
-  SK0 <- MK0 - MK1%*%M11inv%*%M10
-  SKK <- MKK - MK1%*%M11inv%*%M1K
-  Ctemp <- chol(SKK, pivot=TRUE)
-  pivot <- attr(Ctemp, "pivot")
-  oo <- order(pivot)
-  C <- t(Ctemp[,oo])
-  Cinv <- solve(C)
-  S00inv <- solve(S00)
-  valeigen <- eigen(Cinv%*%SK0%*%S00inv%*%S0K%*%t(Cinv))
-  lambda <- valeigen$values
-  e <- valeigen$vector
-  V <- t(Cinv)%*%e
-  if(constant){
-    rownames(V) <- c(colnames(x), "constant")
-  }else{
-    rownames(V) <- colnames(x)
-  }
-  Vorg <- V
-  V <- sapply(1:P, function(x) V[,x]/V[1,x])
-  W <- S0K%*%V%*%solve(t(V)%*%SKK%*%V)
-  PI <- S0K%*%solve(SKK)
-  DELTA <- S00 - S0K%*%V%*%solve(t(V)%*%SKK%*%V)%*%t(V)%*%SK0
-  GAMMA <- M01%*%M11inv - PI%*%MK1%*%M11inv
-  if(type=="trace"){
-    type <- "trace statistic"
-    teststat <- as.matrix(rev(sapply(idx, function(x) -N*sum(log(1 - lambda[(x+1):P])))))
-    colnames(teststat) <- "trace"
-    if(arrsel > 5){
-      cval <- NULL
-    }else{
-      cval <- round(cvals[1:arrsel, ,2],2)
-      colnames(cval) <- c("10\%", "5\%", "1\%")
-      rownames(cval) <- c(paste("r <= ", (arrsel-1):1, " |",sep=""), "r = 0  |")
+    if (constant) {
+        if (spec == "longrun") {
+            ZK <- cbind(x[-c((N - K + 1):N), ], 1)
+            Lnotation <- K
+          } else if (spec == "transitory") {
+            ZK <- cbind(x[-N, ], 1)[K:(N - 1), ]
+            Lnotation <- 1
+          }
+        colnames(ZK) <- c(paste(colnames(x), ".l", Lnotation, sep=""), "constant")
+        Z1 <- Z[, -c(1:P)]
+        temp1 <- NULL
+        for(i in 1:(K-1)){
+          temp <- paste(colnames(x), ".dl", i, sep="")
+          temp1 <- c(temp1, temp)
+        }
+        colnames(Z1) <- temp1
+        P <- P + 1
+        idx <- 0:(P - 2)
+        model <- "without linear trend and constant in cointegration"
+    } else {
+        Z1 <- Z[, -c(1:P)]
+        Z1 <- cbind(1, Z1)
+        temp1 <- NULL
+        for(i in 1:(K-1)){
+          temp <- paste(colnames(x), ".dl", i, sep="")
+          temp1 <- c(temp1, temp)
+        }
+        temp1 <- c("constant", temp1)
+        colnames(Z1) <- temp1
+        if (spec == "longrun") {
+            ZK <- x[-c((N - K + 1):N), ]
+            Lnotation <- K
+          }
+        else if (spec == "transitory") {
+            ZK <- x[-N, ][K:(N - 1), ]
+            Lnotation <- 1
+           }
+        colnames(ZK) <- paste(colnames(x), ".l", Lnotation, sep="")
+        idx <- 0:(P - 1)
+        model <- "with linear trend"
+      }
+    N <- nrow(Z0)
+    if (!(is.null(season))) {
+      if(constant) {
+        Z1 <- cbind(dums[-(1:K), ], Z1)
+      } else {
+        Z1 <- cbind(Z1[, 1], dums[-(1:K), ], Z1[, -1])
+        colnames(Z1) <- c("constant", colnames(Z1)[-1])
+      }
     }
-  }else if(type=="eigen"){
-    type <- "maximal eigenvalue statistic (lambda max)"
-    teststat <- as.matrix(rev(sapply(idx, function(x) -N*log(1 - lambda[x+1]))))
-    colnames(teststat) <- "lambda max."
-    if(arrsel > 5){
-      cval <- NULL
-    }else{
-      cval <- round(cvals[1:arrsel, ,1],2)
-      colnames(cval) <- c("10\%", "5\%", "1\%")
-      rownames(cval) <- c(paste("r <= ", (arrsel-1):1, " |",sep=""), "r = 0  |")
+    if (!(is.null(dumvar))) {
+      if(constant){
+        Z1 <- cbind(dumvar[-(1:K), ], Z1)
+      } else {
+        Z1 <- cbind(Z1[, 1], dumvar[-(1:K), ], Z1[, -1])
+        colnames(Z1) <- c("constant", colnames(Z1)[-1])
+      }
     }
-  }
-  new("ca.jo", x=x, Z0=Z0, Z1=Z1, ZK=ZK, type=type, model=model, const=constant, lag=K, P=arrsel, season=season, dumvar=dumvar, cval=cval, teststat=as.vector(teststat), lambda=lambda, Vorg=Vorg, V=V, W=W, PI=PI, DELTA=DELTA, GAMMA=GAMMA, R0=R0, RK=RK, bp=NA, test.name="Johansen-Procedure")
+    M00 <- crossprod(Z0)/N
+    M11 <- crossprod(Z1)/N
+    MKK <- crossprod(ZK)/N
+    M01 <- crossprod(Z0, Z1)/N
+    M0K <- crossprod(Z0, ZK)/N
+    MK0 <- crossprod(ZK, Z0)/N
+    M10 <- crossprod(Z1, Z0)/N
+    M1K <- crossprod(Z1, ZK)/N
+    MK1 <- crossprod(ZK, Z1)/N
+    M11inv <- solve(M11)
+    R0 <- Z0 - t(M01 %*% M11inv %*% t(Z1))
+    RK <- ZK - t(MK1 %*% M11inv %*% t(Z1))
+    S00 <- M00 - M01 %*% M11inv %*% M10
+    S0K <- M0K - M01 %*% M11inv %*% M1K
+    SK0 <- MK0 - MK1 %*% M11inv %*% M10
+    SKK <- MKK - MK1 %*% M11inv %*% M1K
+    Ctemp <- chol(SKK, pivot = TRUE)
+    pivot <- attr(Ctemp, "pivot")
+    oo <- order(pivot)
+    C <- t(Ctemp[, oo])
+    Cinv <- solve(C)
+    S00inv <- solve(S00)
+    valeigen <- eigen(Cinv %*% SK0 %*% S00inv %*% S0K %*% t(Cinv))
+    lambda <- valeigen$values
+    e <- valeigen$vector
+    V <- t(Cinv) %*% e
+    Vorg <- V
+    V <- sapply(1:P, function(x) V[, x]/V[1, x])
+    W <- S0K %*% V %*% solve(t(V) %*% SKK %*% V)
+    PI <- S0K %*% solve(SKK)
+    DELTA <- S00 - S0K %*% V %*% solve(t(V) %*% SKK %*% V) %*% 
+        t(V) %*% SK0
+    GAMMA <- M01 %*% M11inv - PI %*% MK1 %*% M11inv
+    if (type == "trace") {
+        type <- "trace statistic"
+        teststat <- as.matrix(rev(sapply(idx, function(x) -N * 
+            sum(log(1 - lambda[(x + 1):P])))))
+        colnames(teststat) <- "trace"
+        if (arrsel > 5) {
+            cval <- NULL
+        }
+        else {
+            cval <- round(cvals[1:arrsel, , 2], 2)
+            colnames(cval) <- c("10%", "5%", "1%")
+            rownames(cval) <- c(paste("r <= ", (arrsel - 1):1, 
+                " |", sep = ""), "r = 0  |")
+        }
+    }
+    else if (type == "eigen") {
+        type <- "maximal eigenvalue statistic (lambda max)"
+        teststat <- as.matrix(rev(sapply(idx, function(x) -N * 
+            log(1 - lambda[x + 1]))))
+        colnames(teststat) <- "lambda max."
+        if (arrsel > 5) {
+            cval <- NULL
+        }
+        else {
+            cval <- round(cvals[1:arrsel, , 1], 2)
+            colnames(cval) <- c("10%", "5%", "1%")
+            rownames(cval) <- c(paste("r <= ", (arrsel - 1):1, 
+                " |", sep = ""), "r = 0  |")
+        }
+    }
+  
+    colnames(V) <- colnames(ZK)
+    rownames(V) <- colnames(ZK) 
+    rownames(W) <- colnames(x)
+    colnames(W) <- colnames(ZK)
+    colnames(Vorg) <- colnames(V)
+    rownames(Vorg) <- rownames(V)
+    rownames(PI) <- colnames(x)
+    colnames(PI) <- colnames(W)
+    colnames(Z0) <- paste(colnames(x), ".d", sep="")
+    colnames(R0) <- paste("R0", colnames(Z0), sep=".")
+    colnames(RK) <- paste("RK", colnames(ZK), sep=".")
+   
+    new("ca.jo", x = x, Z0 = Z0, Z1 = Z1, ZK = ZK, type = type, model = model, const = constant, lag = K, P = arrsel, season = season, dumvar = dumvar, cval = cval, teststat = as.vector(teststat), lambda = lambda, Vorg = Vorg, V = V, W = W, PI = PI, DELTA = DELTA, GAMMA = GAMMA, R0 = R0, RK = RK, bp = NA, test.name = "Johansen-Procedure")  
 }
-#
-# auxiliary function for residuals' diagnostics and tests
-#
+##
+## auxiliary function for residuals' diagnostics and tests
+##
+##
+## alphaols
+##
 alphaols <- function(z, reg.number = NULL) 
 {
   if (!(class(z) == "ca.jo")) {
     stop("\nPlease, provide object of class 'ca.jo' as 'z'.\n")
   }
-  R0 <- z@R0
   RKV <- z@RK%*%z@V
+  colnames(RKV) <- paste("V", colnames(z@RK), sep=".")
+  P <- z@P
+  data.mat <- data.frame(z@R0, RKV)
+  text <- colnames(data.mat)[-c(1:P)]
+  text1 <- paste(text, "", sep = "+", collapse = "")
+  text2 <- paste("~", substr(text1, 1, nchar(text1) - 1))
   if (!is.null(reg.number)) {
     reg.number <- as.integer(reg.number)
-    if (reg.number > ncol(z@Z0) || reg.number < 1) {
+    if (reg.number > ncol(z@R0) || reg.number < 1) {
       stop("\nPlease, provide a valid number of the regression within \n the VECM, numbering from 1st to last row.\n")
     }
-  return(lm(R0[, reg.number] ~ -1 + RKV))
+    form1 <- formula(paste("z@R0[, reg.number]", text2, "-1"))
+    return(lm(substitute(form1), data = data.mat))
   }
   else if (is.null(reg.number)) {
-    return(lm(R0 ~ -1 + RKV))
+    form1 <- formula(paste("z@R0", text2, "-1"))
+    return(lm(substitute(form1), data = data.mat))
   }
 }
+##
+## alrtest
+##
 alrtest <- function(z, A, r){
   if(!(class(z)=="ca.jo")){
     stop("\nPlease, provide object of class 'ca.jo' as 'z'.\n")
@@ -499,6 +580,9 @@ alrtest <- function(z, A, r){
   pval <- c(1-pchisq(teststat, df), df)
   new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, const=z@const, H=NULL, A=A, B=B, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=ALPHA, PI=PI, DELTA=NULL, DELTA.bb=DELTA.bb, DELTA.ab=DELTA.ab, DELTA.aa.b=DELTA.aa.b, GAMMA=GAMMA, test.name="Johansen-Procedure")
 }
+##
+## ablrtest
+##
 ablrtest <- function(z, H, A, r){
     if(!(class(z)=="ca.jo")){
       stop("\nPlease, provide object of class 'ca.jo' as 'z'.\n")
@@ -575,6 +659,9 @@ ablrtest <- function(z, H, A, r){
     pval <- c(1-pchisq(teststat, df), df)
     new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, const=z@const, H=H, A=A, B=B, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=ALPHA, PI=PI, DELTA=NULL, DELTA.bb=DELTA.bb, DELTA.ab=DELTA.ab, DELTA.aa.b=DELTA.aa.b, GAMMA=GAMMA, test.name="Johansen-Procedure")
 }
+##
+## blrtest
+##
 blrtest <- function(z, H, r){
   if(!(class(z)=="ca.jo")){
     stop("\nPlease, provide object of class 'ca.jo' as 'z'.\n")
@@ -631,6 +718,9 @@ blrtest <- function(z, H, r){
   pval <- c(1-pchisq(teststat, df), df)
   new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, const=z@const, H=H, A=NULL, B=NULL, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=W, PI=PI, DELTA=DELTA, DELTA.bb=NULL, DELTA.ab=NULL, DELTA.aa.b=NULL, GAMMA=GAMMA, test.name="Johansen-Procedure")
 }
+##
+## bh5lrtest
+##
 bh5lrtest <- function (z, H, r) 
 {
     if (!(class(z) == "ca.jo")) {
@@ -701,6 +791,9 @@ bh5lrtest <- function (z, H, r)
         pval = pval, lambda = lambda.res, Vorg = Vorg, V = V, 
         W = W, PI = PI, DELTA = DELTA, DELTA.bb = NULL, DELTA.ab = NULL,       DELTA.aa.b = NULL, GAMMA = GAMMA, test.name = "Johansen-Procedure")
 }
+##
+## bh6lrtest
+##
 bh6lrtest <- function (z, H, r, r1, conv.val=0.0001, max.iter=50) 
 {
     if (!(class(z) == "ca.jo")) {
@@ -794,21 +887,34 @@ bh6lrtest <- function (z, H, r, r1, conv.val=0.0001, max.iter=50)
     pval <- c(1 - pchisq(teststat, df), df)
     new("cajo.test", Z0 = z@Z0, Z1 = z@Z1, ZK = z@ZK, const = z@const, H = H, A = NULL, B = NULL, type = type, teststat = teststat, pval = pval, lambda = lambda.res, Vorg = Vorg, V = V, W = W, PI = PI, DELTA = DELTA, DELTA.bb = NULL, DELTA.ab = NULL, DELTA.aa.b = NULL, GAMMA = GAMMA, test.name = "Johansen-Procedure")
 }
+##
+## cajools
+##
 cajools <- function(z, reg.number=NULL)
 {
-  if(!(class(z) == "ca.jo") && !(class(z) == "cajo.test")){
+  if (!(class(z) == "ca.jo") && !(class(z) == "cajo.test")) {
     stop("\nPlease, provide object of class 'ca.jo' or 'cajo.test' as 'z'.\n")
   }
-  if (!is.null(reg.number)){
+  P <- z@P
+  data.mat <- data.frame(z@Z0, z@Z1, z@ZK)
+  text <- colnames(data.mat)[-c(1:P)]
+  text1 <- paste(text, "", sep="+", collapse="")
+  text2 <- paste("~", substr(text1, 1, nchar(text1)-1))
+  if (!is.null(reg.number)) {
     reg.number <- as.integer(reg.number)
-    if (reg.number > ncol(z@Z0) || reg.number < 1){
+    if (reg.number > ncol(z@Z0) || reg.number < 1) {
       stop("\nPlease, provide a valid number of the regression within \n the VECM, numbering from 1st to last row.\n")
     }
-    return(lm(z@Z0[, reg.number] ~ z@Z1 + z@ZK - 1))
-  }else if(is.null(reg.number)){
-    return(lm(z@Z0 ~ z@Z1 + z@ZK -1))
-  }
+    form1 <- formula(paste("z@Z0[, reg.number]", text2, "-1"))
+    return(lm(substitute(form1), data=data.mat))
+  } else if (is.null(reg.number)) {
+    form1 <- formula(paste("z@Z0", text2, "-1"))
+    return(lm(substitute(form1), data=data.mat))
+  } 
 }
+##
+## cajolst
+##
 cajolst <- function (x, trend = TRUE, K = 2, season = NULL) 
 {
     x <- as.matrix(x)
@@ -951,12 +1057,34 @@ cajolst <- function (x, trend = TRUE, K = 2, season = NULL)
       colnames(cval) <- c("10%", "5%", "1%")
       rownames(cval) <- c(paste("r <= ", (arrsel - 1):1, " |", sep = ""), "r = 0  |")
     }
+    temp1 <- NULL
+    for (i in 1:(K - 1)) {
+      temp <- paste(colnames(x), ".dl", i, sep = "")
+      temp1 <- c(temp1, temp)
+    }
+    colnames(Z1) <- temp1
+    colnames(ZK) <- paste(colnames(x), "l1", sep=".")
+    colnames(Z0) <- paste(colnames(x), "d", sep=".")
+    colnames(V) <- colnames(ZK)
+    rownames(V) <- colnames(ZK)
+    colnames(W) <- colnames(V)
+    rownames(W) <- colnames(x)
+    colnames(Vorg) <- colnames(V)
+    rownames(Vorg) <- rownames(V)
+    rownames(PI) <- colnames(x)
+    colnames(PI) <- colnames(W)
+    colnames(R0) <- paste("R0", colnames(Z0), sep = ".")
+    colnames(RK) <- paste("RK", colnames(ZK), sep = ".")
+    
     new("ca.jo", x = x, Z0 = Z0, Z1 = Z1, ZK = ZK, type = type,         model = model, const = FALSE, lag = K, P = arrsel, 
         season = season, dumvar = NULL, cval = cval, teststat = as.vector(teststat), 
         lambda = lambda, Vorg = Vorg, V = V, W = W, PI = PI, 
         DELTA = DELTA, GAMMA = GAMMA, R0 = R0, RK = RK, bp = tau.bp, 
         test.name = "Johansen-Procedure")
 }
+##
+## lttest
+##
 lttest <- function(z, r){
   if(!(class(z)=="ca.jo")){
     stop("\nObject 'x' must be of class 'ca.jo'\n")
@@ -968,9 +1096,9 @@ lttest <- function(z, r){
   idx <- r + 1
   df <- length(idx:z@P)
   N <- nrow(z@Z0)
-  test1 <- ca.jo(z@x, constant=TRUE, K=z@lag, season=z@season)
+  test1 <- ca.jo(z@x, constant=TRUE, K=z@lag, season=z@season, dumvar=z@dumvar)
   lambda1 <- test1@lambda
-  test2 <- ca.jo(z@x, constant=FALSE, K=z@lag, season=z@season)
+  test2 <- ca.jo(z@x, constant=FALSE, K=z@lag, season=z@season, dumvar=z@dumvar)
   lambda2 <- test2@lambda
   teststat <- -N*sum(log((1-lambda1[idx:z@P])/(1-lambda2[idx:z@P])))
   pval <- 1 - pchisq(teststat, df)
@@ -986,6 +1114,9 @@ lttest <- function(z, r){
   cat(paste("with", df, "degress of freedom\n", sep=" "))
   print(round(lttest, 2))
 }
+##
+## plotres
+##
 plotres <- function (x){
   if (!(class(x) == "ca.jo"))
     stop("\nObject is not of class 'ca.jo' \n")
@@ -1005,9 +1136,9 @@ plotres <- function (x){
     }
   }
 }
-#
-# KPSS-Test
-#
+##
+## KPSS-Test
+##
 ur.kpss <- function(y, type=c("mu", "tau"), lags=c("short", "long", "nil"), use.lag=NULL){
   y <- na.omit(as.vector(y))
   n <- length(y)
@@ -1051,9 +1182,9 @@ ur.kpss <- function(y, type=c("mu", "tau"), lags=c("short", "long", "nil"), use.
   teststat <- nominator/denominator
   new("ur.kpss", y=y, type=type, lag=as.integer(lmax), teststat=as.numeric(teststat), cval=cval, res=res , test.name="KPSS") 
 }
-#
-# Phillips-Ouliaris Test
-#
+##
+## Phillips-Ouliaris Test
+##
 ca.po <- function(z, demean=c("none", "constant", "trend"), lag=c("short", "long"), type=c("Pu", "Pz"), tol=NULL){
   z <- na.omit(as.matrix(z))
   if(ncol(z)<2 || ncol(z)>6){
@@ -1133,15 +1264,16 @@ ca.po <- function(z, demean=c("none", "constant", "trend"), lag=c("short", "long
   rownames(cval) <- "critical values"
   new("ca.po", z=z, type=type, model=model, lag=as.integer(lmax), cval=cval, res=res, teststat=teststat, testreg=test.reg, test.name="Phillips \& Ouliaris")
 }
-#
-# Augmented-Dickey-Fuller Test
-#
+##
+## Augmented-Dickey-Fuller Test
+##
 ur.df <- function (y, type = c("none", "drift", "trend"), lags = 1) 
 {
     if (ncol(as.matrix(y)) > 1) 
         stop("\ny is not a vector or univariate time series.\n")
     if (any(is.na(y))) 
         stop("\nNAs in y.\n")
+    y <- as.vector(y)
     lag <- as.integer(lags)
     if (lag < 0) 
         stop("\nLags must be set to an non negative integer value.\n")
@@ -1289,9 +1421,9 @@ ur.df <- function (y, type = c("none", "drift", "trend"), lags = 1)
    
     new("ur.df", y = y, model = type, cval=cvals, lags=lag, teststat = teststat, testreg=testreg, res=res, test.name="Augmented Dickey-Fuller Test")
 }
-#
-# Phillips-Perron Test
-#
+##
+## Phillips-Perron Test
+##
 ur.pp <- function(x, type=c("Z-alpha", "Z-tau"), model=c("constant", "trend"), lags=c("short", "long"), use.lag=NULL){
   x <- na.omit(as.vector(x))
   n <- length(x)
@@ -1377,16 +1509,18 @@ ur.pp <- function(x, type=c("Z-alpha", "Z-tau"), model=c("constant", "trend"), l
   }
   new("ur.pp", y=y, type=type, model=model, lag=as.integer(lmax), cval=cval, teststat=as.numeric(teststat), testreg=test.reg, auxstat=aux.stat, res=res, test.name="Phillips-Perron")
 }
-#
-# Schmidt-Phillips Test
-#
+##
+## Schmidt-Phillips Test
+##
 ur.sp <- function(y, type=c("tau", "rho"), pol.deg=c(1, 2, 3, 4), signif=c(0.01, 0.05, 0.1)){
   y <- na.omit(as.vector(y))
   type <- match.arg(type)
+  signif <- signif[1]
   signif.val <- c(0.01, 0.05, 0.1)
   if(!(signif %in% signif.val)){
     warning("\nPlease, provide as signif one of c(0.01, 0.05, 0.1); signif=0.01 used")
   signif <- 0.01}
+  pol.deg <- pol.deg[1]
   if(!(pol.deg %in% c(1:4))){
     warning("\nPlease, provide as polynomial degree one of c(1, 2, 3, 4); po.deg=1 used")
   pol.deg <- 1}
@@ -1464,22 +1598,14 @@ ur.sp <- function(y, type=c("tau", "rho"), pol.deg=c(1, 2, 3, 4), signif=c(0.01,
   }
   new("ur.sp", y=y, type=type, polynomial=as.integer(pol.deg), teststat=as.numeric(teststat), cval=cval, signif=signif, res=res, testreg=corr.reg, test.name="Schmidt-Phillips")
 }
-#
-# Function for critical values of ur.sp
-#
-.spcv <- function(obs, type=c("tau", "rho"), pol.deg=c(1, 2, 3, 4), signif=c(0.01, 0.025, 0.05, 0.1)){
-  obs <- as.integer(obs)
+##
+## Function for critical values of ur.sp
+##
+.spcv <- function(obs, type, pol.deg, signif){
   obs.ranges <- c(25, 50, 100, 200, 500, 1000, 1e30)
-  type <- match.arg(type)
   dim.1 <- which(obs.ranges >= obs, arr.ind=TRUE)[1]
   signif.val <- c(0.01, 0.05, 0.1)
-  if(!(signif %in% signif.val)){
-    warning("\nPlease, provide as signif one of c(0.01, 0.05, 0.1), signif=0.01 used")
-    signif <- 0.01}
   dim.2 <- which(signif==signif.val, arr.ind=TRUE)
-  if(!(pol.deg %in% c(1:4))){
-    warning("\nPlease, provide as polynomial degree one of c(1, 2, 3, 4); pol.deg=1 used")
-    pol.deg <- 1}
   dim.3 <- pol.deg
   if(type=="tau"){
   cvs.tau <- -1*c(3.9, 3.73, 3.63, 3.61, 3.59, 3.58, 3.56, 3.18, 3.11, 3.06, 3.04, 3.04, 3.02, 3.02, 2.85, 2.8, 2.77, 2.76, 2.76, 2.75, 2.75, 4.52, 4.28, 4.16, 4.12, 4.08, 4.06, 4.06, 3.78, 3.77, 3.65, 3.6, 3.55, 3.55, 3.53, 3.52, 3.41, 3.34, 3.31, 3.28, 3.26, 3.26, 3.26, 5.07, 4.73, 4.59, 4.53, 4.5, 4.49, 4.44, 4.26, 4.08, 4.03, 3.99, 3.96, 3.95, 3.93, 3.89, 3.77, 3.72, 3.69, 3.68, 3.68, 3.67, 5.57, 5.13, 4.99, 4.9, 4.85, 4.83, 4.81, 4.7, 4.47, 4.39, 4.33, 4.31, 4.31, 4.29, 4.3, 4.15, 4.1, 4.06, 4.03, 4.03, 4.01)
@@ -1491,9 +1617,9 @@ ur.sp <- function(y, type=c("tau", "rho"), pol.deg=c(1, 2, 3, 4), signif=c(0.01,
   cval <- cv.array[dim.1, dim.2, dim.3]}
   return(cval)
 }
-#
-# Zivot-Andrews Test
-#
+##
+## Zivot-Andrews Test
+##
 ur.za <- function(y, model=c("intercept", "trend", "both"), lag){
   y <- na.omit(as.vector(y))
   n <- length(y)
@@ -1560,9 +1686,9 @@ ur.za <- function(y, model=c("intercept", "trend", "both"), lag){
   teststat <- roll.stat[bpoint]
   new("ur.za", y=y, model=model, lag=lag, teststat=teststat, cval=cval, bpoint=bpoint, tstats=roll.stat, res=test.reg$residuals, testreg=test.reg, test.name="Zivot-Andrews")
 }
-#
-# Setting methods for classes
-#
+##
+## Setting methods for classes
+##
 show.urca <- function(object){
   title <- paste("#", object@test.name, "Unit Root / Cointegration Test #", sep=" ")
   row <- paste(rep("#", nchar(title)), collapse="")
