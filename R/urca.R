@@ -1620,14 +1620,15 @@ ur.sp <- function(y, type=c("tau", "rho"), pol.deg=c(1, 2, 3, 4), signif=c(0.01,
 ##
 ## Zivot-Andrews Test
 ##
-ur.za <- function(y, model=c("intercept", "trend", "both"), lag){
+ur.za <- function(y, model=c("intercept", "trend", "both"), lag=NULL){
   y <- na.omit(as.vector(y))
   n <- length(y)
   model <- match.arg(model)
+  if(is.null(lag)) lag <- 0
   lag <- as.integer(lag)
-  if(length(lag) > 1 || lag < 1){
-    warning("\nPlease, specify maximal number of lags for differenced series as positive integer; lags=1 is now used.")
-    lags <- 1}
+  if(length(lag) > 1 || lag < 0){
+    warning("\nPlease, specify maximal number of lags for differenced series as positive integer; lag=1 is now used.")
+    lag <- 1}
   datmat <- matrix(NA, n, lag + 3)
   if(n < ncol(datmat) + 2){
     stop("\nInsufficient number of obeservations.")}
@@ -1636,10 +1637,14 @@ ur.za <- function(y, model=c("intercept", "trend", "both"), lag){
   datmat[,1] <- y
   datmat[,2] <- c(NA, y)[1:n]
   datmat[,3] <- trend
-  for(i in 1:lag){
-    datmat[ , i + 3] <- c(rep(NA, i + 1), diff(y))[1:n]}
   datmat <- as.data.frame(datmat)
+  colnames(datmat)[1:3] <- c("y", "y.l1", "trend")
+  if(lag > 0){
+    for(i in 1:lag){
+      datmat[ , i + 3] <- c(rep(NA, i + 1), diff(y))[1:n]
+    }
   colnames(datmat) <- c("y", "y.l1", "trend", paste("y.dl", 1:lag, sep=""))
+  }
   if(model=="intercept"){
     roll <- function(z){
       du <- c(rep(0, z), rep(1, (n-z)))

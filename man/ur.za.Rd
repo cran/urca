@@ -7,7 +7,7 @@
   trend or in both.
 }
 \usage{
-ur.za(y, model = c("intercept", "trend", "both"), lag)
+ur.za(y, model = c("intercept", "trend", "both"), lag=NULL)
 }
 \arguments{
   \item{y}{Vector to be tested for a unit root.}
