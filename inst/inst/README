@@ -30,6 +30,6 @@ definition of the `Help-menu' (look for a line, similar to:
 	menu  helpMenu  topMenu   ""  ""  ""
 
 Then, the newly created `urca-menu' will be placed left to the
-`Help-menu' of `Rcmdr' once you executed: library(Rcmdr) from an 
+`Help-menu' of `Rcmdr' once you executed: library(Rcmdr) from a 
 R Console.
 
