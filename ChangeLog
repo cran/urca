@@ -1,3 +1,8 @@
+2006-04-23  Dr. Bernhard Pfaff  <bp@>
+
+	* inst/Rcmdr-menus.txt: Changed last column entries to
+	packageAvailable() where applicable.
+
 2006-02-24    Bernhard Pfaff  <bernhard@pfaffikus.de>
 
 	* R/urca.R (ur.za): Inserted default value lag=NULL in function header.
