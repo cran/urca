@@ -4,7 +4,7 @@
 \description{
   The function \code{show.urca} is called within the defined methods
   for classes \code{ca.jo}, \code{cajo.test}, \code{ca.po},
-  \code{ur.ers}, \code{ur.kpss}, \code{ur.po}, \code{ur.pp},
+  \code{ur.df}, \code{ur.ers}, \code{ur.kpss}, \code{ur.po}, \code{ur.pp},
   \code{ur.df}, \code{ur.sp} and \code{ur.za}.
  
 }
