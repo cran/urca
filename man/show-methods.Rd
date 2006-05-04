@@ -24,6 +24,8 @@
   VAR with respect to \eqn{\bold{\alpha}} and/or \eqn{\bold{\beta}}.}
 \item{object = "ca.po"}{Displays the test statistic of the Phillips \&
   Ouliaris cointegration test.}
+\item{object = "ur.df"}{Displays the test statistic of the Augmented,
+  Dickey and Fuller unit root test.}
 \item{object = "ur.ers"}{Displays the test statistic of the Elliott,
   Rothenberg \& Stock unit root test.}
 \item{object = "ur.kpss"}{Displays the test statistic of the Kwiatkowski

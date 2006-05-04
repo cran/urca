@@ -1,4 +1,14 @@
-2006-04-23  Dr. Bernhard Pfaff  <bp@>
+2006-05-02    <pfaffb@FRA103FM316GW1>
+
+
+2006-05-02    Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* man/plot-methods.Rd: Added entry for 'ur.df'.
+	* man/show.urca.Rd: Added entry for 'ur.df'.
+	* man/summary-methods.Rd: Added entry for 'ur.df'. 
+	* man/show-methods.Rd: Added entry for 'ur.df'.
+
+2006-04-23  Bernhard Pfaff  <bernhard@pfaffikus.de>
 
 	* inst/Rcmdr-menus.txt: Changed last column entries to
 	packageAvailable() where applicable.

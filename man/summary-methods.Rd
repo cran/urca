@@ -16,6 +16,9 @@
   Summarises the outcome of unit root/cointegration tests by creating a new object of class \code{sumurca}.
 }
 \section{Methods}{\describe{
+    \item{object = "ur.df"}{The test type, its statistic, the test
+      regression and the critical values for the Augmented Dickey and
+      Fuller test are returned.}  
     \item{object = "ur.ers"}{The test type, its statistic and the
       critical values for the Elliott, Rothenberg \& Stock test are
       returned. In case of test \code{"DF-GLS"} the summary output
