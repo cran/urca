@@ -1,5 +1,6 @@
-2006-05-02    <pfaffb@FRA103FM316GW1>
+2006-09-03  Bernhard Pfaff  <bernhard@pfaffikus.de>
 
+	* R/urca.R (ca.po): trd <- 1:(nobs+1) inserted for type Pu and trend.
 
 2006-05-02    Bernhard Pfaff  <bernhard@pfaffikus.de>
 
