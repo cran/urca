@@ -1226,6 +1226,7 @@ ca.po <- function(z, demean=c("none", "constant", "trend"), lag=c("short", "long
     trd <- 1:nobs
     res <- residuals(lm(zl ~ zr + trd))
     if(type=="Pu"){
+      trd <- 1:(nobs+1)
       resu <- residuals(lm(z[,1] ~ z[,-1] + trd))
       test.reg <- summary(lm(z[,1] ~ z[,-1] + trd))
     }else if(type=="Pz"){

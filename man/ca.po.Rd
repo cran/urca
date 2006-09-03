@@ -23,7 +23,7 @@ ca.po(z, demean = c("none", "constant", "trend"),
   The test \code{"Pz"}, compared to the test \code{"Pu"}, has the
   advantage that it is invariant to the normalization of the
   cointegration vector, \emph{i.e.} it does not matter which variable
-  is one the left hand side of the equation. In case convergence
+  is on the left hand side of the equation. In case convergence
   problems are encountered by matrix inversion, one can pass a higher
   tolerance level \emph{via} \code{"tol=..."} to the \code{solve()}-function.
 }
