@@ -1,3 +1,7 @@
+2006-09-05  Dr. Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* R/urca.R (ca.po): cvals for Pz and Pu swapped
+
 2006-09-03  Bernhard Pfaff  <bernhard@pfaffikus.de>
 
 	* R/urca.R (ca.po): trd <- 1:(nobs+1) inserted for type Pu and trend.
