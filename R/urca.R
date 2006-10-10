@@ -150,7 +150,7 @@ setClass("sumurca", representation(classname="character",
 ##
 
 ##
-## Elliott, Rothenberg & Stock-Test
+## Elliott, Rothenberg and Stock-Test
 ##
 ur.ers <- function(y, type=c("DF-GLS", "P-test"), model=c("constant", "trend"), lag.max=4){
   type <- match.arg(type)
@@ -256,9 +256,9 @@ ur.ers <- function(y, type=c("DF-GLS", "P-test"), model=c("constant", "trend"), 
     test.reg <- dfgls.reg
     lag.max <- lag.max-1
   }
-  colnames(cvals) <- c("1%", "5%", "10%")
+  colnames(cvals) <- c("1pct", "5pct", "10pct")
   rownames(cvals) <- c("critical values")
-  new("ur.ers", y=y, yd=yd, type=type, model=model, lag=as.integer(lag.max), cval=round(cvals, 2), teststat=teststat, testreg=test.reg, test.name="Elliot, Rothenberg \& Stock")
+  new("ur.ers", y=y, yd=yd, type=type, model=model, lag=as.integer(lag.max), cval=round(cvals, 2), teststat=teststat, testreg=test.reg, test.name="Elliot, Rothenberg and Stock")
 }
 ##
 ## Johansen Procedure
@@ -443,7 +443,7 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, spec=c("long
         }
         else {
             cval <- round(cvals[1:arrsel, , 2], 2)
-            colnames(cval) <- c("10%", "5%", "1%")
+            colnames(cval) <- c("10pct", "5pct", "1pct")
             rownames(cval) <- c(paste("r <= ", (arrsel - 1):1, 
                 " |", sep = ""), "r = 0  |")
         }
@@ -458,7 +458,7 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, spec=c("long
         }
         else {
             cval <- round(cvals[1:arrsel, , 1], 2)
-            colnames(cval) <- c("10%", "5%", "1%")
+            colnames(cval) <- c("10pct", "5pct", "1pct")
             rownames(cval) <- c(paste("r <= ", (arrsel - 1):1, 
                 " |", sep = ""), "r = 0  |")
         }
@@ -1054,7 +1054,7 @@ cajolst <- function (x, trend = TRUE, K = 2, season = NULL)
       cval <- NULL
     } else {
       cval <- round(cvals[1:arrsel, ], 2)
-      colnames(cval) <- c("10%", "5%", "1%")
+      colnames(cval) <- c("10pct", "5pct", "1pct")
       rownames(cval) <- c(paste("r <= ", (arrsel - 1):1, " |", sep = ""), "r = 0  |")
     }
     temp1 <- NULL
@@ -1158,12 +1158,12 @@ ur.kpss <- function(y, type=c("mu", "tau"), lags=c("short", "long", "nil"), use.
   }
   if(type=="mu"){
     cval <- as.matrix(t(c(0.347, 0.463, 0.574, 0.739)))
-    colnames(cval) <- c("10%", "5%", "2.5%", "1%")
+    colnames(cval) <- c("10pct", "5pct", "2.5pct", "1pct")
     rownames(cval) <- "critical values"
     res <- y - mean(y)
   }else if(type=="tau"){
     cval <- as.matrix(t(c(0.119, 0.146, 0.176, 0.216)))
-    colnames(cval) <- c("10%", "5%", "2.5%", "1%")
+    colnames(cval) <- c("10pct", "5pct", "2.5pct", "1pct")
     rownames(cval) <- "critical values"
     trend <- 1:n
     res <- residuals(lm(y ~ trend))
@@ -1261,9 +1261,9 @@ ca.po <- function(z, demean=c("none", "constant", "trend"), lag=c("short", "long
     cval <- as.matrix(t(cvals[m-1, ,ari3]))
     res <- as.matrix(resu)
   }
-  colnames(cval) <- c("10\%", "5\%", "1\%")
+  colnames(cval) <- c("10pct", "5pct", "1pct")
   rownames(cval) <- "critical values"
-  new("ca.po", z=z, type=type, model=model, lag=as.integer(lmax), cval=cval, res=res, teststat=teststat, testreg=test.reg, test.name="Phillips \& Ouliaris")
+  new("ca.po", z=z, type=type, model=model, lag=as.integer(lmax), cval=cval, res=res, teststat=teststat, testreg=test.reg, test.name="Phillips and Ouliaris")
 }
 ##
 ## Augmented-Dickey-Fuller Test
@@ -1417,7 +1417,7 @@ ur.df <- function (y, type = c("none", "drift", "trend"), lags = 1)
 
         testnames <- c('tau3', 'phi2', 'phi3')
       }
-    colnames(cvals) <- c('1%', '5%', '10%')
+    colnames(cvals) <- c("1pct", "5pct", "10pct")
     rownames(cvals) <- testnames
    
     new("ur.df", y = y, model = type, cval=cvals, lags=lag, teststat = teststat, testreg=testreg, res=res, test.name="Augmented Dickey-Fuller Test")
@@ -1445,7 +1445,7 @@ ur.pp <- function(x, type=c("Z-alpha", "Z-tau"), model=c("constant", "trend"), l
     lmax <- trunc(12*(n/100)^0.25)}
   if(model=="trend"){
     cval <- as.matrix(t(c(-3.9638-8.353/n-47.44/(n^2), -3.4126-4.039/n-17.83/(n^2), -3.1279-2.418/n-7.58/(n^2))))
-    colnames(cval) <- c("1%", "5%", "10%")
+    colnames(cval) <- c("1pct", "5pct", "10pct")
     rownames(cval) <- "critical values"
     model <- "with intercept and trend"
     trend <- (1:n) - n/2
@@ -1480,7 +1480,7 @@ ur.pp <- function(x, type=c("Z-alpha", "Z-tau"), model=c("constant", "trend"), l
     }
   }else if(model=="constant"){
     cval <- as.matrix(t(c(-3.4335-5.999/n-29.25/(n^2), -2.8621-2.738/n-8.36/(n^2), -2.5671-1.438/n-4.48/(n^2))))
-    colnames(cval) <- c("1%", "5%", "10%")
+    colnames(cval) <- c("1pct", "5pct", "10pct")
     rownames(cval) <- "critical values"
     model <- "with intercept"
     test.reg <- summary(lm(y ~ y.l1))
@@ -1913,7 +1913,7 @@ setMethod("show", "sumurca", function(object){
         res1 <- as.matrix(round(object@teststat, 2))
         colnames(res1) <- "test"
         result <- cbind(res1, object@cval)
-        cat("Values of teststatistic \& critical values of test:\n")
+        cat("Values of teststatistic and critical values of test:\n")
         cat("\n")
         print(result)
         cat("\n")

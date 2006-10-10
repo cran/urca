@@ -1,3 +1,7 @@
+2006-10-10  Dr. Bernhard Pfaff  <bernhard@pfaffikus.de>
+
+	* R/urca.R: '\&' replaced by 'and' and '\%' replaced by 'pct'.
+
 2006-09-05  Dr. Bernhard Pfaff  <bernhard@pfaffikus.de>
 
 	* R/urca.R (ca.po): cvals for Pz and Pu swapped
