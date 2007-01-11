@@ -1,3 +1,7 @@
+2007-01-10  Dr. Bernhard Pfaff  <bp@>
+
+	* inst/Rcmdr-menus.txt: activation columne inserted.
+
 2006-12-27  Dr. Bernhard Pfaff  <bernhard@pfaffikus.de>
 
 	* data/npext.rda: missing series M inserted
