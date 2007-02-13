@@ -1477,6 +1477,7 @@ ur.pp <- function(x, type=c("Z-alpha", "Z-tau"), model=c("constant", "trend"), l
     }else if(type=="Z-alpha"){
       alpha <- coef(test.reg)[2, 1]
       teststat <- n*(alpha-1)-lambda/M
+      cval <- as.matrix(t(c(NA, NA, NA)))
     }
   }else if(model=="constant"){
     cval <- as.matrix(t(c(-3.4335-5.999/n-29.25/(n^2), -2.8621-2.738/n-8.36/(n^2), -2.5671-1.438/n-4.48/(n^2))))
@@ -1506,6 +1507,7 @@ ur.pp <- function(x, type=c("Z-alpha", "Z-tau"), model=c("constant", "trend"), l
     }else if(type=="Z-alpha"){
       alpha <- coef(test.reg)[2, 1]
       teststat <- n*(alpha-1)-lambda/myybar
+      cval <- as.matrix(t(c(NA, NA, NA)))
     }
   }
   new("ur.pp", y=y, type=type, model=model, lag=as.integer(lmax), cval=cval, teststat=as.numeric(teststat), testreg=test.reg, auxstat=aux.stat, res=res, test.name="Phillips-Perron")
@@ -1801,9 +1803,11 @@ setMethod("show", "sumurca", function(object){
     cat('\n')
     print(object@auxstat)
     cat('\n')
-    cat('Critical values for Z statistics: \n')
-    print(object@cval)
-    cat('\n')
+    if(identical(object@type, "Z-tau")){
+      cat('Critical values for Z statistics: \n')
+      print(object@cval)
+      cat('\n')
+    }
     invisible(object)
   }else if(object@classname=="ur.df"){
     title <- paste("#", object@test.name, "Unit Root Test #", sep=" ")
