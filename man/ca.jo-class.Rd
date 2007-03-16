@@ -59,6 +59,8 @@
       \code{NA}.}
     \item{\code{test.name}:}{Object of class \code{"character"}: The
       name of the test, \emph{i.e.} `Johansen-Procedure'.}
+    \item{\code{call}:}{Object of class \code{"call"}: The
+      call of function \code{ca.jo}.}
   }
 }
 \section{Extends}{
