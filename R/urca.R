@@ -36,7 +36,8 @@ setClass("ca.jo", representation(x="ANY",
                                  GAMMA="matrix",
                                  R0="matrix",
                                  RK="matrix",
-                                 bp="ANY"),
+                                 bp="ANY",
+                                 call="call"),
          contains="urca")
 
 setClass("cajo.test", representation(Z0="matrix",
@@ -466,17 +467,18 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, spec=c("long
   
     colnames(V) <- colnames(ZK)
     rownames(V) <- colnames(ZK) 
-    rownames(W) <- colnames(x)
+    rownames(W) <- paste(colnames(x), ".d", sep = "")
     colnames(W) <- colnames(ZK)
     colnames(Vorg) <- colnames(V)
     rownames(Vorg) <- rownames(V)
-    rownames(PI) <- colnames(x)
+    rownames(PI) <- rownames(W)
     colnames(PI) <- colnames(W)
     colnames(Z0) <- paste(colnames(x), ".d", sep="")
     colnames(R0) <- paste("R0", colnames(Z0), sep=".")
     colnames(RK) <- paste("RK", colnames(ZK), sep=".")
+    rownames(GAMMA) <- rownames(W)
    
-    new("ca.jo", x = x, Z0 = Z0, Z1 = Z1, ZK = ZK, type = type, model = model, const = constant, lag = K, P = arrsel, season = season, dumvar = dumvar, cval = cval, teststat = as.vector(teststat), lambda = lambda, Vorg = Vorg, V = V, W = W, PI = PI, DELTA = DELTA, GAMMA = GAMMA, R0 = R0, RK = RK, bp = NA, test.name = "Johansen-Procedure")  
+    new("ca.jo", x = x, Z0 = Z0, Z1 = Z1, ZK = ZK, type = type, model = model, const = constant, lag = K, P = arrsel, season = season, dumvar = dumvar, cval = cval, teststat = as.vector(teststat), lambda = lambda, Vorg = Vorg, V = V, W = W, PI = PI, DELTA = DELTA, GAMMA = GAMMA, R0 = R0, RK = RK, bp = NA, test.name = "Johansen-Procedure", call = match.call())  
 }
 ##
 ## auxiliary function for residuals' diagnostics and tests
@@ -1355,7 +1357,7 @@ ur.df <- function (y, type = c("none", "drift", "trend"), lags = 1)
       rowselec <- 4
     if(250 <= n & n < 500)
       rowselec <- 5
-    if(n > 500)
+    if(n >= 500)
       rowselec <- 6
     if (type == "none"){ 
         cval.tau1 <- rbind(
