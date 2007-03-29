@@ -306,6 +306,11 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, spec=c("long
     if (!(is.null(dumvar))) {
         dumvar <- as.matrix(dumvar)
         colnames(dumvar) <- make.names(colnames(dumvar))
+        if(is.null(colnames(dumvar))){
+          dumcols <- ncol(dumvar)
+          colnames(dumvar) <- paste("exo", 1:dumcols, sep = "")
+          warning("\nNo column names in 'dumvar', using prefix 'exo' instead.\n")
+        }          
         if (!(nrow(dumvar) == nrow(x))) {
             stop("\nUnequal row length between dummy variables and x matrix.\n")
         }
@@ -394,11 +399,13 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, spec=c("long
       }
     }
     if (!(is.null(dumvar))) {
+      tmp <- colnames(Z1)
       if(constant){
         Z1 <- cbind(dumvar[-(1:K), ], Z1)
+        colnames(Z1) <- c(colnames(dumvar), tmp)
       } else {
         Z1 <- cbind(Z1[, 1], dumvar[-(1:K), ], Z1[, -1])
-        colnames(Z1) <- c("constant", colnames(Z1)[-1])
+        colnames(Z1) <- c("constant", colnames(dumvar), tmp[-1])
       }
     }
     M00 <- crossprod(Z0)/N

@@ -1,3 +1,7 @@
+2007-03-22   Dr. Bernhard Pfaff <bernhard@pfaffikus.de>
+
+	* R/urca.R (ca.jo): Colnames handling for dumvars added.
+
 2007-03-16   Dr. Bernhard Pfaff <bernhard@pfaffikus.de>
 
 	* R/urca.R (ur.df): Fixed rowselec for n >= 500.
