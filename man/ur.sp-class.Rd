@@ -7,7 +7,6 @@
   This class contains the relevant information by applying the Schmidt
   \& Phillips unit root test to a time series.
 }
-}
 \section{Slots}{
   \describe{
     \item{\code{y}:}{Object of class \code{"vector"}: The time series to

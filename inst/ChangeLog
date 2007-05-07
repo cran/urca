@@ -1,3 +1,8 @@
+2007-05-07   Dr. Bernhard Pfaff <bernhard@pfaffikus.de>
+	* Splitted file 'urca.R' in separate files.
+	* R/cajorls.R (cajorls): Function for estimating restricted VECM
+	included. 
+
 2007-03-22   Dr. Bernhard Pfaff <bernhard@pfaffikus.de>
 
 	* R/urca.R (ca.jo): Colnames handling for dumvars added.
