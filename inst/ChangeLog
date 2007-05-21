@@ -1,3 +1,7 @@
+2007-05-21    Dr. Bernhard Pfaff <bernhard@pfaffikus.de>
+
+	* R/All-classes.R: ca.jo: inserted slot 'spec' for VECM specification.
+
 2007-05-07   Dr. Bernhard Pfaff <bernhard@pfaffikus.de>
 	* Splitted file 'urca.R' in separate files.
 	* R/cajorls.R (cajorls): Function for estimating restricted VECM

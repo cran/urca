@@ -37,6 +37,7 @@ setClass("ca.jo", representation(x="ANY",
                                  R0="matrix",
                                  RK="matrix",
                                  bp="ANY",
+                                 spec="character",
                                  call="call"),
          contains="urca")
 
