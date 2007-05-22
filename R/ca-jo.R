@@ -222,5 +222,5 @@ ca.jo <- function(x, type=c("eigen", "trace"), constant=FALSE, K=2, spec=c("long
     colnames(RK) <- paste("RK", colnames(ZK), sep=".")
     rownames(GAMMA) <- rownames(W)
    
-    new("ca.jo", x = x, Z0 = Z0, Z1 = Z1, ZK = ZK, type = type, model = model, const = constant, lag = K, P = arrsel, season = season, dumvar = dumvar, cval = cval, teststat = as.vector(teststat), lambda = lambda, Vorg = Vorg, V = V, W = W, PI = PI, DELTA = DELTA, GAMMA = GAMMA, R0 = R0, RK = RK, bp = NA, test.name = "Johansen-Procedure", call = match.call())  
+    new("ca.jo", x = x, Z0 = Z0, Z1 = Z1, ZK = ZK, type = type, model = model, const = constant, lag = K, P = arrsel, season = season, dumvar = dumvar, cval = cval, teststat = as.vector(teststat), lambda = lambda, Vorg = Vorg, V = V, W = W, PI = PI, DELTA = DELTA, GAMMA = GAMMA, R0 = R0, RK = RK, bp = NA, test.name = "Johansen-Procedure", spec = spec, call = match.call())  
 }
