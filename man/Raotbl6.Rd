@@ -1,5 +1,6 @@
 \name{Raotbl6} 
 \alias{Raotbl6}
+\encoding{latin1}
 \docType{data}
 \title{Data set used by Yash P. Mehra (1994)}
 \description{
@@ -26,7 +27,7 @@
   }
 
   Further details about the data can be found in the data appendix of
-  Rao, ``Cointegration for the Applied Economist´´.
+  Rao, ``Cointegration for the Applied Economist".
   
 }
 \source{
