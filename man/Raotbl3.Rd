@@ -1,5 +1,6 @@
 \name{Raotbl3} 
 \alias{Raotbl3}
+\encoding{latin1}
 \docType{data}
 \title{Data set used by Holden and Perman (1994)}
 \description{
@@ -22,7 +23,7 @@
   }
   
   More details about the data are provided in the data appendix of Rao,
-  ``Cointegration for the Applied Economist´´ (see source below).
+  ``Cointegration for the Applied Economist" (see source below).
 }
 \source{
   Holden, Darryl and Roger Perman (1994), Unit Roots and Cointegration

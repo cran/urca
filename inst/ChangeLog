@@ -1,3 +1,11 @@
+2007-06-12    Dr. Bernhard Pfaff <bernhard@pfaffikus.de>
+
+	* man/cajorls.Rd: \encoding{latin1} inserted.
+	* man/Raotbl3.Rd: \encoding{latin1} inserted and "''" fixed.
+	* man/Raotbl4.Rd: \encoding{latin1} inserted and "''" fixed.
+	* man/Raotbl5.Rd: \encoding{latin1} inserted and "''" fixed.
+	* man/Raotbl6.Rd: \encoding{latin1} inserted and "''" fixed.
+
 2007-05-21    Dr. Bernhard Pfaff <bernhard@pfaffikus.de>
 
 	* R/All-classes.R: ca.jo: inserted slot 'spec' for VECM specification.

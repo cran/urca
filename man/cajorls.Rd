@@ -1,5 +1,6 @@
 \name{cajorls}
 \alias{cajorls}
+\encoding{latin1}
 \title{OLS regression of VECM}
 \description{
   This function returns the OLS regressions of a restricted VECM,

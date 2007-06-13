@@ -1,5 +1,6 @@
 \name{Raotbl4} 
 \alias{Raotbl4}
+\encoding{latin1}
 \docType{data}
 \title{Data set used by Pierre Perron (1994)}
 \description{
@@ -23,7 +24,7 @@
 
   For further details about the data see \emph{Notes} in the data
   appendix `Table D.5' of Rao, ``Cointegration for the Applied
-  Economist´´.
+  Economist".
   
 }
 \source{
