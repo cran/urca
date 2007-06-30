@@ -1,3 +1,9 @@
+2008-06-30  Dr. Bernhard Pfaff  <bp@callisto>
+
+	* R/alrtest.R (alrtest): Inserted eigen(... , symmetric = TRUE)
+	* inst/CITATION: Updated citation file to second edition.
+	* inst/book-ex/: R code examples from second edition included.
+
 2007-10-31    Dr. Bernhard Pfaff <bernhard@pfaffikus.de>
 
 	* R/ca-jo.R (ca.jo): Argument 'ctable' dropped and use of

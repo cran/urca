@@ -1,17 +1,19 @@
 citHeader("To cite the urca package in publications use:")
 
+citFooter("For BibTex versions of citations use: toBibtex(citation('urca'))")
+
 citEntry(entry="Book",
          title = "Analysis of Integrated and Cointegrated Time Series with R",
          author = personList(as.person("B. Pfaff")),
 	 publisher = "Springer",
-         edition = "First",
+         edition = "Second",
          address      = "New York",
-         year         = 2006,
+         year         = 2008,
          note         = "ISBN 0-387-27960-1",
          url          = "http://www.pfaffikus.de",
          
          textVersion = 
-         paste("Pfaff, B. (2006)", 
+         paste("Pfaff, B. (2008)", 
                "Analysis of Integrated and Cointegrated Time Series with R.",
-               "First Edition. Springer, New York. ISBN 0-387-27960-1")
+               "Second Edition. Springer, New York. ISBN 0-387-27960-1")
 )
