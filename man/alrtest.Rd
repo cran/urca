@@ -45,7 +45,7 @@ alrtest(z, A, r)
 \examples{
 data(denmark)
 sjd <- denmark[, c("LRM", "LRY", "IBO", "IDE")]
-sjd.vecm <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, spec="longrun",
+sjd.vecm <- ca.jo(sjd, ecdet = "const", type="eigen", K=2, spec="longrun",
 season=4)
 DA <- matrix(c(1,0,0,0), c(4,1))
 summary(alrtest(sjd.vecm, A=DA, r=1))

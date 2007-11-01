@@ -62,7 +62,7 @@ plot(za.gnp)
 #
 data(denmark)
 sjd <- denmark[, c("LRM", "LRY", "IBO", "IDE")]
-sjd.vecm <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, season=4)
+sjd.vecm <- ca.jo(sjd, ecdet="const", type="eigen", K=2, season=4)
 plot(sjd.vecm)
 }
 \author{Bernhard Pfaff}

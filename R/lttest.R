@@ -12,9 +12,9 @@ lttest <- function(z, r){
   idx <- r + 1
   df <- length(idx:z@P)
   N <- nrow(z@Z0)
-  test1 <- ca.jo(z@x, constant=TRUE, K=z@lag, season=z@season, dumvar=z@dumvar)
+  test1 <- ca.jo(z@x, ecdet = "const", K=z@lag, season=z@season, dumvar=z@dumvar)
   lambda1 <- test1@lambda
-  test2 <- ca.jo(z@x, constant=FALSE, K=z@lag, season=z@season, dumvar=z@dumvar)
+  test2 <- ca.jo(z@x, ecdet = "none", K=z@lag, season=z@season, dumvar=z@dumvar)
   lambda2 <- test2@lambda
   teststat <- -N*sum(log((1-lambda1[idx:z@P])/(1-lambda2[idx:z@P])))
   pval <- 1 - pchisq(teststat, df)

@@ -47,8 +47,8 @@ cajorls(z, r = 1, reg.number = NULL)
 \examples{
 data(finland)
 sjf <- finland
-sjf.vecm <- ca.jo(sjf, constant = FALSE, type = "eigen", K = 2,
-spec = "longrun", season = 4, ctable = "A2")
+sjf.vecm <- ca.jo(sjf, ecdet = "none", type = "eigen", K = 2,
+spec = "longrun", season = 4)
 sjf.vecm.rls <- cajorls(sjf.vecm, r = 2)
 summary(sjf.vecm.rls$rlm)
 sjf.vecm.rls$beta

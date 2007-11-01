@@ -310,7 +310,7 @@ urcacajo <- function(){
     }
     ttype <- tclvalue(typeVariable)
     spect <- tclvalue(specVariable)
-    ctype <- if(tclvalue(constVariable) == 0) "FALSE" else "TRUE"
+    ctype <- tclvalue(ecdetVariable)
     lags <- tclvalue(lagVariable)
     seas <- tclvalue(seasonVariable)
     dummy <- tclvalue(dumVariable)
@@ -331,7 +331,7 @@ urcacajo <- function(){
         return()
       }
     }
-    command <- paste("ca.jo(x = ", x, ",  type = ", ttype, ", constant = ",  ctype, ", K = ",
+    command <- paste("ca.jo(x = ", x, ",  type = ", ttype, ", ecdet = ",  ctype, ", K = ",
                      lags, ", spec = ", spect, ", season = ", seas, ", dumvar = ", dummy , ")", sep="")
     logger(paste(modelValue, " <- ", command, sep=""))
     assign(modelValue, justDoIt(command), envir=.GlobalEnv)
@@ -345,7 +345,8 @@ urcacajo <- function(){
                labels=c("longrun specification", "transitory specification"), title="VECM specification")
   radioButtons(name="season", buttons=c("none", "monthly", "quarterly"), values=c("NULL", "12", "4"), 
                labels=c("None", "Monthly seasonality", "Quarterly seasonality"), title="Seasonality")
-  checkBoxes(frame="const1Frame", boxes="const", initialValues="0", labels="Include constant in longrun relationship?")
+  radioButtons(name="ecdet", buttons=c("none", "const", "trend"), values=c("'none'", "'const'", "'trend'"), 
+               labels=c("none", "constant", "trend"), title="Deterministic Variable in Cointegration") 
   rightFrame <- tkframe(top)
   lagFrame <- tkframe(rightFrame)
   lagVariable <- tclVar("2")
@@ -363,7 +364,7 @@ urcacajo <- function(){
   tkgrid(dumFrame, sticky="w")
   tkgrid(typeFrame, rightFrame, sticky="nw")
   tkgrid(specFrame, seasonFrame, sticky="nw")
-  tkgrid(const1Frame, sticky="w")
+  tkgrid(ecdetFrame, rightFrame, sticky="w")
   tkgrid(buttonsFrame, sticky="w")
   tkgrid.configure(lagField, sticky="e")
   tkgrid.configure(dumField, sticky="e")

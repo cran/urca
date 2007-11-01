@@ -162,7 +162,7 @@ cajolst <- function (x, trend = TRUE, K = 2, season = NULL)
     colnames(R0) <- paste("R0", colnames(Z0), sep = ".")
     colnames(RK) <- paste("RK", colnames(ZK), sep = ".")
     
-    new("ca.jo", x = x, Z0 = Z0, Z1 = Z1, ZK = ZK, type = type,         model = model, const = FALSE, lag = K, P = arrsel, 
+    new("ca.jo", x = x, Z0 = Z0, Z1 = Z1, ZK = ZK, type = type, model = model, ecdet = "none", lag = K, P = arrsel, 
         season = season, dumvar = NULL, cval = cval, teststat = as.vector(teststat), 
         lambda = lambda, Vorg = Vorg, V = V, W = W, PI = PI, 
         DELTA = DELTA, GAMMA = GAMMA, R0 = R0, RK = RK, bp = tau.bp, 

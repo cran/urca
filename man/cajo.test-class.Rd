@@ -15,8 +15,9 @@
       matrix, except for the lagged variables in levels.}
     \item{\code{ZK}:}{Object of class \code{"matrix"}: The matrix of the
       lagged variables in levels.}
-    \item{\code{const}:}{Object of class \code{"logic"}: If TRUE, no
-      linear trend is included and \emph{vice versa}.}
+    \item{\code{ecdet}:}{Object of class \code{"character"}: Specifies
+      the deterministic term to be included in the cointegration
+      relation. This can be either "none", "const", or "trend".}
     \item{\code{H}:}{Object of class \code{"ANY"}: The matrix
       containing the restrictions placed upon \eqn{\bold{\beta}}.}
     \item{\code{A}:}{Object of class \code{"ANY"}: The matrix

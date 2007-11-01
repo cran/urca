@@ -42,9 +42,9 @@ cajools(z, reg.number = NULL)
 \examples{
 data(denmark)
 sjd <- denmark[, c("LRM", "LRY", "IBO", "IDE")]
-sjd.vecm1 <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, spec="longrun",
+sjd.vecm1 <- ca.jo(sjd, ecdet = "const", type="eigen", K=2, spec="longrun",
 season=4)
-sjd.vecm2 <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, spec="transitory",
+sjd.vecm2 <- ca.jo(sjd, ecdet = "const", type="eigen", K=2, spec="transitory",
 season=4)
 sjd.vecm.ols1 <- cajools(sjd.vecm1)
 sjd.vecm.ols2 <- cajools(sjd.vecm2)

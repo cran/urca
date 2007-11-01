@@ -83,7 +83,7 @@ summary(za.gnp)
 #
 data(finland)
 sjf <- finland
-sjf.vecm <- ca.jo(sjf, constant=FALSE, type="eigen", K=2, season=4)
+sjf.vecm <- ca.jo(sjf, ecdet="none", type="eigen", K=2, season=4)
 summary(sjf.vecm)
 #
 HF0 <- matrix(c(-1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), c(4,3))

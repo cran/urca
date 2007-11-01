@@ -9,10 +9,10 @@ bh6lrtest <- function (z, H, r, r1, conv.val=0.0001, max.iter=50)
     if (r >= z@P || r < 1) {
         stop("\nCount of cointegrating relationships is out of allowable range.\n")
     }
-    if (z@const == TRUE) {
-        P <- z@P + 1
-    } else {
+    if (z@ecdet == "none") {
         P <- z@P
+    } else {
+        P <- z@P + 1
     }
     r <- as.integer(r)
     H <- as.matrix(H)
@@ -92,5 +92,5 @@ bh6lrtest <- function (z, H, r, r1, conv.val=0.0001, max.iter=50)
     teststat <- N*(sum(log(1-rho[1:r1])) + sum(log(1-lambda.res[1:r2])) - sum(log(1-lambda[1:r])))
     df <- (P - s - r2)*r1
     pval <- c(1 - pchisq(teststat, df), df)
-    new("cajo.test", Z0 = z@Z0, Z1 = z@Z1, ZK = z@ZK, const = z@const, H = H, A = NULL, B = NULL, type = type, teststat = teststat, pval = pval, lambda = lambda.res, Vorg = Vorg, V = V, W = W, PI = PI, DELTA = DELTA, DELTA.bb = NULL, DELTA.ab = NULL, DELTA.aa.b = NULL, GAMMA = GAMMA, test.name = "Johansen-Procedure")
+    new("cajo.test", Z0 = z@Z0, Z1 = z@Z1, ZK = z@ZK, ecdet = z@ecdet, H = H, A = NULL, B = NULL, type = type, teststat = teststat, pval = pval, lambda = lambda.res, Vorg = Vorg, V = V, W = W, PI = PI, DELTA = DELTA, DELTA.bb = NULL, DELTA.ab = NULL, DELTA.aa.b = NULL, GAMMA = GAMMA, test.name = "Johansen-Procedure")
 }
