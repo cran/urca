@@ -1,3 +1,37 @@
+2007-10-31    Dr. Bernhard Pfaff <bernhard@pfaffikus.de>
+
+	* R/ca-jo.R (ca.jo): Argument 'ctable' dropped and use of
+	Osterwald-Lenum critical values instead.
+	* man/ca.jo.Rd: Documentation adjusted for change in ca.jo(). 
+
+2007-10-29    Dr. Bernhard Pfaff <bernhard@pfaffikus.de>
+
+	* R/ca-jo.R (ca.jo): Exchnaged argument 'const' for 'ecdet'.
+	* R/lttest.R (lttest): Adjusted for argument 'ecdet' in ca.jo().
+	* R/ablrtest.R (ablrtest): Adjusted for argument 'ecdet' in ca.jo().
+	* R/All-classes.R: Adjusted relevant classes for argument 'ecdet'.
+	* R/alrtest.R (alrtest): Adjusted for argument 'ecdet' in ca.jo().
+	* R/bh5lrtest.R: Adjusted for argument 'ecdet' in ca.jo().
+	* R/bh6lrtest.R: Adjusted for argument 'ecdet' in ca.jo().
+	* R/blrtest.R: Adjusted for argument 'ecdet' in ca.jo().
+	* R/cajolst.R: Adjusted for argument 'ecdet' in ca.jo().
+	* man/ca.jo.Rd: Adjusted documentation and example for argument 'ecdet' in ca.jo().
+	* man/ca.jo-class.Rd: Exchanged 'const'-slot with 'ecdat'-slot.
+	* man/ablrtest.Rd: Adjusted example for argument 'ecdet' in ca.jo().
+	* man/cajo.test-class.Rd: Exchanged 'const'-slot with 'ecdat'-slot.
+	* man/alphaols.Rd: Adjusted example for argument 'ecdet' in ca.jo().
+	* man/alrtest.Rd: Adjusted example for argument 'ecdet' in ca.jo().
+	* man/blrtest.Rd: Adjusted example for argument 'ecdet' in ca.jo().
+	* man/cajools.Rd: Adjusted example for argument 'ecdet' in ca.jo().
+	* man/cajorls.Rd: Adjusted example for argument 'ecdet' in ca.jo().
+	* man/lttest.Rd: Adjusted example for argument 'ecdet' in ca.jo().
+	* man/plot-methods.Rd: Adjusted example for argument 'ecdet' in ca.jo().
+	* man/plotres.Rd: Adjusted example for argument 'ecdet' in ca.jo().
+	* man/show-methods.Rd: Adjusted example for argument 'ecdet' in ca.jo().
+	* man/summary-methods.Rd: Adjusted example for argument 'ecdet' in ca.jo().
+	* inst/Rcmdr-urca.R: Adjusted for ecdet.
+
+	
 2007-06-12    Dr. Bernhard Pfaff <bernhard@pfaffikus.de>
 
 	* man/cajorls.Rd: \encoding{latin1} inserted.

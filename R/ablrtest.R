@@ -14,10 +14,10 @@ ablrtest <- function(z, H, A, r){
     if(r >= z@P || r<1){
       stop("\nCount of cointegrating relationships is out of allowable range.\n")
     }
-    if(z@const==TRUE){
-      P <- z@P + 1
-    }else{
+    if(z@ecdet == "none"){
       P <- z@P
+    }else{
+      P <- z@P + 1
     }
     if(!(nrow(H)==P)){
       stop("\nRow number of 'H' is unequal to VAR order.\n")
@@ -75,5 +75,5 @@ ablrtest <- function(z, H, A, r){
     teststat <- N*sum(log((1-lambda.res[1:r])/(1-lambda[1:r])))
     df <- r*(z@P - ncol(A)) + r*(z@P - ncol(H))
     pval <- c(1-pchisq(teststat, df), df)
-    new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, const=z@const, H=H, A=A, B=B, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=ALPHA, PI=PI, DELTA=NULL, DELTA.bb=DELTA.bb, DELTA.ab=DELTA.ab, DELTA.aa.b=DELTA.aa.b, GAMMA=GAMMA, test.name="Johansen-Procedure")
+    new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, ecdet=z@ecdet, H=H, A=A, B=B, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=ALPHA, PI=PI, DELTA=NULL, DELTA.bb=DELTA.bb, DELTA.ab=DELTA.ab, DELTA.aa.b=DELTA.aa.b, GAMMA=GAMMA, test.name="Johansen-Procedure")
 }

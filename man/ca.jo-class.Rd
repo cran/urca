@@ -22,8 +22,9 @@
     \item{\code{model}:}{Object of class \code{"character"}: The model
       description in prose, with respect to the inclusion of a linear
       trend.}
-    \item{\code{const}:}{Object of class \code{"logic"}: If TRUE, no
-      linear trend is included and \emph{vice versa}.}
+    \item{\code{ecdet}:}{Object of class \code{"character"}: Specifies
+      the deterministic term to be included in the cointegration
+      relation. This can be either "none", "const", or "trend".}
     \item{\code{lag}:}{Object of class \code{"integer"}: The lag order
       for the variables in levels.}
     \item{\code{P}:}{Object of class \code{"integer"}: The count of

@@ -7,15 +7,16 @@
   matrix of eigenvectors as well as the loading matrix.
 }
 \usage{
-ca.jo(x, type = c("eigen", "trace"), constant = FALSE, K = 2,
-spec=c("longrun", "transitory"), season = NULL, dumvar = NULL,
-ctable = c("A1", "A2", "A3"))
+ca.jo(x, type = c("eigen", "trace"), ecdet = c("none", "const", "trend"), K = 2,
+spec=c("longrun", "transitory"), season = NULL, dumvar = NULL)
 }
 \arguments{
   \item{x}{Data matrix to be investigated for cointegration.}
   \item{type}{The test to be conducted, either \code{`eigen'} or
     \code{`trace'}.}
-  \item{constant}{If TRUE, no linear trend is specified.}
+  \item{ecdet}{Character, "none" for no intercept in cointegration,
+    "const" for constant term in cointegration and "trend" for trend
+    variable in cointegration.}
   \item{K}{The lag order of the series (levels) in the VAR.}
   \item{spec}{Determines the specification of the VECM, see details below.}
   \item{season}{If seasonal dummies should be included, the data
@@ -23,8 +24,6 @@ ctable = c("A1", "A2", "A3"))
     data.}
   \item{dumvar}{If dummy variables should be included, a matrix with
     row dimension equal to \code{x} can be provided.} 
-  \item{ctable}{The table from which the critical values should be
-    taken (see reference below for further details). } 
 }
 \details{
 
@@ -85,7 +84,7 @@ ctable = c("A1", "A2", "A3"))
   \code{x}.
 
   Critical values are only reported for systems with less than
-  five variables.
+  11 variables and are taken from Osterwald-Lenum.
   
 }
 \value{
@@ -105,6 +104,11 @@ ctable = c("A1", "A2", "A3"))
   Cointegration Vectors in Gaussian Vector Autoregressive Models,
   \emph{Econometrica}, \bold{Vol. 59, No. 6}, 1551--1580.
 
+  Osterwald-Lenum, M. (1992), A Note with Quantiles of the Asymptotic
+  Distribution of the Maximum Likelihood Cointegration Rank Test
+  Statistics, \emph{Oxford Bulletin of Economics and Statistics},
+  \bold{55, 3}, 461--472.
+
 }
 \seealso{
   
@@ -115,14 +119,14 @@ ctable = c("A1", "A2", "A3"))
 \examples{
 data(denmark)
 sjd <- denmark[, c("LRM", "LRY", "IBO", "IDE")]
-sjd.vecm <- ca.jo(sjd, constant=TRUE, type="eigen", K=2, spec="longrun",
-season=4, ctable="A3")
+sjd.vecm <- ca.jo(sjd, ecdet = "const", type="eigen", K=2, spec="longrun",
+season=4)
 summary(sjd.vecm)
 #
 data(finland)
 sjf <- finland
-sjf.vecm <- ca.jo(sjf, constant=FALSE, type="eigen", K=2,
-spec="longrun", season=4, ctable="A2")
+sjf.vecm <- ca.jo(sjf, ecdet = "none", type="eigen", K=2,
+spec="longrun", season=4)
 summary(sjf.vecm)
 }
 \author{Bernhard Pfaff}
