@@ -46,7 +46,7 @@ alrtest <- function(z, A, r){
   C <- t(Ctemp[,oo])
   Cinv <- solve(C)
   Saa.binv <- solve(Saa.b)
-  valeigen <- eigen(Cinv%*%Ska.b%*%Saa.binv%*%Sak.b%*%t(Cinv))
+  valeigen <- eigen(Cinv%*%Ska.b%*%Saa.binv%*%Sak.b%*%t(Cinv), symmetric = TRUE)
   lambda.res <- valeigen$values
   e <- valeigen$vector
   V <- t(Cinv)%*%e
@@ -66,6 +66,6 @@ alrtest <- function(z, A, r){
   lambda <- z@lambda
   teststat <- N*sum(log((1-lambda.res[1:r])/(1-lambda[1:r])))
   df <- r*(z@P - ncol(A))
-  pval <- c(1-pchisq(teststat, df), df)
+  pval <- c(1-pchisq(q = teststat, df = df), df)
   new("cajo.test", Z0=z@Z0, Z1=z@Z1, ZK=z@ZK, ecdet=z@ecdet, H=NULL, A=A, B=B, type=type, teststat=teststat, pval=pval, lambda=lambda.res, Vorg=Vorg, V=V, W=ALPHA, PI=PI, DELTA=NULL, DELTA.bb=DELTA.bb, DELTA.ab=DELTA.ab, DELTA.aa.b=DELTA.aa.b, GAMMA=GAMMA, test.name="Johansen-Procedure")
 }
