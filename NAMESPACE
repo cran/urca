@@ -1,8 +1,8 @@
 ##
 import(methods)
+##
 ## Functions
 export(ablrtest, alphaols, alrtest, blrtest, bh5lrtest, bh6lrtest, ca.jo, ca.po, cajolst, cajools, cajorls, lttest, plotres, ur.ers, ur.kpss, ur.pp, ur.df, ur.sp, ur.za)
-
 ## Classes       
 exportClasses("urca", "ca.jo", "cajo.test", "ur.kpss", "ca.po", "ur.ers", "ur.pp", "ur.sp", "ur.df", "ur.za", "sumurca")
 
@@ -12,5 +12,6 @@ exportMethods("show", "plot", "summary")
 ## Import functions
 importFrom(graphics, plot)
 importFrom(nlme, BIC)
+
 
 
