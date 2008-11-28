@@ -196,7 +196,7 @@ setMethod("show", "sumurca", function(object){
         rownames(result) <- c(paste("r <= ", (object@P-1):1, " |",sep=""), "r = 0  |")
         print(result)
         cat("\n")
-        invisible(x)
+        invisible(object)
       }
       cat("Eigenvectors, normalised to first column:\n")
       cat("(These are the cointegration relations)\n")

@@ -2,7 +2,7 @@
 			# R E A D M E #
 			###############
 
-The two files in the `/inst' directory of urca, namely `Rcmdr-urca.R' 
+The two files in the `/Rcmdr' directory of urca, namely `Rcmdr-urca.R' 
 and `Rcmdr-menus.txt', can be utilisied as an add-in to `Rcmdr' of
 John Fox. For more information on `Rcmdr' please visit the URL:
 

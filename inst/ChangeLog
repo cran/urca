@@ -1,3 +1,14 @@
+2008-11-27    Dr. Bernhard Pfaff  <bp@callisto>
+
+	* R/methods-show.R (show.urca): Fixed invisible(x) to
+	invisible(object) -> no visible binding for global variable 'x'
+	during QC of urca.
+	* inst/inst: Renamed folder containing Rcmdr-plugin to inst/Rcmdr.
+
+2008-11-26    Dr. Bernhard Pfaff  <bp@callisto>
+
+	* book-ex/Rcode-4-2.R: Bug fixed: error[-c(-1, 100)].
+
 2008-06-30  Dr. Bernhard Pfaff  <bp@callisto>
 
 	* R/alrtest.R (alrtest): Inserted eigen(... , symmetric = TRUE)

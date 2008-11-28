@@ -17,3 +17,4 @@
   cval <- cv.array[dim.1, dim.2, dim.3]}
   return(cval)
 }
+
