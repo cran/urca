@@ -1,5 +1,6 @@
 \name{blrtest}
 \alias{blrtest}
+\encoding{latin1}
 \title{Likelihood ratio test for restrictions on beta}
 \description{
   This function estimates a restricted VAR, where the restrictions are
@@ -12,11 +13,11 @@
 blrtest(z, H, r)
 }
 \arguments{
-  \item{z}{An object of class `ca.jo'.}
+  \item{z}{An object of class \code{ca.jo}.}
   \item{H}{The \eqn{(p \times s)} matrix containing the restrictions on
     \eqn{\bold{\beta}}.}
   \item{r}{The count of cointegrating relationships; \cr
-    inferred from \code{summary(`ca.jo-object')}.}
+    inferred from \code{summary(ca.jo-object)}.}
 }
 \details{
   Please note, that in the case of nested hypothesis, the reported
@@ -24,7 +25,7 @@ blrtest(z, H, r)
   K. Juselius (1990)).
 }
 \value{
-  An object of class \code{`cajo.test'}.
+  An object of class \code{cajo.test}.
 }
 \references{
 

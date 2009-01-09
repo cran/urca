@@ -1,5 +1,6 @@
 \name{lttest}
 \alias{lttest}
+\encoding{latin1}
 \title{Likelihood ratio test for no linear trend in VAR}
 \description{
   Conducts a likelihood ratio test for no inclusion of a linear trend in a

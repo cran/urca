@@ -1,8 +1,8 @@
 \name{ur.sp-class}
 \docType{class}
 \alias{ur.sp-class}
-
-\title{Representation of class `ur.sp'}
+\encoding{latin1}
+\title{Representation of class ur.sp}
 \description{
   This class contains the relevant information by applying the Schmidt
   \& Phillips unit root test to a time series.
@@ -30,7 +30,7 @@
   }
 }
 \section{Extends}{
-Class \code{`"urca'}, directly.
+Class \code{urca}, directly.
 }
 \section{Methods}{
   Type \code{showMethods(classes="ur.sp")} at the R prompt for a

@@ -1,5 +1,6 @@
 \name{ur.ers}
 \alias{ur.ers}
+\encoding{latin1}
 \title{Elliott, Rothenberg \& Stock Unit Root Test}
 \description{
   Performs the Elliott, Rothenberg \& Stock unit root test. 
@@ -28,7 +29,7 @@ ur.ers(y, type = c("DF-GLS", "P-test"), model = c("constant", "trend"),
   Table 1 of Elliot, Rothenberg \& Stock.
 }
 \value{
-  An object of class \code{"ur.ers"}.
+  An object of class \code{ur.ers}.
 }
 
 \references{

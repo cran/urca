@@ -1,6 +1,7 @@
 \name{npext}
 \docType{data}
 \alias{npext}
+\encoding{latin1}
 \title{Nelson \& Plosser extended data set}
 \description{
   This data set contains the fourteen U.S. economic time series used by

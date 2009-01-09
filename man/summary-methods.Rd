@@ -11,6 +11,7 @@
 \alias{summary,ur.df-method}
 \alias{summary,ur.sp-method}
 \alias{summary,ur.za-method}
+\encoding{latin1}
 \title{Methods for Function summary in Package `urca'}
 \description{
   Summarises the outcome of unit root/cointegration tests by creating a new object of class \code{sumurca}.

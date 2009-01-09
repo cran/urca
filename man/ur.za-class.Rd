@@ -1,8 +1,8 @@
 \name{ur.za-class}
 \docType{class}
 \alias{ur.za-class}
-
-\title{Representation of class `ur.za'}
+\encoding{latin1}
+\title{Representation of class ur.za}
 \description{
   This class contains the relevant information by applying the Zivot \& Andrews
   unit root test to a time series.}
@@ -30,7 +30,7 @@
   }
 }
 \section{Extends}{
-Class \code{`urca'}, directly.
+Class \code{urca}, directly.
 }
 \section{Methods}{
   Type \code{showMethods(classes="ur.za")} at the R prompt for a

@@ -1,6 +1,7 @@
 \name{Raotbl1} 
 \alias{Raotbl1}
 \docType{data}
+\encoding{latin1}
 \title{Data set used by Dickey, Jansen \& Thornton (1994)}
 \description{
   This data set contains the time series used by David A. Dickey, Dennis

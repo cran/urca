@@ -1,8 +1,9 @@
 ##
 ## Augmented-Dickey-Fuller Test
 ##
-ur.df <- function (y, type = c("none", "drift", "trend"), lags = 1) 
+ur.df <- function (y, type = c("none", "drift", "trend"), lags = 1, selectlags = c("Fixed", "AIC", "BIC")) 
 {
+    selectlags<-match.arg(selectlags)
     if (ncol(as.matrix(y)) > 1) 
         stop("\ny is not a vector or univariate time series.\n")
     if (any(is.na(y))) 
@@ -23,6 +24,20 @@ ur.df <- function (y, type = c("none", "drift", "trend"), lags = 1)
     z.lag.1 <- y[lags:n]
     tt <- lags:n
     if (lags > 1) {
+    if(selectlags!="Fixed"){
+      critRes<-rep(NA, lags)
+      for(i in 2:(lags)){
+          z.diff.lag = x[, 2:i]
+	  if (type == "none") 
+            result <- lm(z.diff ~ z.lag.1 - 1 + z.diff.lag)
+	  if (type == "drift") 
+            result <- lm(z.diff ~ z.lag.1 + 1 + z.diff.lag)  
+	  if (type == "trend") 
+            result <- lm(z.diff ~ z.lag.1 + 1 + tt + z.diff.lag)
+	  critRes[i]<-AIC(result, k = switch(selectlags, "AIC" = 2, "BIC" = log(length(z.diff))))
+	}
+	lags<-which.min(critRes)
+    }
         z.diff.lag = x[, 2:lags]
         if (type == "none") {
             result <- lm(z.diff ~ z.lag.1 - 1 + z.diff.lag)

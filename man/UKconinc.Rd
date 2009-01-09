@@ -1,6 +1,7 @@
 \name{UKconinc}
 \alias{UKconinc}
 \docType{data}
+\encoding{latin1}
 \title{Data set for the United Kingdom}
 \description{
   This data set contains the series used by Hylleberg, S., R. F. Engle,

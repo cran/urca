@@ -1,5 +1,6 @@
 \name{ca.po}
 \alias{ca.po}
+\encoding{latin1}
 \title{Phillips \& Ouliaris Cointegration Test}
 \description{
   Performs the Phillips \& Ouliaris \code{"Pu"} and \code{"Pz"}
@@ -28,7 +29,7 @@ ca.po(z, demean = c("none", "constant", "trend"),
   tolerance level \emph{via} \code{"tol=..."} to the \code{solve()}-function.
 }
 \value{
-  An object of class \code{`ca.po'}.
+  An object of class \code{ca.po}.
 }
 \references{
   Phillips, P.C.B. and Ouliaris, S. (1990), Asymptotic Properties of

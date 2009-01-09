@@ -1,5 +1,6 @@
 \name{bh6lrtest}
 \alias{bh6lrtest}
+\encoding{latin1}
 \title{Likelihood ratio test for restrictions under partly known beta in
 a subspace}
 \description{
@@ -13,21 +14,20 @@ a subspace}
   be estimated without any restrictions.
 }
 \usage{
-bh6lrtest(z, H, r, r1, conv.val=0.0001, max.iter=50)
+bh6lrtest(z, H, r, r1, conv.val = 0.0001, max.iter = 50)
 }
 \arguments{
-  \item{z}{An object of class `ca.jo'.}
+  \item{z}{An object of class \code{ca.jo}.}
   \item{H}{The \eqn{(p \times s)} matrix containing the known
     cointegration relations.}
   \item{r}{The count of cointegrating relationships; \cr
-    inferred from \code{summary(`ca.jo-object')}.\cr}
+    inferred from \code{summary(ca.jo-object)}.\cr}
   \item{r1}{The count of cointegrating relationships in the first
     partition of the cointegration space; \cr}
   \item{conv.val}{The convergence value of the algorithm. (see details); \cr}
-  \item{max.iter}{The maximal number of iterations.}
-    
-  
+  \item{max.iter}{The maximal number of iterations.} 
 }
+
 \details{
   Please note, that the following ordering of the dimensions should be
   obeyed: \eqn{r1 \leq s \leq p - r2}. A two-step algorithm is used to
@@ -36,7 +36,7 @@ bh6lrtest(z, H, r, r1, conv.val=0.0001, max.iter=50)
   \code{conv.val}.
 }
 \value{
-  An object of class \code{`cajo.test'}.
+  An object of class \code{cajo.test}.
 }
 \references{
 

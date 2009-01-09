@@ -1,8 +1,8 @@
 \name{sumurca-class}
 \docType{class}
 \alias{sumurca-class}
-
-\title{Representation of class `sumurca'}
+\encoding{latin1}
+\title{Representation of class sumurca}
 \description{
   A class for objects returned by applying method summary() to objects
   from classes: \code{ur.ers}, \code{ca.jo}, \code{cajo.test},

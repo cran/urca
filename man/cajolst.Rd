@@ -1,5 +1,6 @@
 \name{cajolst}
 \alias{cajolst}
+\encoding{latin1}
 \title{Testing Cointegrating Rank with Level Shift at Unknown time}
 \description{
   The function \code{cajolst} implements the procedure by Luetkepohl
@@ -16,7 +17,7 @@ cajolst(x, trend = TRUE, K = 2, season = NULL)
   \item{K}{The lag order of the series (levels) in the VAR, must be at
     least equal to \eqn{K = 2}.}
   \item{season}{If seasonal dummies should be included, the data
-    frequency must be set accordingly, \emph{i.e} `4' for quarterly data.}
+    frequency must be set accordingly, \emph{i.e} \sQuote{4} for quarterly data.}
 }
 \details{
   Note, that the slot \code{"x"} of the returned object contains the
@@ -29,7 +30,7 @@ cajolst(x, trend = TRUE, K = 2, season = NULL)
   available. The critical values are taken from Trenkler, Carsten (2003).
 }
 \value{
-  Returns an object of class \code{`ca.jo'}.
+  Returns an object of class \code{ca.jo}.
 }
 \references{
   

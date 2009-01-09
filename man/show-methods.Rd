@@ -12,7 +12,7 @@
 \alias{show,ur.sp-method}
 \alias{show,ur.za-method}
 \alias{show,sumurca-method}
-
+\encoding{latin1}
 \title{Methods for Function show in Package `urca'}
 \description{
   Displays the outcome of the unit root/cointegration tests.

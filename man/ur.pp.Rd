@@ -1,5 +1,6 @@
 \name{ur.pp}
 \alias{ur.pp}
+\encoding{latin1}
 \title{Phillips \& Perron Unit Root Test}
 \description{
   Performs the Phillips \& Perron unit root test. Beside the Z
@@ -22,7 +23,7 @@ ur.pp(x, type = c("Z-alpha", "Z-tau"), model = c("constant", "trend"),
   correction of the error term a Bartlett window is used. 
 }
 \value{
-  An object of class \code{`ur.pp'}.
+  An object of class \code{ur.pp}.
 }
 \references{
   Phillips, P.C.B. and Perron, P. (1988), Testing for a unit root in

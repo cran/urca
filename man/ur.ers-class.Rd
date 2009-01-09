@@ -1,7 +1,7 @@
 \name{ur.ers-class}
 \docType{class}
 \alias{ur.ers-class}
-\title{Representation of class `ur.ers'}
+\title{Representation of class ur.ers}
 \description{
   This class contains the relevant information by applying the Elliott,
   Rothenberg \& Stock unit root test.
@@ -30,7 +30,7 @@
   }
 }
 \section{Extends}{
-Class \code{`urca'}, directly.
+Class \code{urca}, directly.
 }
 \section{Methods}{
   Type \code{showMethods(classes="ur.ers")} at the R prompt for a

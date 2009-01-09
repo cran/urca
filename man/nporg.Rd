@@ -1,6 +1,7 @@
 \name{nporg}
 \docType{data}
 \alias{nporg}
+\encoding{latin1}
 \title{Nelson \& Plosser original data set}
 \description{
   This data set contains the fourteen U.S. economic time series used by

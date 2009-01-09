@@ -1,5 +1,6 @@
 \name{ablrtest}
 \alias{ablrtest}
+\encoding{latin1}
 \title{Likelihood ratio test for restrictions on alpha and beta}
 \description{
   This function estimates a restricted VAR, where the restrictions are
@@ -14,20 +15,20 @@
 ablrtest(z, H, A, r)
 }
 \arguments{
-  \item{z}{An object of class `ca.jo'.}
+  \item{z}{An object of class \code{ca.jo}.}
   \item{H}{The \eqn{(p \times s)} matrix containing the restrictions on
     \eqn{\bold{\beta}}.}
   \item{A}{The \eqn{(p \times m)} matrix containing the restrictions on
     \eqn{\bold{\alpha}}.}
   \item{r}{The count of cointegrating relationships; \cr
-    inferred from \code{summary(`ca.jo-object')}.}
+    inferred from \code{summary(ca.jo-object)}.}
 }
 \details{
   The restricted \eqn{\bold{\alpha}} matrix, as well as \eqn{\bold{\beta}} is
   normalised with respect to the first variable.
 }
 \value{
-  An object of class \code{`cajo.test'}.
+  An object of class \code{cajo.test}.
 }
 \references{
 

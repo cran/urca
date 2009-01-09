@@ -1,8 +1,8 @@
 \name{ca.jo-class}
 \docType{class}
 \alias{ca.jo-class}
-
-\title{Representation of class `ca.jo'}
+\encoding{latin1}
+\title{Representation of class ca.jo}
 \description{
   This class contains the relevant information by applying the Johansen
   procedure to a matrix of time series data.
@@ -67,7 +67,7 @@
   }
 }
 \section{Extends}{
-Class \code{`urca'}, directly.
+Class \code{urca}, directly.
 }
 \section{Methods}{
   Type \code{showMethods(classes="ca.jo")} at the R prompt for a

@@ -1,5 +1,6 @@
 \name{ur.kpss}
 \alias{ur.kpss}
+\encoding{latin1}
 \title{Kwiatkowski et al. Unit Root Test}
 \description{
   Performs the KPSS unit root test, where the Null hypothesis is
@@ -25,7 +26,7 @@ ur.kpss(y, type = c("mu", "tau"), lags = c("short", "long", "nil"),
   maximum lags by setting \code{use.lag} accordingly.
 }
 \value{
-  An object of class \code{`ur.kpss'}.
+  An object of class \code{ur.kpss}.
 }
 \references{
   Kwiatkowski, D., Phillips, P.C.B., Schmidt, P. and Shin, Y., (1992),

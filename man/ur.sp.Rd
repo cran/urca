@@ -1,5 +1,6 @@
 \name{ur.sp}
 \alias{ur.sp}
+\encoding{latin1}
 \title{Schmidt \& Phillips Unit Root Test}
 \description{
   Performs the Schmidt \& Phillips unit root test, where under the Null

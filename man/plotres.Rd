@@ -1,5 +1,6 @@
 \name{plotres}
 \alias{plotres}
+\encoding{latin1}
 \title{Graphical inspection of VECM residuals}
 \description{
   The function \code{plotres} should be used for graphical inspection

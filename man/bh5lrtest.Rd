@@ -1,5 +1,6 @@
 \name{bh5lrtest}
 \alias{bh5lrtest}
+\encoding{latin1}
 \title{Likelihood ratio test for restrictions under partly known beta}
 \description{
   This function estimates a restricted VAR, where some of the
@@ -12,18 +13,18 @@
 bh5lrtest(z, H, r)
 }
 \arguments{
-  \item{z}{An object of class `ca.jo'.}
+  \item{z}{An object of class \code{ca.jo}.}
   \item{H}{The \eqn{(p \times r1)} matrix containing the known
     cointegration relations.}
   \item{r}{The count of cointegrating relationships; \cr
-    inferred from \code{summary(`ca.jo-object')}.}
+    inferred from \code{summary(ca.jo-object)}.}
 }
 \details{
   Please note, that the number of columns of \eqn{\bold{H}} must be
   smaller than the count of cointegration relations \eqn{r}.
 }
 \value{
-  An object of class \code{`cajo.test'}.
+  An object of class \code{cajo.test}.
 }
 \references{
 
