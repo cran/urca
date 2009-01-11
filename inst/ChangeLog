@@ -1,3 +1,17 @@
+2009-01-08  Dr. Bernhard Pfaff  <bp@callisto>
+
+	* man/ur.df.Rd: Argument list ammended for selectlags.
+	* src/UnitRootMacKinnon.f (fcrit): GPL Licence agreement included
+	as comment.
+	* inst/McKinnonLicense.txt: GPL Licence agreement of
+	Prof. McKinnon included. 
+
+2008-12-23    Dr. Bernhard Pfaff  <bp@callisto>
+
+	* man/MacKinnonPValues.Rd: Inclusion of Mackinnon functions from fUnitRoots.
+	* R/MacKinnonPValues.R: Inclusion of functions from fUnitRoots.
+	* src/UnitRootMacKinnon.f (fcrit): Inclusion of FORTRAN routines.
+
 2008-11-27    Dr. Bernhard Pfaff  <bp@callisto>
 
 	* R/methods-show.R (show.urca): Fixed invisible(x) to

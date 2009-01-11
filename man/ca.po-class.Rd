@@ -1,8 +1,8 @@
 \name{ca.po-class}
 \docType{class}
 \alias{ca.po-class}
-
-\title{Representation of class `ca.po'}
+\encoding{latin1}
+\title{Representation of class ca.po}
 \description{
   This class contains the relevant information by applying the Phillips
   \& Ouliaris cointegration test to a data matrix.
@@ -31,7 +31,7 @@
   }
 }
 \section{Extends}{
-Class \code{`urca'}, directly.
+Class \code{urca}, directly.
 }
 \section{Methods}{
   Type \code{showMethods(classes="ca.po")} at the R prompt for a

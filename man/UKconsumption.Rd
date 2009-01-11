@@ -1,6 +1,7 @@
 \name{UKconsumption}
 \alias{UKconsumption}
 \docType{data}
+\encoding{latin1}
 \title{Data set for the United Kingdom}
 \description{
   This data set contains the series used by in Charemza, W. (1997), New

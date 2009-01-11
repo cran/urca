@@ -1,5 +1,6 @@
 \name{alphaols}
 \alias{alphaols}
+\encoding{latin1}
 \title{OLS regression of VECM weighting matrix}
 \description{
   This functions estimates the \eqn{\bold{\alpha}} matrix of a VECM.
@@ -12,7 +13,7 @@
 alphaols(z, reg.number = NULL)
 }
 \arguments{
-  \item{z}{An object of class `ca.jo'.}
+  \item{z}{An object of class \code{ca.jo}.}
   \item{reg.number}{The number of the equation in the R-form that should
     be estimated or if set to \code{NULL} (the default), all equations
     within the R-form are estimated.}
@@ -22,7 +23,7 @@ alphaols(z, reg.number = NULL)
     \bold{\beta}} are calculated by using \code{z@RK} and \code{z@V}.
 }
 \value{
-  Returns an object of class \code{`lm'}.
+  Returns an object of class \code{lm}.
 }
 \references{
 

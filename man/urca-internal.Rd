@@ -1,5 +1,6 @@
 \name{urca-internal}
 \alias{.spcv}
+\encoding{latin1}
 \title{Critical values for Schmidt \& Phillips Unit Root Test}
 \description{
   This function is an internal function and is called by

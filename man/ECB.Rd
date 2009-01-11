@@ -1,6 +1,7 @@
 \name{ecb}
 \alias{ecb}
 \docType{data}
+\encoding{latin1}
 \title{Macroeconomic data of the Euro Zone}
 \description{
   This data set contains some macroeconomic figures of the Euro Zone in

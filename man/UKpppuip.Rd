@@ -1,6 +1,7 @@
 \name{UKpppuip}
 \alias{UKpppuip}
 \docType{data}
+\encoding{latin1}
 \title{Data set for the United Kingdom: ppp and uip}
 \description{
   This data set contains the series used by in Johansen and Juselius

@@ -1,6 +1,7 @@
 \name{Raotbl7} 
 \alias{Raotbl7}
 \docType{data}
+\encoding{latin1}
 \title{Data set used by Glenn Otto (1994)}
 \description{
   This data set contains Canadian quarterly data used by Glenn Otto in his

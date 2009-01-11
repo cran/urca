@@ -1,7 +1,8 @@
 \name{ur.df-class}
 \docType{class}
 \alias{ur.df-class}
-\title{Representation of class `ur.df'}
+\encoding{latin1}
+\title{Representation of class ur.df}
 \description{
   This class contains the relevant information by applying the augmented
   Dickey-Fuller unit root test to a time series.
@@ -28,7 +29,7 @@
   }
 }
 \section{Extends}{
-Class \code{`urca'}, directly.
+Class \code{urca}, directly.
 }
 \section{Methods}{
   Type \code{showMethods(classes="ur.df")} at the R prompt for a

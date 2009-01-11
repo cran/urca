@@ -1,5 +1,6 @@
 \name{ur.za}
 \alias{ur.za}
+\encoding{latin1}
 \title{Zivot \& Andrews Unit Root Test}
 \description{
   Performs the Zivot \& Andrews unit root test, which allows a
@@ -20,7 +21,7 @@ ur.za(y, model = c("intercept", "trend", "both"), lag=NULL)
   of the coeffcient of the lagged endogenous variable. 
 }
 \value{
-  An object of class \code{`ur.za'}.
+  An object of class \code{ur.za}.
 }
 \references{
   Zivot, E. and Andrews, Donald W.K. (1992), Further Evidence on the

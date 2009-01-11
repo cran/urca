@@ -1,5 +1,6 @@
 \name{ca.jo}
 \alias{ca.jo}
+\encoding{latin1}
 \title{Johansen Procedure for VAR}
 \description{
   Conducts the Johansen procedure on a given data set. The
@@ -12,19 +13,20 @@ spec=c("longrun", "transitory"), season = NULL, dumvar = NULL)
 }
 \arguments{
   \item{x}{Data matrix to be investigated for cointegration.}
-  \item{type}{The test to be conducted, either \code{`eigen'} or
-    \code{`trace'}.}
-  \item{ecdet}{Character, "none" for no intercept in cointegration,
-    "const" for constant term in cointegration and "trend" for trend
-    variable in cointegration.}
+  \item{type}{The test to be conducted, either \sQuote{\code{eigen}} or
+    \sQuote{\code{trace}}.}
+  \item{ecdet}{Character, \sQuote{\code{none}} for no intercept in cointegration,
+    \sQuote{\code{const}} for constant term in cointegration and
+    \sQuote{\code{trend}} for trend variable in cointegration.}
   \item{K}{The lag order of the series (levels) in the VAR.}
   \item{spec}{Determines the specification of the VECM, see details below.}
   \item{season}{If seasonal dummies should be included, the data
-    frequency must be set accordingly, \emph{i.e} `4' for quarterly
+    frequency must be set accordingly, \emph{i.e} \sQuote{4} for quarterly
     data.}
   \item{dumvar}{If dummy variables should be included, a matrix with
     row dimension equal to \code{x} can be provided.} 
 }
+
 \details{
 
   Given a general VAR of the form:
@@ -87,9 +89,11 @@ spec=c("longrun", "transitory"), season = NULL, dumvar = NULL)
   11 variables and are taken from Osterwald-Lenum.
   
 }
+
 \value{
-  An object of class \code{`ca.jo'}.
+  An object of class \code{ca.jo}.
 }
+
 \references{
 
   Johansen, S. (1988), Statistical Analysis of Cointegration Vectors,
@@ -110,6 +114,7 @@ spec=c("longrun", "transitory"), season = NULL, dumvar = NULL)
   \bold{55, 3}, 461--472.
 
 }
+
 \seealso{
   
   \code{\link{plotres}}, \code{\link{alrtest}}, \code{\link{ablrtest}},

@@ -1,5 +1,6 @@
 \name{alrtest}
 \alias{alrtest}
+\encoding{latin1}
 \title{Likelihood ratio test for restrictions on alpha}
 \description{
   This function estimates a restricted VAR, where the restrictions are
@@ -12,11 +13,11 @@
 alrtest(z, A, r)
 }
 \arguments{
-  \item{z}{An object of class `ca.jo'.}
+  \item{z}{An object of class \code{ca.jo}.}
   \item{A}{The \eqn{(p \times m)} matrix containing the restrictions on
     \eqn{\bold{\alpha}}.}
   \item{r}{The count of cointegration relationships; \cr
-    inferred from \code{summary(`ca.jo-object')}.}
+    inferred from \code{summary(ca.jo-object)}.}
 }
 \details{
   The orthogonal matrix to \eqn{\bold{A}} can be accessed as
@@ -24,7 +25,7 @@ alrtest(z, A, r)
   normalised with respect to the first variable.
 }
 \value{
-  An object of class \code{`cajo.test'}.
+  An object of class \code{cajo.test}.
 }
 \references{
 

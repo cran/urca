@@ -1,8 +1,8 @@
 \name{ur.kpss-class}
 \docType{class}
 \alias{ur.kpss-class}
-
-\title{Representation of class `ur.kpss'}
+\encoding{latin1}
+\title{Representation of class ur.kpss}
 \description{
   This class contains the relevant information by applying the
   Kwiatkowski, Phillips, Schmidt \& Shin unit root test to a time series.
@@ -26,7 +26,7 @@
   }
 }
 \section{Extends}{
-Class \code{`urca'}, directly.
+Class \code{urca}, directly.
 }
 \section{Methods}{
   Type \code{showMethods(classes="ur.kpss")} at the R prompt for a

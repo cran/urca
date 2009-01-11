@@ -16,7 +16,7 @@
 cajorls(z, r = 1, reg.number = NULL)
 }
 \arguments{
-  \item{z}{An object of class `ca.jo' or `cajo.test'.}
+  \item{z}{An object of class \code{ca.jo} or \code{cajo.test}.}
   \item{r}{An integer, signifiying the cointegration rank.}
   \item{reg.number}{The number of the equation in the VECM that should
     be estimated or if set to \code{NULL} (the default), all equations
@@ -27,7 +27,7 @@ cajorls(z, r = 1, reg.number = NULL)
    \bold{\beta}(S'\bold{\beta})^{-1}}, with \eqn{S' = (I_r, 0)}. 
 }
 \value{
-  Returns a list object with elements of class \code{`lm'} for the
+  Returns a list object with elements of class \code{lm} for the
   restricted VECM and a matrix object with the normalised cointegrating
   vectors. 
 }

@@ -1,7 +1,8 @@
 \name{cajo.test-class}
 \docType{class}
 \alias{cajo.test-class}
-\title{Representation of class `cajo.test'}
+\encoding{latin1}
+\title{Representation of class cajo.test}
 \description{
   This class contains the relevant information by estimating and testing
   a VAR under linear restrictions on \eqn{\bold{\alpha}} and
@@ -57,7 +58,7 @@
   }
 }
 \section{Extends}{
-Class \code{`urca'}, directly.
+Class \code{urca}, directly.
 }
 \section{Methods}{
   Type \code{showMethods(classes="cajo.test")} at the R prompt for a

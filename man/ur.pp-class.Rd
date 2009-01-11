@@ -1,7 +1,8 @@
 \name{ur.pp-class}
 \docType{class}
 \alias{ur.pp-class}
-\title{Representation of class `ur.pp'}
+\encoding{latin1}
+\title{Representation of class ur.pp}
 \description{
   This class contains the relevant information by applying the Phillips
   \& Perron unit root test to a time series.
@@ -32,7 +33,7 @@
   }
 }
 \section{Extends}{
-Class \code{`urca'}, directly.
+Class \code{urca}, directly.
 }
 \section{Methods}{
   Type \code{showMethods(classes="ur.pp")} at the R prompt for a

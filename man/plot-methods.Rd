@@ -10,10 +10,11 @@
 \alias{plot,ur.sp,missing-method}
 \alias{plot,ur.za,missing-method}
 \alias{plot,ur.df,missing-method}
-\title{Methods for Function plot in Package `urca'}
+\encoding{latin1}
+\title{Methods for Function plot in Package urca}
 \description{
   Plot methods for objects belonging to classes set in package
-  \code{`urca'}. Depending on the unit root/cointegration test a
+  \code{urca}. Depending on the unit root/cointegration test a
   suitable graphical presentation is selected.
   }
 \section{Methods}{\describe{

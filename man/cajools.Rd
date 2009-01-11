@@ -1,9 +1,10 @@
 \name{cajools}
 \alias{cajools}
+\encoding{latin1}
 \title{OLS regression of VECM}
 \description{
   This function returns the OLS regressions of an unrestricted VECM,
-  \emph{i.e.} it returns an object of class `lm'. The user can provide a
+  \emph{i.e.} it returns an object of class \code{lm}. The user can provide a
   certain number of which equation in the VECM should be estimated and
   reported, or if \code{"reg.number=NULL"} each equation in the VECM
   will be estimated and its results are reported.
@@ -12,13 +13,13 @@
 cajools(z, reg.number = NULL)
 }
 \arguments{
-  \item{z}{An object of class `ca.jo' or `cajo.test'.}
+  \item{z}{An object of class \code{ca.jo} or \code{cajo.test}.}
   \item{reg.number}{The number of the equation in the VECM that should
     be estimated or if set to \code{NULL} (the default), all equations
     within the VECM are estimated.}
 }
 \value{
-  Returns an object of class \code{`lm'}.
+  Returns an object of class \code{lm}.
 }
 \references{
 

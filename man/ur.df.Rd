@@ -1,17 +1,24 @@
 \name{ur.df}
 \alias{ur.df}
+\encoding{latin1}
 \title{Augmented-Dickey-Fuller Unit Root Test}
 \description{
   Performs the augmented Dickey-Fuller unit root test. 
 }
 \usage{
-ur.df(y, type = c("none", "drift", "trend"), lags = 1) 
+ur.df(y, type = c("none", "drift", "trend"), lags = 1,
+      selectlags = c("Fixed", "AIC", "BIC")) 
 }
 \arguments{
   \item{y}{Vector to be tested for a unit root.}
   \item{type}{Test type, either \code{"none"}, \code{"drift"}  or
     \code{"trend"}.}
   \item{lags}{Number of lags for endogenous variable to be included.}
+  \item{selectlags}{Lag selection can be achieved according to the
+    Akaike \code{"AIC"} or the Bayes \code{"BIC"} information
+    criteria. The maximum number of lags considered is set by
+    \code{lags}. The default is to use a \code{"fixed"} lag length set
+    by \code{lags}.} 
 }
 \details{
   The function \code{ur.df()} computes the augmented Dickey-Fuller
@@ -22,7 +29,7 @@ ur.df(y, type = c("none", "drift", "trend"), lags = 1)
     (1994) and Dickey and Fuller(1981).
   }
 \value{
-  An object of class \code{`ur.df'}.
+  An object of class \code{ur.df}.
 }
 \references{
   Dickey, D. A. and Fuller, W. A. (1979), Distributions of the
