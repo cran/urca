@@ -37,7 +37,7 @@ cajools(z, reg.number = NULL)
 
 }
 \seealso{
-  \code{\link{ca.jo}}, \code{\link{cajorls}}, \code{\link[base]{lm}},
+  \code{\link{ca.jo}}, \code{\link{cajorls}}, \code{\link[stats]{lm}},
   \code{\link{ca.jo-class}} and \code{\link{urca-class}}. 
 }
 \examples{

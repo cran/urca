@@ -41,7 +41,7 @@ cajorls(z, r = 1, reg.number = NULL)
 
 }
 \seealso{
-  \code{\link{ca.jo}}, \code{\link{cajools}}, \code{\link[base]{lm}},
+  \code{\link{ca.jo}}, \code{\link{cajools}}, \code{\link[stats]{lm}},
   \code{\link{ca.jo-class}} and \code{\link{urca-class}}. 
 }
 \examples{

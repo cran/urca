@@ -67,7 +67,7 @@ ur.za <- function(y, model=c("intercept", "trend", "both"), lag=NULL){
     du <- c(rep(0, bpoint), rep(1, (n-bpoint)))
     dt <- c(rep(0, bpoint), 1:(n-bpoint))
     testmat <- cbind(datmat, du, dt)
-    test.reg <- summary(lm(testmat)) 
+    test.reg <- lm(testmat) 
   }
   teststat <- roll.stat[bpoint]
   new("ur.za", y=y, model=model, lag=lag, teststat=teststat, cval=cval, bpoint=bpoint, tstats=roll.stat, res=test.reg$residuals, testreg=test.reg, test.name="Zivot-Andrews")
