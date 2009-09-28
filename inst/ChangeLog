@@ -1,3 +1,16 @@
+2009-09-24    <Dr. Bernhard Pfaff  <bp@callisto>>
+
+	* man/alphaols.Rd: Fixed link for lm
+	* man/cajools.Rd: Fixed link for lm
+	* man/cajorls.Rd: Fixed link for lm
+	* R/ur-za.R: Changed slot testreg to lm object instead of summary.lm 
+	* R/methods-show.R (show.urca): Included summary call for ur.za@testreg 
+	* man/ur.za-class.Rd: Adjusted description for testreg. 
+
+2009-05-04  Dr. Bernhard Pfaff  <bp@callisto>
+
+	* inst/book-ex/Rcode-1-3.R: Changed start year for unemployment 	rate. 
+
 2009-01-08  Dr. Bernhard Pfaff  <bp@callisto>
 
 	* man/ur.df.Rd: Argument list ammended for selectlags.

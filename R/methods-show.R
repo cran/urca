@@ -32,7 +32,7 @@ setMethod("show", "sumurca", function(object){
     cat(title, "\n")
     cat(row, "\n")
     cat("\n")
-    print(object@testreg)
+    print(summary(object@testreg))
     cat('\n')
     cat('Teststatistic:', round(object@teststat, 4), '\n')
     cat('Critical values: 0.01=', object@cval[1], '0.05=', object@cval[2], '0.1=', object@cval[3], '\n')
