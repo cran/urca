@@ -1,3 +1,12 @@
+2010-09-07    Matthieu Stigler
+
+	* R/ur-df.R: Add match.arg for arg type. 
+
+2009-09-28    <Dr. Bernhard Pfaff  <bp@callisto>>
+
+	* R/ur-za.R: Changed slot testreg to lm object instead of
+	summary.lm for other specifications than 'both'. 
+	
 2009-09-24    <Dr. Bernhard Pfaff  <bp@callisto>>
 
 	* man/alphaols.Rd: Fixed link for lm

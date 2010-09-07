@@ -4,6 +4,7 @@
 ur.df <- function (y, type = c("none", "drift", "trend"), lags = 1, selectlags = c("Fixed", "AIC", "BIC")) 
 {
     selectlags<-match.arg(selectlags)
+    type <- match.arg(type)
     if (ncol(as.matrix(y)) > 1) 
         stop("\ny is not a vector or univariate time series.\n")
     if (any(is.na(y))) 
@@ -14,7 +15,6 @@ ur.df <- function (y, type = c("none", "drift", "trend"), lags = 1, selectlags =
         stop("\nLags must be set to an non negative integer value.\n")
     CALL <- match.call()
     DNAME <- deparse(substitute(y))
-    type <- type[1]
     x.name <- deparse(substitute(y))
     lags <- lags + 1
     z <- diff(y)
