@@ -38,7 +38,7 @@ ur.za <- function(y, model=c("intercept", "trend", "both"), lag=NULL){
     bpoint <- which.min(roll.stat)
     du <- c(rep(0, bpoint), rep(1, (n-bpoint)))
     testmat <- cbind(datmat, du)
-    test.reg <- summary(lm(testmat)) 
+    test.reg <- lm(testmat) 
   }else if(model=="trend"){
     roll <- function(z){
       dt <- c(rep(0, z), 1:(n-z))
@@ -51,9 +51,9 @@ ur.za <- function(y, model=c("intercept", "trend", "both"), lag=NULL){
     bpoint <- which.min(roll.stat)
     dt <- c(rep(0, bpoint), 1:(n-bpoint))
     testmat <- cbind(datmat, dt)
-    test.reg <- summary(lm(testmat)) 
+    test.reg <- lm(testmat) 
   }else if(model=="both"){
-    test.reg <- summary(lm(datmat))
+    test.reg <- lm(datmat)
     roll <- function(z){
       du <- c(rep(0, z), rep(1, (n-z)))
       dt <- c(rep(0, z), 1:(n-z))
