@@ -1,3 +1,7 @@
+2011-02-25  Dr. Bernhard Pfaff  <bp@callisto>
+
+	* Changed import directive in NAMESPACE for BIC
+
 2010-09-07    Matthieu Stigler
 
 	* R/ur-df.R: Add match.arg for arg type. 

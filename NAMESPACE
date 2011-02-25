@@ -15,7 +15,12 @@ exportMethods("show", "plot", "summary")
 
 ## Import functions
 importFrom(graphics, plot)
-importFrom(nlme, BIC)
+if (!exists("BIC", envir=asNamespace("stats"))) {
+    importFrom(nlme, BIC)
+} else {
+    importFrom(stats, BIC) # unless you already import stats
+}
+
 
 
 
