@@ -459,7 +459,7 @@ c
      &     + beta(4)*onobs**3
          return
       end if
-      write(6,*) '*** Warning! Error in input file. ***'
+C      write(6,*) '*** Warning! Error in input file. ***'
       return
       end
       
@@ -747,10 +747,10 @@ c
       data c0/2.515517d0/, d1/1.432788d0/, c1/0.802853d0/
       data c2/0.010328d0/, d3/0.001308d0/, d2/0.189269d0/
       data const/.398942280401432678d0/
-      if (prob.lt.0.d0.or.prob.gt.1.d0) then
-         write(6,*) 'Attempt to find inverse normal of ', prob
-         stop
-      end if
+c      if (prob.lt.0.d0.or.prob.gt.1.d0) then
+c         write(6,*) 'Attempt to find inverse normal of ', prob
+c         stop
+c      end if
       pr = prob
       if (prob.gt.0.5d0) pr = 1.d0 - prob
       arg = 1/pr**2

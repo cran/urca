@@ -1,3 +1,7 @@
+2012-07-22  Bernhard Pfaff  <bp@callisto.local>
+
+	* DESCRIPTION (Package): Included Authors@R
+
 2011-02-25  Dr. Bernhard Pfaff  <bp@callisto>
 
 	* Changed import directive in NAMESPACE for BIC
