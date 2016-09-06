@@ -1,7 +1,7 @@
 
 
 c Copyright (c) James G. MacKinnon, 1996 (corrected 2001-1-8)
-c 
+c
 c urcrouts.f: This is a set of subroutines to estimate critical values
 c and P values for unit root and cointegration tests. It is written in
 c Fortran 77. Simply call urcval, specifying the first seven arguments.
@@ -102,19 +102,20 @@ c --260199754-1936399293-1226717600=:4293--
 
 C ******************************************************************************
 
-     
-      subroutine fcrit(probs, cnorm, beta, wght, cval, size, 
+
+      subroutine fcrit(probs, cnorm, beta, wght, cval, size,
      &  precrt, nobs, model, nreg, np, nx)
-      
-      implicit real*8 (a-h,o-z)
+
+      implicit double precision (a-h,o-z)
 c
 c Copyright (c) James G. MacKinnon, 1995
 c Routine to find a critical value for any specified test size.
 c Uses GLS to estimate approximating regression.
 c
-      real*8 probs(221), cnorm(221), beta(4,221), crits(221), wght(221)
-      real*8 yvect(20),xmat(20,4),xomx(4,4),resid(20),gamma(4)
-      real*8 omega(20,20), fits(20)
+      double precision probs(221), cnorm(221), beta(4,221), crits(221),
+     &  wght(221)
+      double precision yvect(20),xmat(20,4),xomx(4,4),resid(20),gamma(4)
+      double precision omega(20,20), fits(20)
       diffm = 1000.d0
       imin = 0
       do i=1,221
@@ -257,21 +258,22 @@ c
 c
       end if
       end
-     
-       
+
+
 C ******************************************************************************
 
 
-      subroutine fpval(beta, cnorm, wght, probs, pval, stat, 
+      subroutine fpval(beta, cnorm, wght, probs, pval, stat,
      &  precrt, nobs, model, nreg, np, nx)
-      implicit real*8 (a-h,o-z)
+      implicit double precision (a-h,o-z)
 c
 c Copyright (c) James G. MacKinnon, 1995
 c Routine to find P value for any specified test statistic.
 c
-      real*8 beta(4,221), crits(221), cnorm(221), wght(221), probs(221)
-      real*8 yvect(20),xmat(20,4),resid(20),gamma(4)
-      real*8 omega(20,20), fits(20), xomx(4,4)
+      double precision beta(4,221), crits(221), cnorm(221), wght(221),
+     &  probs(221)
+      double precision yvect(20),xmat(20,4),resid(20),gamma(4)
+      double precision omega(20,20), fits(20), xomx(4,4)
 c
 c first, compute all the estimated critical values
 c
@@ -421,18 +423,18 @@ c
         return
       end if
       end
-      
- 
+
+
 C ******************************************************************************
 
 
       subroutine eval(beta,cval,model,nreg,nobs)
-      implicit real*8 (a-h,o-z)
+      implicit double precision (a-h,o-z)
 c
 c Copyright (c) James G. MacKinnon, 1995
 c Routine to evaluate response surface for specified betas and sample size.
 c
-      real*8 beta(4)
+      double precision beta(4)
       if (nobs.eq.0) then
          cval = beta(1)
          return
@@ -462,8 +464,8 @@ c
 C      write(6,*) '*** Warning! Error in input file. ***'
       return
       end
-      
-      
+
+
 C ******************************************************************************
 
 
@@ -475,10 +477,12 @@ c Subroutine to do GLS estimation the obvious way
 c Use only when sample size is small (nobs <= 50)
 c 1995-1-3
 c
-      implicit real*8 (a-h,o-z)
-      real*8 xmat(nomax,nvmax), yvect(nomax), omega(nomax,nomax)
-      real*8 beta(nvmax), xomx(nvmax,nvmax), fits(nomax), resid(nomax)
-      real*8 xomy(50)
+      implicit double precision (a-h,o-z)
+      double precision xmat(nomax,nvmax), yvect(nomax),
+     &  omega(nomax,nomax)
+      double precision beta(nvmax), xomx(nvmax,nvmax), fits(nomax),
+     &  resid(nomax)
+      double precision xomy(50)
 c
 c xomx is covariance matrix of parameter estimates if omega is truly known
 c First, invert omega matrix if ivrt=0. Original one gets replaced.
@@ -544,19 +548,19 @@ c
 c
       return
       end
-      
-      
+
+
 C ******************************************************************************
 
 
       subroutine cholx(amat,m,n,kxx)
-      implicit real*8 (a-h,o-z)
+      implicit double precision (a-h,o-z)
 c
 c Copyright (c) James G. MacKinnon, 1993
 c This routine uses the cholesky decomposition to invert a real
 c symmetric matrix.
 c
-      real*8 amat(m,m)
+      double precision amat(m,m)
       kxx = 0
       do 8 i=1,n
       kl = i - 1
@@ -602,13 +606,13 @@ c
    16 continue
    20 return
       end
-      
-    
+
+
 C ******************************************************************************
 
 
       subroutine ddnor(ystar,gauss)
-      implicit real*8(a-h,o-z)
+      implicit double precision(a-h,o-z)
 c
 c Copyright (c) James G. MacKinnon, 1993
 c Routine to evaluate cumulative normal distribution
@@ -620,7 +624,7 @@ c normal distribution. It is probably accurate to 19 or 20
 c significant digits. It was written in 1977, based on the Cody
 c article referred to in the documentation for IMSL subroutine mdnor.
 c
-      real*8 p(6), q(5), a(9), b(8), c(5), d(4)
+      double precision p(6), q(5), a(9), b(8), c(5), d(4)
       data p(1)/-6.58749161529837803157d-04/,
      1     p(2)/-1.60837851487422766278d-02/,
      2     p(3)/-1.25781726111229246204d-01/,
@@ -730,13 +734,13 @@ c
       gauss = erfc*.5d0
       return
       end
-      
-      
+
+
 C ******************************************************************************
 
 
       subroutine innorz(prob,anorm)
-      implicit real*8 (a-h,o-z)
+      implicit double precision (a-h,o-z)
 c
 c Copyright (c) James G. MacKinnon, 1995
 c Inverse normal routine that adjusts crude result twice.
