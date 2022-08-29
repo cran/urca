@@ -1,10 +1,10 @@
 \name{urca-internal}
 \alias{.spcv}
 \encoding{latin1}
-\title{Critical values for Schmidt \& Phillips Unit Root Test}
+\title{Critical values for Schmidt and Phillips Unit Root Test}
 \description{
   This function is an internal function and is called by
-  \code{ur.sp}. It computes the critical value of the Schmidt \&
+  \code{ur.sp}. It computes the critical value of the Schmidt and
   Phillips test, given a level of significance, the polynomial degree of
   the test regression, the test type and the sample size.
 }
@@ -25,7 +25,7 @@
   the Presence of Deterministic Trends, \emph{Oxford Bulletin of Economics and
   Statistics}, \bold{54(3)}, 257--287.
 
-  Download possible at: \url{http://cowles.econ.yale.edu/}, see rubric
+  Download possible at: \url{https://cowles.yale.edu/}, see rubric
   'Discussion Papers (CFDPs)'.
 }
 \seealso{\code{\link{ur.sp}}.}

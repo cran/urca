@@ -22,21 +22,21 @@
 \item{object = "ca.jo"}{Displays the test statistic of the Johansen procedure.}
 \item{object = "cajo.test"}{Displays the test statistic of a restricted
   VAR with respect to \eqn{\bold{\alpha}} and/or \eqn{\bold{\beta}}.}
-\item{object = "ca.po"}{Displays the test statistic of the Phillips \&
+\item{object = "ca.po"}{Displays the test statistic of the Phillips and
   Ouliaris cointegration test.}
 \item{object = "ur.df"}{Displays the test statistic of the Augmented,
   Dickey and Fuller unit root test.}
 \item{object = "ur.ers"}{Displays the test statistic of the Elliott,
-  Rothenberg \& Stock unit root test.}
+  Rothenberg and Stock unit root test.}
 \item{object = "ur.kpss"}{Displays the test statistic of the Kwiatkowski
   \emph{et al.} unit root test.}
-\item{object = "ur.pp"}{Displays the test statistic of the Phillips \&
+\item{object = "ur.pp"}{Displays the test statistic of the Phillips and
   Perron unit root test.}
 \item{object = "ur.df"}{Displays the test statistic of the augmented
   Dickey-Fuller unit root test.}
-\item{object = "ur.sp"}{Displays the test statistic of the Schmidt \&
+\item{object = "ur.sp"}{Displays the test statistic of the Schmidt and
   Phillips unit root test.}
-\item{object = "ur.za"}{Displays the test statistic of the Zivot \&
+\item{object = "ur.za"}{Displays the test statistic of the Zivot and
   Andrews unit root test.}
 \item{object = "sumurca"}{Displays the summary output.}
 

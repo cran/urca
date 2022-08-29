@@ -5,7 +5,7 @@
 \title{Representation of class ur.pp}
 \description{
   This class contains the relevant information by applying the Phillips
-  \& Perron unit root test to a time series.
+  and Perron unit root test to a time series.
 }
 \section{Slots}{
   \describe{
@@ -56,9 +56,8 @@ Class \code{urca}, directly.
   \emph{Long-Run Economic Relationships}, eds. R.F. Engle and
   C.W.J. Granger, London, Oxford, 267--276.
   
-  Download possible at: \url{http://cowles.econ.yale.edu/}, see rubric
-  'Discussion Papers (CFDPs)' and
-  \url{http://www.econ.ucsd.edu/papers/files/90-4.pdf}.
+  Download possible at: \url{https://cowles.yale.edu/}, see rubric
+  'Discussion Papers (CFDPs)'.
 }
 \seealso{
   \code{\link{ur.pp}} and \code{\link{urca-class}}

@@ -2,7 +2,7 @@
 ## lttest
 ##
 lttest <- function(z, r){
-  if(!(class(z)=="ca.jo")){
+  if(!inherits(z, "ca.jo")){
     stop("\nObject 'x' must be of class 'ca.jo'\n")
   }
   r <- as.integer(r)

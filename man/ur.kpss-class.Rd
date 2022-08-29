@@ -5,7 +5,7 @@
 \title{Representation of class ur.kpss}
 \description{
   This class contains the relevant information by applying the
-  Kwiatkowski, Phillips, Schmidt \& Shin unit root test to a time series.
+  Kwiatkowski, Phillips, Schmidt and Shin unit root test to a time series.
 }
 \section{Slots}{
   \describe{
@@ -47,7 +47,7 @@ Class \code{urca}, directly.
   a Unit Root: How Sure Are We That Economic Time Series Have a Unit
   Root?, \emph{Journal of Econometrics}, \bold{54}, 159--178.
 
-  Download possible at: \url{http://cowles.econ.yale.edu/}, see rubric
+  Download possible at: \url{https://cowles.yale.edu/}, see rubric
   'Discussion Papers (CFDPs)'.
 }
 \seealso{

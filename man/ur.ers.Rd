@@ -1,9 +1,9 @@
 \name{ur.ers}
 \alias{ur.ers}
 \encoding{latin1}
-\title{Elliott, Rothenberg \& Stock Unit Root Test}
+\title{Elliott, Rothenberg and Stock Unit Root Test}
 \description{
-  Performs the Elliott, Rothenberg \& Stock unit root test. 
+  Performs the Elliott, Rothenberg and Stock unit root test. 
 }
 \usage{
 ur.ers(y, type = c("DF-GLS", "P-test"), model = c("constant", "trend"),
@@ -19,14 +19,14 @@ ur.ers(y, type = c("DF-GLS", "P-test"), model = c("constant", "trend"),
     regression for \code{"DF-GLS"}.}
 }
 \details{
-  To improve the power of the unit root test, Elliot, Rothenberg \& Stock
+  To improve the power of the unit root test, Elliot, Rothenberg and Stock
   proposed a local to unity detrending of the time series. ERS developed
   a feasible point optimal test, \code{"P-test"}, which takes serial
   correlation of the error term into account. The second test type is
   the \code{"DF-GLS"} test, which is an ADF-type test applied to the
   detrended data without intercept. Critical values for this test are
   taken from MacKinnon in case of \code{model="constant"} and else from
-  Table 1 of Elliot, Rothenberg \& Stock.
+  Table 1 of Elliot, Rothenberg and Stock.
 }
 \value{
   An object of class \code{ur.ers}.
@@ -41,7 +41,6 @@ ur.ers(y, type = c("DF-GLS", "P-test"), model = c("constant", "trend"),
   \emph{Long-Run Economic Relationships}, eds. R.F. Engle and
   C.W.J. Granger, London, Oxford, 267--276.
 
-  Download possible at: \url{http://www.econ.ucsd.edu/papers/files/90-4.pdf}.
 }
 
 \seealso{\code{\link{ur.ers-class}}}

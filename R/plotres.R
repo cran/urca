@@ -2,7 +2,7 @@
 ## plotres
 ##
 plotres <- function (x){
-  if (!(class(x) == "ca.jo"))
+  if (!inherits(x, "ca.jo"))
     stop("\nObject is not of class 'ca.jo' \n")
   resids <- x@Z0 - x@Z1%*%t(x@GAMMA) - x@ZK%*%t(x@PI)
   oldpar <- par(no.readonly = TRUE)

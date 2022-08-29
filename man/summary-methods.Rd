@@ -21,7 +21,7 @@
       regression and the critical values for the Augmented Dickey and
       Fuller test are returned.}  
     \item{object = "ur.ers"}{The test type, its statistic and the
-      critical values for the Elliott, Rothenberg \& Stock test are
+      critical values for the Elliott, Rothenberg and Stock test are
       returned. In case of test \code{"DF-GLS"} the summary output
       of the test regression is provided, too.}
     \item{object = "ur.kpss"}{The test statistic, the critical value as
@@ -38,19 +38,19 @@
       as the loading matrix are returned.}  
     \item{object = "ca.po"}{The \code{"Pz"} or \code{"Pu"} statistic,
       the critical values as well as the summary output of the test
-      regression for the Phillips \& Ouliaris cointegration test.}
+      regression for the Phillips and Ouliaris cointegration test.}
     \item{object = "ur.pp"}{The Z statistic, the critical values as
       well as the summary output of the test regression for the Phillips
-      \& Perron test, as well as the test statistics for the
+      and Perron test, as well as the test statistics for the
       coefficients of the deterministic part is returned.}
     \item{object = "ur.df"}{The relevant tau statistic, the critical
       values as well as the summary output of the test regression for
       the augmented Dickey-Fuller test is returned.}
     \item{object = "ur.sp"}{The test statistic, the critical value as
       well as the summary output of the test regression for the Schmidt
-      \& Phillips test is returned.}
+      and Phillips test is returned.}
     \item{object = "ur.za"}{The test statistic, the critical values as
-      well as the summary output of the test regression for the Zivot \&
+      well as the summary output of the test regression for the Zivot and
       Andrews test is returned.}
 }}
 \seealso{

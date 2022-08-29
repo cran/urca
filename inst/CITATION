@@ -10,7 +10,7 @@ citEntry(entry="Book",
          address      = "New York",
          year         = 2008,
          note         = "ISBN 0-387-27960-1",
-         url          = "http://www.pfaffikus.de",
+         url          = "https://www.pfaffikus.de",
          
          textVersion = 
          paste("Pfaff, B. (2008)", 

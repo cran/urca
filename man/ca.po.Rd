@@ -1,9 +1,9 @@
 \name{ca.po}
 \alias{ca.po}
 \encoding{latin1}
-\title{Phillips \& Ouliaris Cointegration Test}
+\title{Phillips and Ouliaris Cointegration Test}
 \description{
-  Performs the Phillips \& Ouliaris \code{"Pu"} and \code{"Pz"}
+  Performs the Phillips and Ouliaris \code{"Pu"} and \code{"Pz"}
   cointegration test.
 }
 \usage{

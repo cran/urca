@@ -1,5 +1,5 @@
 cajorls <- function(z, r = 1, reg.number = NULL){
-    if (!(class(z) == "ca.jo") && !(class(z) == "cajo.test")) {
+    if ((!inherits(z, "ca.jo")) && (!inherits(z, "cajo.test"))) {
         stop("\nPlease, provide object of class 'ca.jo' or 'cajo.test' as 'z'.\n")
     }
     P <- ncol(z@Z0)

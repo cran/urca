@@ -1,9 +1,9 @@
 \name{ur.pp}
 \alias{ur.pp}
 \encoding{latin1}
-\title{Phillips \& Perron Unit Root Test}
+\title{Phillips and Perron Unit Root Test}
 \description{
-  Performs the Phillips \& Perron unit root test. Beside the Z
+  Performs the Phillips and Perron unit root test. Beside the Z
   statistics Z-alpha and Z-tau, the Z statistics for the deterministic
   part of the test regression are computed, too.
 }
@@ -19,7 +19,7 @@ ur.pp(x, type = c("Z-alpha", "Z-tau"), model = c("constant", "trend"),
   \item{use.lag}{Use of a different lag number, specified by the user.}
 }
 \details{
-  The function \code{ur.pp()} computes the Phillips \& Perron test. For
+  The function \code{ur.pp()} computes the Phillips and Perron test. For
   correction of the error term a Bartlett window is used. 
 }
 \value{
@@ -33,9 +33,8 @@ ur.pp(x, type = c("Z-alpha", "Z-tau"), model = c("constant", "trend"),
   \emph{Long-Run Economic Relationships}, eds. R.F. Engle and
   C.W.J. Granger, London, Oxford, 267--276.
   
-  Download possible at: \url{http://cowles.econ.yale.edu/}, see rubric
-  'Discussion Papers (CFDPs)' and
-  \url{http://www.econ.ucsd.edu/papers/files/90-4.pdf}.
+  Download possible at: \url{https://cowles.yale.edu/}, see rubric
+  'Discussion Papers (CFDPs)'.
 }
 \seealso{\code{\link{ur.pp-class}}.}
 \examples{

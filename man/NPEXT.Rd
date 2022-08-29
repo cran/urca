@@ -2,10 +2,10 @@
 \docType{data}
 \alias{npext}
 \encoding{latin1}
-\title{Nelson \& Plosser extended data set}
+\title{Nelson and Plosser extended data set}
 \description{
   This data set contains the fourteen U.S. economic time series used by
-  Schotman \& Dijk. All series are transformed by taking logarithms
+  Schotman and Dijk. All series are transformed by taking logarithms
   except for the bond yield. The sample period ends in 1988.
 }
 \usage{data(npext)}
@@ -54,7 +54,7 @@
   the Unit-Root Hypothesis using Mixtures of Elliptical Models,
   \emph{Journal of Business and Economic Statistics}, \bold{12}, 95--107. 
 }
-\references{\url{http://www.amstat.org/publications/jbes/}}
+\references{\url{https://www.amstat.org}}
 \author{Bernhard Pfaff}
 \keyword{datasets}
 \concept{data set Nelson Plosser macroeconomic variables}

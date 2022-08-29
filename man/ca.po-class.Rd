@@ -5,7 +5,7 @@
 \title{Representation of class ca.po}
 \description{
   This class contains the relevant information by applying the Phillips
-  \& Ouliaris cointegration test to a data matrix.
+  and Ouliaris cointegration test to a data matrix.
 }
 \section{Slots}{
   \describe{
@@ -27,7 +27,7 @@
     \item{\code{testreg}:}{Object of class \code{"ANY"}: The summary
       output of the cointegration regression(s).}
     \item{\code{test.name}:}{Object of class \code{"character"}: The
-      name of the test, \emph{i.e.} `Phillips \& Ouliaris'.}
+      name of the test, \emph{i.e.} `Phillips and Ouliaris'.}
   }
 }
 \section{Extends}{

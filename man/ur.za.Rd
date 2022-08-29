@@ -1,9 +1,9 @@
 \name{ur.za}
 \alias{ur.za}
 \encoding{latin1}
-\title{Zivot \& Andrews Unit Root Test}
+\title{Zivot and Andrews Unit Root Test}
 \description{
-  Performs the Zivot \& Andrews unit root test, which allows a
+  Performs the Zivot and Andrews unit root test, which allows a
   break at an unknown point in either the intercept, the linear
   trend or in both.
 }
@@ -26,10 +26,10 @@ ur.za(y, model = c("intercept", "trend", "both"), lag=NULL)
 \references{
   Zivot, E. and Andrews, Donald W.K. (1992), Further Evidence on the
   Great Crash, the Oil-Price Shock, and the Unit-Root Hypothesis,
-  \emph{Journal of Business \& Economic Statistics}, \bold{10(3)},
+  \emph{Journal of Business and Economic Statistics}, \bold{10(3)},
   251--270.
 
-  Download possible at: \url{http://cowles.econ.yale.edu/}, see rubric
+  Download possible at: \url{https://cowles.yale.edu/}, see rubric
   'Discussion Papers (CFDPs)'.
 }
 \seealso{\code{\link{ur.za-class}}}

@@ -20,21 +20,21 @@
 \section{Methods}{\describe{
 
 \item{x = "ur.ers", y = "missing"}{Diagram of fit of the Elliott,
-  Rothenberg \& Stock unit root test of type \code{"DF-GLS"} with
+  Rothenberg and Stock unit root test of type \code{"DF-GLS"} with
   residual plot and their acfs' and pacfs'.}
 \item{x = "ur.kpss", y = "missing"}{Residual plot and their acfs' and
   pacfs' of the KPSS test.}
 \item{x = "ca.jo", y = "missing"}{Time series plots and associated
   cointegration relations for the Johansen procedure.}
 \item{x = "ca.po", y = "missing"}{Residual plot and their acfs' and
-  pacfs' of the cointegration regression(s) for the Phillips \& Ouliaris
+  pacfs' of the cointegration regression(s) for the Phillips and Ouliaris
   test.}
-\item{x = "ur.pp", y = "missing"}{Diagram of fit of the Phillips \&
+\item{x = "ur.pp", y = "missing"}{Diagram of fit of the Phillips and
   Perron unit root test, residual plot and their acfs' and pacfs'.}
-\item{x = "ur.sp", y = "missing"}{Diagram of fit of the Schmidt \&
+\item{x = "ur.sp", y = "missing"}{Diagram of fit of the Schmidt and
   Phillips unit root test, residual plot and their acfs' and pacfs'.}
 \item{x = "ur.za", y = "missing"}{Plot of recursive t-statistics
-  as outcome of Zivot \& Andrews unit root test.}
+  as outcome of Zivot and Andrews unit root test.}
 }}
 \seealso{
   \code{\link{ur.ers-class}}, \code{\link{ur.kpss-class}},

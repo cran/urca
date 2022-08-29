@@ -4,7 +4,7 @@
 \title{Representation of class ur.ers}
 \description{
   This class contains the relevant information by applying the Elliott,
-  Rothenberg \& Stock unit root test.
+  Rothenberg and Stock unit root test.
 }
 \section{Slots}{
   \describe{
@@ -26,7 +26,7 @@
     \item{\code{testreg}:}{Object of class \code{"ANY"}: The test
       regression, only set for \code{"DF-GLS"}.}
     \item{\code{test.name}:}{Object of class \code{"character"}: The
-      name of the test, \emph{i.e.} `Elliott, Rothenberg \& Stock'.}
+      name of the test, \emph{i.e.} `Elliott, Rothenberg and Stock'.}
   }
 }
 \section{Extends}{
@@ -54,7 +54,6 @@ Class \code{urca}, directly.
   \emph{Long-Run Economic Relationships}, eds. R.F. Engle and
   C.W.J. Granger, London, Oxford, 267--276.
 
-  Download possible at: \url{http://www.econ.ucsd.edu/papers/files/90-4.pdf}.
 }
 \seealso{
   \code{\link{ur.ers}} and \code{\link{urca-class}}.

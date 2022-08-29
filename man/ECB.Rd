@@ -29,7 +29,7 @@
   European Central Bank, Monthly Bulletins, Frankfurt am Main, Germany.
 }
 \references{
- \url{http://www.ecb.int}
+ \url{https://www.ecb.europa.eu}
 }
 \author{Bernhard Pfaff}
 \keyword{datasets}

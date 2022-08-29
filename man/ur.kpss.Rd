@@ -18,12 +18,13 @@ ur.kpss(y, type = c("mu", "tau"), lags = c("short", "long", "nil"),
   \item{use.lag}{User specified number of lags.}
 }
 \details{
-  \code{lags="short"} sets the number of lags to \eqn{\root 4 \of {4
-      \times (n/100)}},
-  whereas \code{lags="long"} sets the number of lags to \eqn{\root 4 \of
-    {12 \times (n/100)}}. If \code{lags="nil"} is choosen, then no error
-  correction is made. Furthermore, one can specify a different number of
-  maximum lags by setting \code{use.lag} accordingly.
+  \code{lags="short"} sets the number of lags to
+  \eqn{\sqrt[4]{4 \times (n/100)}}, whereas
+  \code{lags="long"} sets the number of lags to
+  \eqn{\sqrt[4]{12 \times (n/100)}}. If \code{lags="nil"} is choosen,
+  then no error correction is made. Furthermore, one can specify a
+  different number of maximum lags by setting \code{use.lag}
+  accordingly.
 }
 \value{
   An object of class \code{ur.kpss}.
@@ -34,7 +35,7 @@ ur.kpss(y, type = c("mu", "tau"), lags = c("short", "long", "nil"),
   a Unit Root: How Sure Are We That Economic Time Series Have a Unit
   Root?, \emph{Journal of Econometrics}, \bold{54}, 159--178.
 
-  Download possible at: \url{http://cowles.econ.yale.edu/}, see rubric
+  Download possible at: \url{https://cowles.yale.edu/}, see rubric
   'Discussion Papers (CFDPs)'.
 }
 \seealso{\code{\link{ur.kpss-class}}}

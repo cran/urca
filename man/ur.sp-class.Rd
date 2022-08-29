@@ -5,7 +5,7 @@
 \title{Representation of class ur.sp}
 \description{
   This class contains the relevant information by applying the Schmidt
-  \& Phillips unit root test to a time series.
+  and Phillips unit root test to a time series.
 }
 \section{Slots}{
   \describe{
@@ -26,7 +26,7 @@
     \item{\code{testreg}:}{Object of class \code{"ANY"}: The summary
       output of the test regression.}
     \item{\code{test.name}:}{Object of class \code{"character"}: The
-      name of the test, \emph{i.e.} `"Schmidt \& Phillips'.}
+      name of the test, \emph{i.e.} `"Schmidt and Phillips'.}
   }
 }
 \section{Extends}{
@@ -50,7 +50,7 @@ Class \code{urca}, directly.
   the Presence of Deterministic Trends, \emph{Oxford Bulletin of Economics and
   Statistics}, \bold{54(3)}, 257--287.
 
-  Download possible at: \url{http://cowles.econ.yale.edu/}, see rubric
+  Download possible at: \url{https://cowles.yale.edu/}, see rubric
   'Discussion Papers (CFDPs)'.
 }
 \seealso{

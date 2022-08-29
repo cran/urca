@@ -2,10 +2,10 @@
 \docType{data}
 \alias{nporg}
 \encoding{latin1}
-\title{Nelson \& Plosser original data set}
+\title{Nelson and Plosser original data set}
 \description{
   This data set contains the fourteen U.S. economic time series used by
-  Nelson \& Plosser in their seminal paper.
+  Nelson and Plosser in their seminal paper.
 }
 \usage{data(nporg)}
 \format{

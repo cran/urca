@@ -3,7 +3,7 @@
 ##
 bh5lrtest <- function (z, H, r) 
 {
-    if (!(class(z) == "ca.jo")) {
+    if (!inherits(z, "ca.jo")) {
         stop("\nPlease, provide object of class 'ca.jo' as 'z'.\n")
     }
     if (r >= z@P || r < 1) {

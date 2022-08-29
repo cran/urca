@@ -2,7 +2,7 @@
 \alias{Raotbl1}
 \docType{data}
 \encoding{latin1}
-\title{Data set used by Dickey, Jansen \& Thornton (1994)}
+\title{Data set used by Dickey, Jansen and Thornton (1994)}
 \description{
   This data set contains the time series used by David A. Dickey, Dennis
   W. Jansen and Daniel L. Thornton in their article: ``A Primer on

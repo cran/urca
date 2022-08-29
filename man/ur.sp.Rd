@@ -1,9 +1,9 @@
 \name{ur.sp}
 \alias{ur.sp}
 \encoding{latin1}
-\title{Schmidt \& Phillips Unit Root Test}
+\title{Schmidt and Phillips Unit Root Test}
 \description{
-  Performs the Schmidt \& Phillips unit root test, where under the Null
+  Performs the Schmidt and Phillips unit root test, where under the Null
   and Alternative Hypothesis the coefficients of the deterministic
   variables are included.
 }
@@ -31,7 +31,7 @@ ur.sp(y, type = c("tau", "rho"), pol.deg = c(1, 2, 3, 4),
   the Presence of Deterministic Trends, \emph{Oxford Bulletin of Economics and
   Statistics}, \bold{54(3)}, 257--287.
 
-  Download possible at: \url{http://cowles.econ.yale.edu/}, see rubric
+  Download possible at: \url{https://cowles.yale.edu/}, see rubric
   'Discussion Papers (CFDPs)'.
 }
 \seealso{\code{\link{ur.sp-class}}}

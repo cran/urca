@@ -3,7 +3,7 @@ import(methods)
 import(nlme)
 
 ##
-useDynLib(urca)
+useDynLib(urca, .registration = TRUE)
 
 ## Functions
 export(ablrtest, alphaols, alrtest, blrtest, bh5lrtest, bh6lrtest, ca.jo, ca.po,
