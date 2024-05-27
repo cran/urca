@@ -1,4 +1,4 @@
-
+c 2012-12-10 YC: added R print and exit functions
 
 c Copyright (c) James G. MacKinnon, 1996 (corrected 2001-1-8)
 c
@@ -28,77 +28,6 @@ c that lines are terminated by CR/LF for DOS, Windows, and OS/2 systems
 c and by LF alone for Unix systems).
 c
 
-c Author authorisation to use under GPL license:
-
-c From - Sat Nov 15 11:56:30 2008
-c X-Mozilla-Status: 0001
-c X-Mozilla-Status2: 00000000
-c Delivered-To: matthieu.stigler@gmail.com
-c Received: by 10.100.110.6 with SMTP id i6cs31074anc;
-c        Fri, 14 Nov 2008 18:53:21 -0800 (PST)
-c Received: by 10.65.23.5 with SMTP id a5mr1662842qbj.30.1226717600830;
-c        Fri, 14 Nov 2008 18:53:20 -0800 (PST)
-c Return-Path: <jgm@jgm.econ.queensu.ca>
-c Received: from jgm.econ.queensu.ca (JGM.econ.QueensU.CA [130.15.74.85])
-c        by mx.google.com with ESMTP id p9si2368721qbp.15.2008.11.14.18.53.20;
-c        Fri, 14 Nov 2008 18:53:20 -0800 (PST)
-c Received-SPF: pass (google.com: best guess record for domain of jgm@jgm.econ.queensu.ca designates 130.15.74.85 as permitted sender) client-ip=130.15.74.85;
-c Authentication-Results: mx.google.com; spf=pass (google.com: best guess record for domain of jgm@jgm.econ.queensu.ca designates 130.15.74.85 as permitted sender) smtp.mail=jgm@jgm.econ.queensu.ca
-c Received: from jgm by jgm.econ.queensu.ca with local (Exim 4.63)
-c	(envelope-from <jgm@jgm.econ.queensu.ca>)
-c	id 1L1BHk-00018U-3o
-c	for matthieu.stigler@gmail.com; Fri, 14 Nov 2008 21:53:20 -0500
-c Date: Fri, 14 Nov 2008 21:53:20 -0500 (EST)
-c From: James MacKinnon <jgm@econ.queensu.ca>
-c To: Matthieu Stigler <matthieu.stigler@gmail.com>
-c Subject: Re: Program for surface response function
-c In-Reply-To: <491D8DF3.20907@gmail.com>
-c Message-ID: <Pine.LNX.4.62.0811142148490.4293@jgm.econ.queensu.ca>
-c References: <491D8DF3.20907@gmail.com>
-c MIME-Version: 1.0
-c Content-Type: MULTIPART/MIXED; BOUNDARY="260199754-1936399293-1226717600=:4293"
-c
-c  This message is in MIME format.  The first part should be readable text,
-c  while the remaining parts are likely unreadable without MIME-aware tools.
-c
-c --260199754-1936399293-1226717600=:4293
-c Content-Type: TEXT/PLAIN; charset=ISO-8859-1; format=flowed
-c Content-Transfer-Encoding: QUOTED-PRINTABLE
-c
-c On Fri, 14 Nov 2008, Matthieu Stigler wrote:
-c
-c > mat@cunix:~/Repertoires/urcdist$ f77  -O urcrouts.f -o urcrout
-c > /usr/lib/gcc/i486-linux-gnu/3.4.6/../../../../lib/libfrtbegin.a(frtbegin.o):
-c > In function `main':
-c > (.text+0x35): undefined reference to `MAIN__'
-c > collect2: ld a retourn=E9 1 code d'=E9tat d'ex=E9cution
-c
-c The problem is simply that urcrouts.f contains no main program. Either add
-c a main program that calls one or more routines from urcrouts.f (you will
-c need this anyway), or compile with the -c switch (instead of -o urcrout).
-c This will create urcrouts.o, but it won't be any use without a main
-c program.
-c
-c > Furthermore, I contributed some functions for the R program and would be
-c > interested to try to integrate your functions for the package devoted to
-c > unit root tests (urca). Do you agree that your code will be used in a R
-c > package under the GPL license?
-c
-c That would be fine with me. But I would want to make sure the R code works
-c properly and provides appropriate citations before you make it available.
-c
-c Cheers,
-c
-c James G. MacKinnon
-c Head, Department of Economics
-c Queen's University
-c Kingston, Ontario, Canada
-c K7L 3N6
-c
-c Email: jgm@econ.queensu.ca
-c Phone: 613 533-2293
-c Fax:   613 533-6668
-c --260199754-1936399293-1226717600=:4293--
 
 C ******************************************************************************
 
@@ -106,16 +35,15 @@ C ******************************************************************************
       subroutine fcrit(probs, cnorm, beta, wght, cval, size,
      &  precrt, nobs, model, nreg, np, nx)
 
-      implicit double precision (a-h,o-z)
+      implicit real(8) (a-h,o-z)
 c
 c Copyright (c) James G. MacKinnon, 1995
 c Routine to find a critical value for any specified test size.
 c Uses GLS to estimate approximating regression.
 c
-      double precision probs(221), cnorm(221), beta(4,221), crits(221),
-     &  wght(221)
-      double precision yvect(20),xmat(20,4),xomx(4,4),resid(20),gamma(4)
-      double precision omega(20,20), fits(20)
+      real(8) probs(221), cnorm(221), beta(4,221), crits(221), wght(221)
+      real(8) yvect(20),xmat(20,4),xomx(4,4),resid(20),gamma(4)
+      real(8) omega(20,20), fits(20)
       diffm = 1000.d0
       imin = 0
       do i=1,221
@@ -265,15 +193,14 @@ C ******************************************************************************
 
       subroutine fpval(beta, cnorm, wght, probs, pval, stat,
      &  precrt, nobs, model, nreg, np, nx)
-      implicit double precision (a-h,o-z)
+      implicit real(8) (a-h,o-z)
 c
 c Copyright (c) James G. MacKinnon, 1995
 c Routine to find P value for any specified test statistic.
 c
-      double precision beta(4,221), crits(221), cnorm(221), wght(221),
-     &  probs(221)
-      double precision yvect(20),xmat(20,4),resid(20),gamma(4)
-      double precision omega(20,20), fits(20), xomx(4,4)
+      real(8) beta(4,221), crits(221), cnorm(221), wght(221), probs(221)
+      real(8) yvect(20),xmat(20,4),resid(20),gamma(4)
+      real(8) omega(20,20), fits(20), xomx(4,4)
 c
 c first, compute all the estimated critical values
 c
@@ -429,12 +356,13 @@ C ******************************************************************************
 
 
       subroutine eval(beta,cval,model,nreg,nobs)
-      implicit double precision (a-h,o-z)
+      implicit real(8) (a-h,o-z)
+
 c
 c Copyright (c) James G. MacKinnon, 1995
 c Routine to evaluate response surface for specified betas and sample size.
 c
-      double precision beta(4)
+      real(8) beta(4)
       if (nobs.eq.0) then
          cval = beta(1)
          return
@@ -461,7 +389,8 @@ c
      &     + beta(4)*onobs**3
          return
       end if
-C      write(6,*) '*** Warning! Error in input file. ***'
+      ier = 1
+      call intpr('*** Warning! Error in input file. ***', -1, ier, 0)
       return
       end
 
@@ -477,12 +406,10 @@ c Subroutine to do GLS estimation the obvious way
 c Use only when sample size is small (nobs <= 50)
 c 1995-1-3
 c
-      implicit double precision (a-h,o-z)
-      double precision xmat(nomax,nvmax), yvect(nomax),
-     &  omega(nomax,nomax)
-      double precision beta(nvmax), xomx(nvmax,nvmax), fits(nomax),
-     &  resid(nomax)
-      double precision xomy(50)
+      implicit real(8) (a-h,o-z)
+      real(8) xmat(nomax,nvmax), yvect(nomax), omega(nomax,nomax)
+      real(8) beta(nvmax), xomx(nvmax,nvmax), fits(nomax), resid(nomax)
+      real(8) xomy(50)
 c
 c xomx is covariance matrix of parameter estimates if omega is truly known
 c First, invert omega matrix if ivrt=0. Original one gets replaced.
@@ -498,14 +425,16 @@ c
         end do
       end do
 c
-      do 21 i=1,nobs
-      do 21 k=1,nobs
-      do 24 j=1,nvar
-      xomy(j) = xomy(j) + xmat(i,j)*omega(k,i)*yvect(k)
-      do 24 l=j,nvar
-      xomx(j,l) = xomx(j,l) + xmat(i,j)*omega(k,i)*xmat(k,l)
-   24 continue
-   21 continue
+      do i=1,nobs
+         do k=1,nobs
+            do j=1,nvar
+               xomy(j) = xomy(j) + xmat(i,j)*omega(k,i)*yvect(k)
+               do l=j,nvar
+                  xomx(j,l) = xomx(j,l) + xmat(i,j)*omega(k,i)*xmat(k,l)
+               end do
+            end do
+         end do
+      end do
 c
       do j=1,nvar
         do l=j,nvar
@@ -519,11 +448,12 @@ c
 c
 c  now form estimates of beta.
 c
-      do 5 i=1,nvar
-      beta(i) = 0.d0
-      do 5 j=1,nvar
-      beta(i) = beta(i) + xomx(i,j)*xomy(j)
-    5 continue
+      do i=1,nvar
+         beta(i) = 0.d0
+         do j=1,nvar
+            beta(i) = beta(i) + xomx(i,j)*xomy(j)
+         end do
+      end do
 c
 c find ssr, fitted values, and residuals
 c
@@ -554,57 +484,60 @@ C ******************************************************************************
 
 
       subroutine cholx(amat,m,n,kxx)
-      implicit double precision (a-h,o-z)
+      implicit real(8) (a-h,o-z)
 c
-c Copyright (c) James G. MacKinnon, 1993
-c This routine uses the cholesky decomposition to invert a real
-c symmetric matrix.
+c     Copyright (c) James G. MacKinnon, 1993
+c     This routine uses the cholesky decomposition to invert a real
+c     symmetric matrix.
 c
-      double precision amat(m,m)
+      real(8) amat(m,m)
+      ooa = 1.d0 ! Wall
       kxx = 0
-      do 8 i=1,n
-      kl = i - 1
-      do 7 j=i,n
-      if (i.gt.1) then
-        do 3 k=1,kl
-    3   amat(i,j) = amat(i,j) - amat(k,i)*amat(k,j)
-      else
-        if (amat(i,i).le.0.d0) then
-        kxx = i
-        go to 20
-      end if
-      end if
-      if (i.eq.j) then
-        amat(i,i) = dsqrt(amat(i,i))
-      else
-        if (j.eq.i+1) ooa = 1.d0/amat(i,i)
-        amat(i,j) = amat(i,j)*ooa
-      end if
-    7 continue
-    8 continue
-      do 13 i=1,n
-      do 12 j=i,n
-      ooa = 1.d0/amat(j,j)
-      if (i.ge.j) then
-        t = 1.d0
-        go to 12
-      end if
-      kl = j - 1
-      t = 0.d0
-      do 11 k=i,kl
-   11 t = t - amat(i,k)*amat(k,j)
-   12 amat(i,j) = t*ooa
-   13 continue
-      do 16 i=1,n
-      do 15 j=i,n
-      t = 0.d0
-      do 14 k=j,n
-   14 t = t + amat(i,k)*amat(j,k)
-      amat(i,j) = t
-   19 amat(j,i) = t
-   15 continue
-   16 continue
-   20 return
+      do i=1,n
+         kl = i - 1
+         do j=i,n
+            if (i .gt. 1) then
+               do k=1,kl
+                  amat(i,j) = amat(i,j) - amat(k,i)*amat(k,j)
+               end do
+            else if (amat(i,i) .le. 0.d0) then
+               kxx = i
+               return
+            end if
+            if (i.eq.j) then
+               amat(i,i) = dsqrt(amat(i,i))
+            else
+               if (j.eq.i+1) ooa = 1.d0/amat(i,i)
+               amat(i,j) = amat(i,j)*ooa
+            end if
+         end do
+      end do
+      do i=1,n
+         do j=i,n
+            ooa = 1.d0/amat(j,j)
+            if (i.ge.j) then
+               t = 1.d0
+            else
+               kl = j - 1
+               t = 0.d0
+               do k=i,kl
+                  t = t - amat(i,k)*amat(k,j)
+               end do
+            end if
+            amat(i,j) = t*ooa
+         end do
+      end do
+      do i=1,n
+         do j=i,n
+            t = 0.d0
+            do k=j,n
+               t = t + amat(i,k)*amat(j,k)
+            end do
+            amat(i,j) = t
+            amat(j,i) = t
+         end do
+      end do
+      return
       end
 
 
@@ -612,7 +545,7 @@ C ******************************************************************************
 
 
       subroutine ddnor(ystar,gauss)
-      implicit double precision(a-h,o-z)
+      implicit real(8)(a-h,o-z)
 c
 c Copyright (c) James G. MacKinnon, 1993
 c Routine to evaluate cumulative normal distribution
@@ -624,7 +557,7 @@ c normal distribution. It is probably accurate to 19 or 20
 c significant digits. It was written in 1977, based on the Cody
 c article referred to in the documentation for IMSL subroutine mdnor.
 c
-      double precision p(6), q(5), a(9), b(8), c(5), d(4)
+      real(8) p(6), q(5), a(9), b(8), c(5), d(4)
       data p(1)/-6.58749161529837803157d-04/,
      1     p(2)/-1.60837851487422766278d-02/,
      2     p(3)/-1.25781726111229246204d-01/,
@@ -740,7 +673,7 @@ C ******************************************************************************
 
 
       subroutine innorz(prob,anorm)
-      implicit double precision (a-h,o-z)
+      implicit real(8) (a-h,o-z)
 c
 c Copyright (c) James G. MacKinnon, 1995
 c Inverse normal routine that adjusts crude result twice.
@@ -751,10 +684,10 @@ c
       data c0/2.515517d0/, d1/1.432788d0/, c1/0.802853d0/
       data c2/0.010328d0/, d3/0.001308d0/, d2/0.189269d0/
       data const/.398942280401432678d0/
-c      if (prob.lt.0.d0.or.prob.gt.1.d0) then
-c         write(6,*) 'Attempt to find inverse normal of ', prob
-c         stop
-c      end if
+      if (prob.lt.0.d0.or.prob.gt.1.d0) then
+         call realpr('Attempt to find inverse normal of ', -1, prob, 1)
+         call rexit('')
+      end if
       pr = prob
       if (prob.gt.0.5d0) pr = 1.d0 - prob
       arg = 1/pr**2
@@ -781,4 +714,3 @@ c
       anorm = anorm - error/dens
       return
       end
-

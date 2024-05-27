@@ -26,8 +26,5 @@
     2}, 169--210.
   
 }
-\references{
-  \url{http://web.math.ku.dk/~sjo/}
-}
 \author{Bernhard Pfaff}
 \keyword{datasets}

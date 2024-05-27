@@ -1,10 +1,6 @@
-citHeader("To cite the urca package in publications use:")
-
-citFooter("For BibTex versions of citations use: toBibtex(citation('urca'))")
-
-citEntry(entry="Book",
+bibentry(bibtype = "Book",
          title = "Analysis of Integrated and Cointegrated Time Series with R",
-         author = personList(as.person("B. Pfaff")),
+         author = c(person(c("B."), c("Pfaff"))),
 	 publisher = "Springer",
          edition = "Second",
          address      = "New York",
